@@ -23,20 +23,26 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
             active: true,
             items: [
                 {
-                    ref: "/homepage/company", label: "Company", active: true
+                    ref: "/homepage/myDetails", label: "My Details", active: true
                 },
                 {
-                    ref: "/homepage/chargeAccounts", label: "Charge Accounts", active: true
+                    ref: "/homepage/changePassword", label: "Change Password", active: true
+                },
+                {
+                    ref: "/homepage/securitySettings", label: "Security Setting", active: true
                 },
             ]
         },
 
-        "Hotel Setup":{
+        "Contacts":{
             icon: <FaHotel  size={20} />,
             active: true,
             items: [
                 {
-                    ref: "/homepage/hotelSetup", label: "Hotel" , active: true
+                    ref: "/homepage/contacts", label: "Contacts" , active: true
+                },
+                {
+                    ref: "/homepage/subContacts", label: "Sub Contacts" , active: true
                 },
                 {
                     ref: "/homepage/false", label: "False", active: hotelSetup

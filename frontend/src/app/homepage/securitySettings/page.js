@@ -1,11 +1,11 @@
 "use client"
 import Loader from "@/components/Loader/Loader"
 
-const HotelSetup = () => {
+const securitySettings = () => {
     return (
         <>
             <Loader/>
         </>
     )
 }
-export default HotelSetup;
+export default securitySettings;
