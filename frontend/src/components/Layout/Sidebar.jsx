@@ -54,7 +54,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
         <>
             <aside className={(showSidebar ? "" : "hidden ") + "h-screen border-r border-bg-primary  overflow-hidden w-72 flex shrink-0 fixed top-0 z-40 inset-0 lg:block"} aria-label="Sidebar">
                 <div className="h-full w-full no-scrollbar px-3 pb-4  bg-white text-bg-primary">
-                    <Link href="/dashboard">
+                    <Link href="/homepage">
                         <div className="flex justify-center">
                             <div className="w-30 h-30 mt-8">
                                 <Image src="/images/logo.png" alt="Logotipo" width={150} height={150} />
@@ -67,7 +67,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                     <br />
 
                     <div className="flex items-center space-x-2">
-                        <Link href="/dashboard" className='flex space-x-4 align-middle ml-3'>
+                        <Link href="/homepage" className='flex space-x-4 align-middle ml-3'>
                             <FaUser className="text-2xl text-primary-800" />
                             <span className="text-sm text-primary-800 font-semibold">{name}</span>
                         </Link>
