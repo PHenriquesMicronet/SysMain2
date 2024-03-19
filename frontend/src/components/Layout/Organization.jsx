@@ -22,11 +22,11 @@ const Contact = () => {
         { label: "Aveiro", value: "Aveiro", description: "" },
         { label: "Guarda", value: "Guarda", description: "" }
     ]
-    const Payment =[
-        {label: "Use Default (Set Per Order)", value:"payments", description:""}
+    const Payment = [
+        { label: "Use Default (Set Per Order)", value: "payments", description: "" }
     ]
-    const Billing =[
-        {label: "Use Default Contact (Details Above)", value:"billings", description:""}
+    const Billing = [
+        { label: "Use Default Contact (Details Above)", value: "billings", description: "" }
     ]
 
     return (
@@ -72,8 +72,8 @@ const Contact = () => {
                     </div>
                 ))}
             </div>
-            <div className="w-full">
-                <div className="max-w-2xl flex flex-row gap-4 my-4 mr-8">
+            <div className="w-full flex flex-col gap-4">
+                <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                     <Autocomplete
                         label="Select country"
                     >
@@ -128,31 +128,24 @@ const Contact = () => {
                             Mexico
                         </AutocompleteItem>
                     </Autocomplete>
-                    {variants.map((variant) => (
-                        <div key={variant} className=" max-w-xl flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                            <Autocomplete
-                                variant="outlined"
-                                defaultItems={Distritos}
-                                label="Distrito"
-                                className="max-w-lg"
-                            >
-                                {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
-                            </Autocomplete>
-                        </div>
-                    ))}
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        {variants.map((variant) => (
+                            <div key={variant} className="w-full flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                <Autocomplete
+                                    variant="outlined"
+                                    defaultItems={Distritos}
+                                    label="Distrito"
+                                    className="max-w-lg"
+                                >
+                                    {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
+                                </Autocomplete>
+                                <Input type="text" variant={variant} label="Zip Code" />
+                            </div>
+                        ))}</div>
                 </div>
             </div>
-            <div className="w-full flex flex-col gap-4 my-4">
-                {variants.map((variant) => (
-                    <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Input type="City" variant={variant} label="City" />
-                        <Input type="Zip Code" variant={variant} label="Zip Code" />
-                    </div>
-                ))}
-            </div>
-                    
             <div className="flex flex-row max-w-4xl mt-4">
-            <Checkbox defaultSelected>Tick to configure as sub-account with client area access</Checkbox>
+                <Checkbox defaultSelected>Tick to configure as sub-account with client area access</Checkbox>
             </div>
             <Divider className="my-8 horizontal" />
         </div></>

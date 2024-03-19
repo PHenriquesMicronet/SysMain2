@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react";
-import { Modal, ScrollShadow, ModalContent, ModalHeader, ModalBody,Avatar, ModalFooter, Button, useDisclosure, Input, Textarea, Autocomplete, Divider, AutocompleteItem } from "@nextui-org/react";
+import { Modal, ScrollShadow, ModalContent, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { AiOutlineGlobal } from "react-icons/ai";
 import axios from 'axios';
 
@@ -41,10 +41,10 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                             base: "max-h-screen",
                             wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
                             body: "h-full ",
-                            
+
                         }}
                         size="full"
-                        hideCloseButton= "true"
+                        hideCloseButton="true"
                         isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
                         <ModalContent>
                             {(onClose) => (
@@ -156,22 +156,22 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     </AutocompleteItem>
                                                 </Autocomplete>
                                                 <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                {variants.map((variant) => (
-                                                    <div key={variant} className="w-full flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                        <Autocomplete
-                                                            variant="outlined"
-                                                            defaultItems={Distritos}
-                                                            label="Distrito"
-                                                            className="max-w-lg"
-                                                        >
-                                                            {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
-                                                        </Autocomplete>
-                                                        <Input type="text" variant={variant} label="Zip Code" />
-                                                    </div>
-                                                ))}</div>
-                                                </div>
-                                                
-                                            </div>   
+                                                    {variants.map((variant) => (
+                                                        <div key={variant} className="w-full flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                                            <Autocomplete
+                                                                variant="outlined"
+                                                                defaultItems={Distritos}
+                                                                label="Distrito"
+                                                                className="max-w-lg"
+                                                            >
+                                                                {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
+                                                            </Autocomplete>
+                                                            <Input type="text" variant={variant} label="Zip Code" />
+                                                        </div>
+                                                    ))}</div>
+                                            </div>
+
+                                        </div>
                                     </ModalBody>
                                 </>
                             )}
@@ -180,7 +180,7 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                 </>
             )}
 
-{formTypeModal === 12 && ( //Properties
+            {formTypeModal === 12 && ( //Properties
                 <>
                     <Button onPress={onOpen} color={buttonColor} className="w-fit">
                         {buttonName} {buttonIcon}
@@ -190,10 +190,10 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                             base: "max-h-screen",
                             wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
                             body: "h-full ",
-                            
+
                         }}
                         size="full"
-                        hideCloseButton= "true"
+                        hideCloseButton="true"
                         isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
                         <ModalContent>
                             {(onClose) => (
@@ -213,7 +213,7 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                 >
                                                     <Input type="text" variant={variant} label="Name" />
-                                                    <Input type="text" variant={variant} label="Fiscal Number" />
+                                                    <Input type="text" variant={variant} label="Last Number" />
                                                 </div>
                                             ))}
                                         </div>
@@ -224,6 +224,7 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                 >
                                                     <Input type="Email" variant={variant} label="Email" />
+                                                    <Input type="text" variant={variant} label="Fiscal Number" />
                                                 </div>
                                             ))}
                                         </div>
@@ -305,22 +306,22 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     </AutocompleteItem>
                                                 </Autocomplete>
                                                 <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                {variants.map((variant) => (
-                                                    <div key={variant} className="w-full flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                        <Autocomplete
-                                                            variant="outlined"
-                                                            defaultItems={Distritos}
-                                                            label="Distrito"
-                                                            className="max-w-lg"
-                                                        >
-                                                            {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
-                                                        </Autocomplete>
-                                                        <Input type="text" variant={variant} label="Zip Code" />
-                                                    </div>
-                                                ))}</div>
-                                                </div>
-                                                
-                                            </div>   
+                                                    {variants.map((variant) => (
+                                                        <div key={variant} className="w-full flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                                            <Autocomplete
+                                                                variant="outlined"
+                                                                defaultItems={Distritos}
+                                                                label="Distrito"
+                                                                className="max-w-lg"
+                                                            >
+                                                                {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
+                                                            </Autocomplete>
+                                                            <Input type="text" variant={variant} label="Zip Code" />
+                                                        </div>
+                                                    ))}</div>
+                                            </div>
+
+                                        </div>
                                     </ModalBody>
                                 </>
                             )}
