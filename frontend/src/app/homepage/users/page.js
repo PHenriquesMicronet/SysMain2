@@ -1,6 +1,5 @@
 "use client"
-import Loader from "@/components/Loader/Loader"
-import Details from "@/components/Layout/MyDetails"
+import Details from "@/components/Layout/Users"
 
 const MyDetails = () => {
     return (

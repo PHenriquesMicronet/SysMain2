@@ -11,7 +11,7 @@ import {
 
 const Contact = () => {
 
-    const variants = ["bordered"];
+    const variants = ["underlined"];
 
     const Distritos = [
         { label: "Viana do Castelo", value: "VianadoCastelo", description: "" },
