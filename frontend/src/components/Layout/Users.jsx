@@ -31,20 +31,29 @@ export default function Contact() {
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const [searchValue, setSearchValue] = React.useState("");
-    const [caracteristics, setCaracteristics] = useState([]);
+    const [user, setUser] = useState([]);
+    
 
     const filteredItems = React.useMemo(() => {
-        return caracteristics.filter((caracteristic) =>
-            caracteristic.Description.toLowerCase().includes(
+        return user.filter((user) =>
+            user.name.toLowerCase().includes(
                 searchValue.toLowerCase()
             ) ||
-            caracteristic.idCarateristics.toString().toLowerCase().includes(
+            user.idUser.toString().toLowerCase().includes(
                 searchValue.toLowerCase()
             )
         );
-    }, [caracteristics, searchValue]);
+    }, [user, searchValue]);
 
-    const items = React.useMemo(() => {
+    useEffect(() => {
+        const getData = async () => {
+            const res = await axios.get("/api/hotel/user");
+            setUser(res.data.response);
+        };
+        getData();
+        }, []);
+
+  const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
 
@@ -102,20 +111,25 @@ export default function Contact() {
                                 LAST NAME
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                COMPANY NAME
+                                EMAIL
                             </TableColumn>
-
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                FISCAL NUMBER
+                            </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 PHONE NUMBER
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                ADDRESS
+                                ADDRESS 1
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                ADDRESS 2
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 COUNTRY
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                CITY
+                                DISTRICT
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 ZIP CODE
@@ -125,15 +139,19 @@ export default function Contact() {
                             </TableColumn>
                         </TableHeader>
                         <TableBody>
-                            {items.map((caracteristic, index) => (
+                            {items.map((user, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>Alterar</TableCell>
-                                    <TableCell>Alterar</TableCell>
-                                    <TableCell>Alterar</TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
+                                    <TableCell>{user.userID}</TableCell>
+                                    <TableCell>{user.name}</TableCell>
+                                    <TableCell>{user.lastName}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                    <TableCell>{user.fiscalNumber}</TableCell>
+                                    <TableCell>{user.phoneNumber}</TableCell>
+                                    <TableCell>{user.address1}</TableCell>
+                                    <TableCell>{user.address2}</TableCell>
+                                    <TableCell>{user.country}</TableCell>
+                                    <TableCell>{user.district}</TableCell>
+                                    <TableCell>{user.zipCode}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>

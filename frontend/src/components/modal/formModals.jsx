@@ -4,9 +4,9 @@ import { Modal, ScrollShadow, ModalContent, ModalHeader, ModalBody, Avatar, Moda
 import { AiOutlineGlobal } from "react-icons/ai";
 import axios from 'axios';
 
+//icons
 import { TfiSave } from "react-icons/tfi";
 import { LiaExpandSolid } from "react-icons/lia";
-import { RxExit } from "react-icons/rx";
 import { MdClose } from "react-icons/md";
 
 
@@ -29,6 +29,33 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
         { label: "Guarda", value: "Guarda", description: "" }
     ]
 
+    //inserção na tabela user
+    const [user, setUser] = useState({
+        LastName:'', 
+        Email:'', 
+        FiscalNumber:'', 
+        Address1:'', 
+        Address2:'', 
+        Country:'', 
+        District:'', 
+        ZipCode:''
+    })
+
+    const handleInput = (event) => {
+        setUser({ ...user, [event.target.name]: event.target.value })
+    }
+    function handleSubmit(event) {
+        event.preventDefault()
+        if (!user.Name || !user.LastName || !user.Email || !user.FiscalNumber || !user.Address1 || !user.Address2 || !user.Country || !user.District || !user.ZipCode) {
+            alert("Preencha os campos corretamente");
+            return;
+        }
+        axios.put('/api/hotel/user', user)
+            .then(response => console.log(response))
+            .catch(err => console.log(err))
+    }
+    //final da inserção na tabela user
+
     return (
         <>
             {formTypeModal === 11 && ( //Properties
@@ -49,6 +76,7 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                         <ModalContent>
                             {(onClose) => (
                                 <>
+                                <form onSubmit={handleSubmit}>
                                     <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
                                         <div className='flex flex-row items-center mr-5'>
                                             <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
@@ -63,8 +91,8 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     key={variant}
                                                     className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                 >
-                                                    <Input type="text" variant={variant} label="Name" />
-                                                    <Input type="text" variant={variant} label="Fiscal Number" />
+                                                    <Input type="text" onChange={handleInput} variant={variant} label="Name" />
+                                                    <Input type="text" onChange={handleInput} variant={variant} label="Fiscal Number" />
                                                 </div>
                                             ))}
                                         </div>
@@ -74,7 +102,7 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     key={variant}
                                                     className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                 >
-                                                    <Input type="Email" variant={variant} label="Email" />
+                                                    <Input onChange={handleInput} type="Email" variant={variant} label="Email" />
                                                 </div>
                                             ))}
                                         </div>
@@ -84,7 +112,7 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     key={variant}
                                                     className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
                                                 >
-                                                    <Input type="" variant={variant} label="Phone Number" />
+                                                    <Input type="text" onChange={handleInput} variant={variant} label="Phone Number" />
                                                 </div>
                                             ))}
                                         </div>
@@ -94,8 +122,8 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     key={variant}
                                                     className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                 >
-                                                    <Input type="text" variant={variant} label="Address 1" />
-                                                    <Input type="text" variant={variant} label="Address 2" />
+                                                    <Input type="text" onChange={handleInput} variant={variant} label="Address 1" />
+                                                    <Input type="text" onChange={handleInput} variant={variant} label="Address 2" />
                                                 </div>
                                             ))}
                                         </div>
@@ -103,6 +131,7 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                                                 <Autocomplete
                                                     label="Select country"
+                                                    onChange={handleInput}
                                                 >
                                                     <AutocompleteItem
                                                         key="Portugal"
@@ -164,15 +193,15 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                                 label="Distrito"
                                                                 className="max-w-lg"
                                                             >
-                                                                {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
+                                                                {(item) => <AutocompleteItem onChange={handleInput} key={item.value}>{item.label}</AutocompleteItem>}
                                                             </Autocomplete>
-                                                            <Input type="text" variant={variant} label="Zip Code" />
+                                                            <Input type="text" onChange={handleInput} variant={variant} label="Zip Code" />
                                                         </div>
                                                     ))}</div>
                                             </div>
-
                                         </div>
                                     </ModalBody>
+                                    </form>
                                 </>
                             )}
                         </ModalContent>
@@ -180,7 +209,7 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                 </>
             )}
 
-            {formTypeModal === 12 && ( //Properties
+            {formTypeModal === 12 && ( //Users
                 <>
                     <Button onPress={onOpen} color={buttonColor} className="w-fit">
                         {buttonName} {buttonIcon}
@@ -212,8 +241,8 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     key={variant}
                                                     className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                 >
-                                                    <Input type="text" variant={variant} label="Name" />
-                                                    <Input type="text" variant={variant} label="Last Number" />
+                                                    <Input type="text" onChange={handleInput} variant={variant} label="Name" />
+                                                    <Input type="text"onChange={handleInput}  variant={variant} label="Last Number" />
                                                 </div>
                                             ))}
                                         </div>
@@ -223,8 +252,8 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     key={variant}
                                                     className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                 >
-                                                    <Input type="Email" variant={variant} label="Email" />
-                                                    <Input type="text" variant={variant} label="Fiscal Number" />
+                                                    <Input type="Email" onChange={handleInput} variant={variant} label="Email" />
+                                                    <Input type="text" onChange={handleInput} variant={variant} label="Fiscal Number" />
                                                 </div>
                                             ))}
                                         </div>
@@ -234,7 +263,7 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     key={variant}
                                                     className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
                                                 >
-                                                    <Input type="" variant={variant} label="Phone Number" />
+                                                    <Input type="text" onChange={handleInput} variant={variant} label="Phone Number" />
                                                 </div>
                                             ))}
                                         </div>
@@ -244,8 +273,8 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                     key={variant}
                                                     className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                 >
-                                                    <Input type="text" variant={variant} label="Address 1" />
-                                                    <Input type="text" variant={variant} label="Address 2" />
+                                                    <Input type="text" onChange={handleInput} variant={variant} label="Address 1" />
+                                                    <Input type="text" onChange={handleInput} variant={variant} label="Address 2" />
                                                 </div>
                                             ))}
                                         </div>
@@ -253,6 +282,7 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                                                 <Autocomplete
                                                     label="Select country"
+                                                    onChange={handleInput}
                                                 >
                                                     <AutocompleteItem
                                                         key="Portugal"
@@ -314,13 +344,12 @@ const formModals = ({ buttonName, buttonIcon, modalHeader, formTypeModal, button
                                                                 label="Distrito"
                                                                 className="max-w-lg"
                                                             >
-                                                                {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
+                                                                {(item) => <AutocompleteItem onChange={handleInput} key={item.value}>{item.label}</AutocompleteItem>}
                                                             </Autocomplete>
-                                                            <Input type="text" variant={variant} label="Zip Code" />
+                                                            <Input type="text" onChange={handleInput} variant={variant} label="Zip Code" />
                                                         </div>
                                                     ))}</div>
                                             </div>
-
                                         </div>
                                     </ModalBody>
                                 </>
