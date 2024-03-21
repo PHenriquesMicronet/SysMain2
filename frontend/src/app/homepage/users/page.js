@@ -1,5 +1,5 @@
 "use client"
-import Details from "@/components/Layout/Users"
+import Details from "@/components/Layout/Pages/Users"
 
 const MyDetails = () => {
     return (

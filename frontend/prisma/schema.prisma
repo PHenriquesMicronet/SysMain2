@@ -20,18 +20,6 @@ model organization {
   zipCode        String @db.VarChar(45)
 }
 
-model properties {
-  propertyID   Int    @id @default(autoincrement())
-  name         String @db.VarChar(250)
-  fiscalNumber String @db.VarChar(45)
-  email        String @db.VarChar(250)
-  phoneNumber  String @db.VarChar(45)
-  adderss1     String @db.VarChar(250)
-  country      String @db.VarChar(250)
-  district     String @db.VarChar(250)
-  zipCode      String @db.VarChar(45)
-}
-
 model user {
   userID       Int    @id @default(autoincrement())
   name         String @db.VarChar(250)
@@ -45,4 +33,30 @@ model user {
   district     String @db.VarChar(250)
   zipCode      String @db.VarChar(45)
   password     String @unique(map: "password_UNIQUE") @db.VarChar(250)
+}
+
+model aplication {
+  id          Int    @id @default(autoincrement())
+  description String @default("") @db.VarChar(100)
+  abreviatura String @default("") @db.VarChar(10)
+}
+
+model perfil {
+  perfilId   Int    @id @default(autoincrement())
+  nomePerfil String @default("") @db.VarChar(50)
+}
+
+model property {
+  propertyID   Int    @id @default(autoincrement())
+  name         String @db.VarChar(250)
+  fiscalNumber String @db.VarChar(45)
+  email        String @db.VarChar(250)
+  phoneNumber  String @db.VarChar(45)
+  address1     String @db.VarChar(250)
+  country      String @db.VarChar(250)
+  district     String @db.VarChar(250)
+  zipCode      String @db.VarChar(45)
+  description  String @db.VarChar(250)
+  abbreviation String @db.VarChar(10)
+  designation  String @db.VarChar(50)
 }

@@ -7,12 +7,12 @@ export async function GET(request) {
 
     const prisma = new PrismaClient()
 
-    const usersRecords = await prisma.user.findMany()
+    const propertiesRecords = await prisma.property.findMany()
 
-    const response = usersRecords
+    const response = propertiesRecords
 
     prisma.$disconnect()
-    
+
     return new NextResponse(JSON.stringify({ response, status: 200 }));
 }
 
@@ -20,20 +20,21 @@ export async function PUT(request) {
     const prisma = new PrismaClient();
 
     try {
-        const { Name, LastName, Email, FiscalNumber, PhoneNumber, Address1, Address2, Country, District, ZipCode, Password } = await request.json();
+        const { Name, Email, FiscalNumber, Address1, Address2, Country, District, ZipCode, PhoneNumber, Description, Abbreviation, Designation } = await request.json();
         const newRecord = await prisma.user.create({
             data: {
                 name: Name,
-                lastName: LastName,
                 email: Email,
-                fiscalNumber: FiscalNumber,
-                phoneNumber: PhoneNumber,
+                FiscalNumber: FiscalNumber,
                 address1 : Address1,
                 address2 : Address2,
                 country : Country,
                 district : District,
                 zipCode : ZipCode,
-                password: Password
+                phoneNumber: PhoneNumber,
+                description: Description,
+                abbreviation: Abbreviation,
+                designation: Designation
             }
         });
 

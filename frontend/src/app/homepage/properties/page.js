@@ -1,5 +1,5 @@
 "use client"
-import Properties from "@/components/Layout/Properties"
+import Properties from "@/components/Layout/Pages/Properties"
 
 const properties = () => {
     return (

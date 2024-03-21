@@ -24,7 +24,7 @@ import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
 
 
-import FormModals from "@/components/modal/formModals";
+import FormModals from "@/components/Modal/modalUser";
 
 export default function Contact() {
 
@@ -39,7 +39,7 @@ export default function Contact() {
             user.name.toLowerCase().includes(
                 searchValue.toLowerCase()
             ) ||
-            user.idUser.toString().toLowerCase().includes(
+            user.userID.toString().toLowerCase().includes(
                 searchValue.toLowerCase()
             )
         );
@@ -53,7 +53,7 @@ export default function Contact() {
         getData();
         }, []);
 
-  const items = React.useMemo(() => {
+    const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
 
@@ -86,7 +86,7 @@ export default function Contact() {
                             buttonColor={"primary"}
                             modalHeader={"Inserir Utilizador"}
                             modalIcons={"bg-red"}
-                            formTypeModal={12}
+                            formTypeModal={10}
                         ></FormModals>
                     </div>
                 </div>
@@ -108,22 +108,7 @@ export default function Contact() {
                                 NAME
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                LAST NAME
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
                                 EMAIL
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                FISCAL NUMBER
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                PHONE NUMBER
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                ADDRESS 1
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                ADDRESS 2
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 COUNTRY
@@ -143,12 +128,7 @@ export default function Contact() {
                                 <TableRow key={index}>
                                     <TableCell>{user.userID}</TableCell>
                                     <TableCell>{user.name}</TableCell>
-                                    <TableCell>{user.lastName}</TableCell>
                                     <TableCell>{user.email}</TableCell>
-                                    <TableCell>{user.fiscalNumber}</TableCell>
-                                    <TableCell>{user.phoneNumber}</TableCell>
-                                    <TableCell>{user.address1}</TableCell>
-                                    <TableCell>{user.address2}</TableCell>
                                     <TableCell>{user.country}</TableCell>
                                     <TableCell>{user.district}</TableCell>
                                     <TableCell>{user.zipCode}</TableCell>
@@ -168,7 +148,7 @@ export default function Contact() {
                                                         buttonName={"Editar"}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Grupo de Tipologias"}
-                                                        formTypeModal={11}
+                                                        formTypeModal={10}
                                                     ></FormModals>
                                                 </DropdownItem>
                                                 <DropdownItem key="delete">Remover</DropdownItem>

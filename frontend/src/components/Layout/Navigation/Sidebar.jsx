@@ -39,6 +39,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                     ref: "/homepage/organization", label: "Organizations" , active: true
                 },
                 {
+                    ref: "/homepage/profile", label: "Profiles", active: true
+                },
+                {
                     ref: "/homepage/users", label: "Users", active: true
                 },
                 {
