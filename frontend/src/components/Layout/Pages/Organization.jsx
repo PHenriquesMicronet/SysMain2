@@ -17,6 +17,7 @@ import { MdClose } from "react-icons/md";
 const Contact = () => {
 
     const variants = ["underlined", "light"];
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const Distritos = [
         { label: "Viana do Castelo", value: "VianadoCastelo", description: "" },
@@ -31,8 +32,25 @@ const Contact = () => {
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
+    const handleInput = (event) => {
+        setUser({ ...user, [event.target.name]: event.target.value })
+    }
+   /* function handleSubmit(event) {
+        event.preventDefault()
+        if (!user.Name || !user.LastName || !user.Email || !user.FiscalNumber || !user.Address1 || !user.Address2 || !user.Country || !user.District || !user.ZipCode) {
+            alert("Preencha os campos corretamente");
+            return;
+        }
+        axios.put('/api/hotel/user', user)
+            .then(response => console.log(response))
+            .catch(err => console.log(err))
+    }*/
+    //final da inserção na tabela Organization
+
+
     return (
         <>
+        <form /*onSubmit={handleSubmit}*/>
             <div className='flex flex-row items-center mr-5'>
                 <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
                 <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
@@ -152,7 +170,8 @@ const Contact = () => {
                     </div>
                 </div>
                 <Divider className="my-8 horizontal" />
-            </div></>
+            </div>
+            </form></>
     );
 };
 

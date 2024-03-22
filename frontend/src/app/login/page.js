@@ -1,5 +1,5 @@
 "use client"
-import Login from "@/components/Layout/Login"
+import Login from "@/components/Layout/Auth/Login"
 
 const login = () => {
     return (
