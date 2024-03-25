@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, Image } from "@nextui-org/react";
 
-const HomePage = () => {
+const ChooseOrganization = () => {
     const [isHovered1, setIsHovered1] = useState(false);
     const [isHovered2, setIsHovered2] = useState(false);
     const [isHovered3, setIsHovered3] = useState(false);
@@ -9,7 +9,7 @@ const HomePage = () => {
 
     return (
         <>
-         <p className="text-center text-3xl mt-24 antialiased">Selecione o sistema que quer utilizar</p>
+         <p className="text-center text-3xl mt-24 antialiased text-emerald-500">Selecione a organização na qual quer trabalhar</p>
             <div className="flex justify-center items-center mt-20">
                 <div className="grid grid-cols-2 gap-4">
                     <div
@@ -19,7 +19,7 @@ const HomePage = () => {
                     >
                         <Card className="w-80 h-80 flex flex-col justify-center items-center">
                             <CardHeader className="flex flex-col items-center justify-center">
-                                <p className="text-large text-center mb-10">SYSMain</p>
+                                <p className="text-large text-center mb-10">Organização 1</p>
                                 <Image className="w-52 h-52"
                                     src="/images/Logo-Login.png"
                                 />
@@ -33,7 +33,7 @@ const HomePage = () => {
                     >
                         <Card className="w-80 h-80 flex flex-col justify-center items-center">
                             <CardHeader className="flex flex-col items-center justify-center">
-                                <p className="text-large text-center mb-10">SYSPMS</p>
+                                <p className="text-large text-center mb-10">Organização 2</p>
                                 <Image className="w-52 h-52"
                                     src="/images/Logo-Login.png"
                                 />
@@ -47,7 +47,7 @@ const HomePage = () => {
                     >
                         <Card className="w-80 h-80 flex flex-col justify-center items-center">
                             <CardHeader className="flex flex-col items-center justify-center">
-                                <p className="text-large text-center mb-10">SYSSYS</p>
+                                <p className="text-large text-center mb-10">Organização 3</p>
                                 <Image className="w-52 h-52"
                                     src="/images/Logo-Login.png"
                                 />
@@ -61,7 +61,7 @@ const HomePage = () => {
                     >
                         <Card className="w-80 h-80 flex flex-col justify-center items-center">
                             <CardHeader className="flex flex-col items-center justify-center">
-                                <p className="text-large text-center mb-10">SYS</p>
+                                <p className="text-large text-center mb-10">Organização 4</p>
                                 <Image className="w-52 h-52"
                                     src="/images/Logo-Login.png"
                                 />
@@ -74,4 +74,4 @@ const HomePage = () => {
     );
 };
 
-export default HomePage;
+export default ChooseOrganization;
