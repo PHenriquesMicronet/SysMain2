@@ -23,26 +23,33 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
 
+import FormModals from "@/components/Modal/modalProfile";
 
-import FormModals from "@/components/modal/formModals";
-
-export default function Contact() {
+const profilePage = () => {
 
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const [searchValue, setSearchValue] = React.useState("");
-    const [caracteristics, setCaracteristics] = useState([]);
+    const [profile, setProfile] = useState([]);
 
     const filteredItems = React.useMemo(() => {
-        return caracteristics.filter((caracteristic) =>
-            caracteristic.Description.toLowerCase().includes(
+        return profile.filter((profile) =>
+            profile.name.toLowerCase().includes(
                 searchValue.toLowerCase()
             ) ||
-            caracteristic.idCarateristics.toString().toLowerCase().includes(
+            profile.perfilId.toString().toLowerCase().includes(
                 searchValue.toLowerCase()
             )
         );
-    }, [caracteristics, searchValue]);
+    }, [profile, searchValue]);
+
+    useEffect(() => {
+        const getData = async () => {
+            const res = await axios.get("/api/hotel/profile");
+            setProfile(res.data.response);
+        };
+        getData();
+        }, []);
 
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -55,7 +62,7 @@ export default function Contact() {
         <>
             <main>
                 <div className="flex flex-col mt-5 py-3">
-                    <p className="text-xs px-6">Propriedades</p>
+                    <p className="text-xs px-6">Perfil</p>
                     <div className="flex flex-row justify-between items-center mx-5">
                         <div className="flex flex-row">
                             <div className="flex flex-wrap md:flex-nowrap gap-4">
@@ -72,16 +79,15 @@ export default function Contact() {
                             </div>
                         </div>
                         <FormModals
-                            buttonName={"Inserir Propriedade"}
+                            buttonName={"Inserir Perfil"}
                             buttonIcon={<FiPlus size={15} />}
                             buttonColor={"primary"}
-                            modalHeader={"Inserir Propriedade"}
+                            modalHeader={"Inserir Perfil"}
                             modalIcons={"bg-red"}
-                            formTypeModal={11}
+                            formTypeModal={10}
                         ></FormModals>
                     </div>
-                </div>
-                <div className="mx-5 h-[65vh] min-h-full">
+                    <div className="mx-5 h-[65vh] min-h-full">
                     <Table
                         isHeaderSticky={"true"}
                         layout={"fixed"}
@@ -99,37 +105,18 @@ export default function Contact() {
                                 NAME
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                FISCAL NUMBER
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                PHONE NUMBER
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                ADDRESS
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                COUNTRY
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                CITY
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                ZIP CODE
+                                DESCRIPTION
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
                             </TableColumn>
                         </TableHeader>
                         <TableBody>
-                            {items.map((caracteristic, index) => (
+                            {items.map((perfil, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>Alterar</TableCell>
-                                    <TableCell>Alterar</TableCell>
-                                    <TableCell>Alterar</TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
+                                    <TableCell>{perfil.profileID}</TableCell>
+                                    <TableCell>{perfil.name}</TableCell>
+                                    <TableCell>{perfil.description}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>
@@ -146,7 +133,7 @@ export default function Contact() {
                                                         buttonName={"Editar"}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Grupo de Tipologias"}
-                                                        formTypeModal={11}
+                                                        formTypeModal={10}
                                                     ></FormModals>
                                                 </DropdownItem>
                                                 <DropdownItem key="delete">Remover</DropdownItem>
@@ -159,43 +146,10 @@ export default function Contact() {
                         </TableBody>
                     </Table>
                 </div>
-                <div className="bg-tableFooter border border-tableFooterBorder flex justify-end items-center lg:pl-72 w-full min-h-10vh fixed bottom-0 right-0 z-20 text-sm text-default-400 py-3">
-                    <div className="flex flex-row items-center">
-                        <Pagination
-                            isCompact
-                            showControls
-                            color="primary"
-                            variant="flat"
-                            page={page}
-                            //total={pages}
-                            //onChange={(page) => setPage(page)}
-                            className="mx-5"
-                        />
-                        <div>
-                            <span className="text-sm text-black">
-                                Items por página:
-                            </span>
-                            <select
-                                value={rowsPerPage}
-                                //onChange={handleChangeRowsPerPage}
-                                className="ml-2 py-1 px-2 border rounded bg-transparent text-sm text-default-600 mx-5"
-                            >
-                                <option value={15}>15</option>
-                                <option value={25}>25</option>
-                                <option value={50}>50</option>
-                            </select>
-                        </div>
-                        <div className="ml-5 mr-10 text-black">
-                            {items.length > 0
-                                ? `${(page - 1) * rowsPerPage + 1}-${Math.min(
-                                    page * rowsPerPage,
-                                    filteredItems.length
-                                )} de ${filteredItems.length}`
-                                : "0 resultados"}
-                        </div>
-                    </div>
                 </div>
-            </main>
+                </main>
         </>
     );
 };
+
+export default profilePage;

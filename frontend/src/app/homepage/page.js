@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import HomePage from "@/components/Layout/Homepage"
+import HomePage from "@/components/Layout/Pages/Homepage"
 
 const Homepage = (pagina) => {
 

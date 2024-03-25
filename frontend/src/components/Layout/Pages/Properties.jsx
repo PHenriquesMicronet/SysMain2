@@ -24,25 +24,33 @@ import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
 
 
-import FormModals from "@/components/modal/formModals";
+import FormModals from "@/components/Modal/modalProperty";
 
 export default function Contact() {
 
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const [searchValue, setSearchValue] = React.useState("");
-    const [caracteristics, setCaracteristics] = useState([]);
+    const [property, setProperty] = useState([]);
 
     const filteredItems = React.useMemo(() => {
-        return caracteristics.filter((caracteristic) =>
-            caracteristic.Description.toLowerCase().includes(
+        return property.filter((property) =>
+            property.description.toLowerCase().includes(
                 searchValue.toLowerCase()
             ) ||
-            caracteristic.idCarateristics.toString().toLowerCase().includes(
+            property.propertyID.toString().toLowerCase().includes(
                 searchValue.toLowerCase()
             )
         );
-    }, [caracteristics, searchValue]);
+    }, [property, searchValue]);
+
+    useEffect(() => {
+        const getData = async () => {
+            const res = await axios.get("/api/hotel/property");
+            setProperty(res.data.response);
+        };
+        getData();
+        }, []);
 
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -55,7 +63,7 @@ export default function Contact() {
         <>
             <main>
                 <div className="flex flex-col mt-5 py-3">
-                    <p className="text-xs px-6">Utilizador</p>
+                    <p className="text-xs px-6">Propriedades</p>
                     <div className="flex flex-row justify-between items-center mx-5">
                         <div className="flex flex-row">
                             <div className="flex flex-wrap md:flex-nowrap gap-4">
@@ -72,12 +80,12 @@ export default function Contact() {
                             </div>
                         </div>
                         <FormModals
-                            buttonName={"Inserir Utilizador"}
+                            buttonName={"Inserir Propriedade"}
                             buttonIcon={<FiPlus size={15} />}
                             buttonColor={"primary"}
-                            modalHeader={"Inserir Utilizador"}
+                            modalHeader={"Inserir Propriedade"}
                             modalIcons={"bg-red"}
-                            formTypeModal={12}
+                            formTypeModal={10}
                         ></FormModals>
                     </div>
                 </div>
@@ -99,41 +107,30 @@ export default function Contact() {
                                 NAME
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                LAST NAME
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                COMPANY NAME
-                            </TableColumn>
-
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                PHONE NUMBER
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
                                 ADDRESS
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                COUNTRY
+                                DESCRIPTION
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                CITY
+                                ABBREVIATION
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                ZIP CODE
+                                DESIGNATION
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
                             </TableColumn>
                         </TableHeader>
                         <TableBody>
-                            {items.map((caracteristic, index) => (
+                            {items.map((property, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>Alterar</TableCell>
-                                    <TableCell>Alterar</TableCell>
-                                    <TableCell>Alterar</TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
-                                    <TableCell><p className="truncate ">Alterar</p></TableCell>
+                                    <TableCell>{property.propertyID}</TableCell>
+                                    <TableCell>{property.name}</TableCell>
+                                    <TableCell>{property.address1}</TableCell>
+                                    <TableCell>{property.description}</TableCell>
+                                    <TableCell>{property.abbreviation}</TableCell>
+                                    <TableCell>{property.designation}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>
@@ -150,7 +147,7 @@ export default function Contact() {
                                                         buttonName={"Editar"}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Grupo de Tipologias"}
-                                                        formTypeModal={11}
+                                                        formTypeModal={10}
                                                     ></FormModals>
                                                 </DropdownItem>
                                                 <DropdownItem key="delete">Remover</DropdownItem>

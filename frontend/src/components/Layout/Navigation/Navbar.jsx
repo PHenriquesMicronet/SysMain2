@@ -8,7 +8,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaExpand } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
-import Loader from '../Loader/Loader';
+import Loader from '../../Loader/Loader';
 
 
 export default function Navbar({ toggle, children, breadcrumbs }) {

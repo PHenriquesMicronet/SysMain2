@@ -1,8 +1,8 @@
 "use client"
 import Head from 'next/head';
-import Sidebar from './Sidebar';
-import Navbar from './Navbar';
-import SidebarToggle from './SidebarToggle';
+import Sidebar from './Navigation/Sidebar';
+import Navbar from './Navigation/Navbar';
+import SidebarToggle from './Navigation/SidebarToggle';
 import Breadcrumb from './Breadcrumb';
 import { useState } from 'react';
 
