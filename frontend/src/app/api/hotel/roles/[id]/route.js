@@ -11,9 +11,9 @@ export async function DELETE(request, context) {
 
         console.log(id)
 
-        const deleteRecord = await prisma.profile.delete({
+        const deleteRecord = await prisma.roles.delete({
             where: {
-                profileID: parseInt(id),
+                roleID: parseInt(id),
             }
         })
         return new NextResponse(JSON.stringify({status: 200 }));

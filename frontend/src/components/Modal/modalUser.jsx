@@ -48,7 +48,7 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
     }
     function handleSubmit(event) {
         event.preventDefault()
-        if (!user.Name || !user.LastName || !user.Email || !user.FiscalNumber || !user.PhoneNumber || !user.Address1 || !user.Address2 || !user.Country || !user.District || !user.ZipCode || !user.Password) {
+        if (!user.Name || !user.LastName || !user.Email || !user.FiscalNumber || !user.PhoneNumber || !user.Address1 || !user.Address2 || !user.Country || !user.District || !user.ZipCode || !user.Password || !user.OrganizationID || !user.RoleID) {
             alert("Preencha os campos corretamente");
             return;
         }
@@ -65,6 +65,8 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                 District: user.Country,
                 ZipCode: user.ZipCode,
                 Password: user.Password,
+                OrganizationID: user.OrganizationID,
+                RoleID: user.RoleID
             }
         })
             .then(response => console.log(response))
@@ -151,7 +153,7 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
                                                         <Input type="text" name="Name" onChange={handleInput} variant={variant} label="Name" />
-                                                        <Input type="text" name="LastName" onChange={handleInput} variant={variant} label="Last Number" />
+                                                        <Input type="text" name="LastName" onChange={handleInput} variant={variant} label="Last Name" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -207,6 +209,8 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                                                         className="flex w-1/2flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
                                                         <Input type="password" name="Password" onChange={handleInput} variant={variant} label="Password" />
+                                                        <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organiztion ID" />
+                                                        <Input type="number" name="RoleID" onChange={handleInput} variant={variant} label="Role ID" />
                                                     </div>
                                                 ))}
                                             </div>

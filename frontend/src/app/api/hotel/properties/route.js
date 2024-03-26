@@ -2,14 +2,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { PrismaClient } from "@prisma/client";
+import organization from "@/app/homepage/organization/page";
 
 export async function GET(request) {
 
     const prisma = new PrismaClient()
 
-    const profileRecords = await prisma.profile.findMany()
+    const propertiesRecords = await prisma.properties.findMany()
 
-    const response = profileRecords
+    const response = propertiesRecords
 
     prisma.$disconnect()
 
@@ -20,11 +21,21 @@ export async function PUT(request) {
     const prisma = new PrismaClient();
 
     try {
-        const {data} = await request.json();
-        const newRecord = await prisma.profile.create({
+        const { data } = await request.json();
+        const newRecord = await prisma.properties.create({
             data: {
                 name: data.Name,
+                email: data.Email,
+                fiscalNumber: parseInt(data.FiscalNumber),
+                address1 : data.Address1,
+                country : data.Country,
+                district : data.District,
+                zipCode : data.ZipCode,
+                phoneNumber: data.PhoneNumber,
                 description: data.Description,
+                abbreviation: data.Abbreviation,
+                designation: data.Designation,
+                organizationID: parseInt(data.OrganizationID)
             }
         });
 
@@ -37,20 +48,21 @@ export async function PUT(request) {
     }
 }
 
-
+/*
 export async function PATCH(request) {
 
     const prisma = new PrismaClient()
 
     try {
-        const { ProfileID, Name, Description } = await request.json();
-        const updateRecord = await prisma.profile.update({
+        const { idCarateristics, Description, Abreviature, Details } = await request.json();
+        const updateRecord = await prisma.characteristics.update({
             where: {
-                profileID: ProfileID,
+                characteristicID: idCarateristics,
             },
             data: {
-                name:Name,
                 description: Description,
+                abreviature: Abreviature,
+                details: Details
             }
         })
         return new NextResponse(JSON.stringify({status: 200 }));
@@ -61,7 +73,7 @@ export async function PATCH(request) {
         await prisma.$disconnect();
     }
 }
-
+*/
 
 
 

@@ -7,9 +7,9 @@ export async function GET(request) {
 
     const prisma = new PrismaClient()
 
-    const propertiesRecords = await prisma.property.findMany()
+    const rolesRecords = await prisma.roles.findMany()
 
-    const response = propertiesRecords
+    const response = rolesRecords
 
     prisma.$disconnect()
 
@@ -20,20 +20,11 @@ export async function PUT(request) {
     const prisma = new PrismaClient();
 
     try {
-        const { data } = await request.json();
-        const newRecord = await prisma.property.create({
+        const {data} = await request.json();
+        const newRecord = await prisma.roles.create({
             data: {
                 name: data.Name,
-                email: data.Email,
-                fiscalNumber: parseInt(data.FiscalNumber),
-                address1 : data.Address1,
-                country : data.Country,
-                district : data.District,
-                zipCode : data.ZipCode,
-                phoneNumber: data.PhoneNumber,
                 description: data.Description,
-                abbreviation: data.Abbreviation,
-                designation: data.Designation
             }
         });
 
@@ -46,21 +37,20 @@ export async function PUT(request) {
     }
 }
 
-/*
+
 export async function PATCH(request) {
 
     const prisma = new PrismaClient()
 
     try {
-        const { idCarateristics, Description, Abreviature, Details } = await request.json();
-        const updateRecord = await prisma.characteristics.update({
+        const { ProfileID, Name, Description } = await request.json();
+        const updateRecord = await prisma.profile.update({
             where: {
-                characteristicID: idCarateristics,
+                profileID: ProfileID,
             },
             data: {
+                name:Name,
                 description: Description,
-                abreviature: Abreviature,
-                details: Details
             }
         })
         return new NextResponse(JSON.stringify({status: 200 }));
@@ -71,7 +61,7 @@ export async function PATCH(request) {
         await prisma.$disconnect();
     }
 }
-*/
+
 
 
 

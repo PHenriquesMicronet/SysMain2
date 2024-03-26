@@ -48,7 +48,7 @@ export async function DELETE(request, context) {
 
         console.log(id)
 
-        const deleteRecord = await prisma.property.delete({
+        const deleteRecord = await prisma.properties.delete({
             where: {
                 propertyID: parseInt(id),
             }

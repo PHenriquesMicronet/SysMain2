@@ -46,11 +46,11 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     }
     function handleSubmit(event) {
         event.preventDefault()
-        if (!property.Name || !property.Email || !property.PhoneNumber || !property.FiscalNumber || !property.Address1 || !property.Country || !property.District || !property.ZipCode || !property.Abbreviation || !property.Description || !property.Designation) {
+        if (!property.Name || !property.Email || !property.PhoneNumber || !property.FiscalNumber || !property.Address1 || !property.Country || !property.District || !property.ZipCode || !property.Abbreviation || !property.Description || !property.Designation || !property.OrganizationID) {
             alert("Preencha os campos corretamente");
             return;
         }
-        axios.put('/api/hotel/property',{
+        axios.put('/api/hotel/properties',{
             data:{
                 Name: property.Name,
                 Email: property.Email, 
@@ -63,6 +63,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                 Description: property.Description,
                 Abbreviation: property.Abbreviation,
                 Designation: property.Designation,
+                OrganizationID: property.OrganizationID
             }
         }) 
         .then(response => console.log(response))
@@ -216,6 +217,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     
                                                     <Input type="text" name="Abbreviation" onChange={handleInput} variant={variant} label="Abbreviation" />
                                                     <Input type="text" name="Designation" onChange={handleInput} variant={variant} label="Designation" />
+                                                    <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organization" />
                                                 </div>
                                             ))}
                                         </div>

@@ -46,7 +46,7 @@ export default function Contact() {
 
     useEffect(() => {
         const getData = async () => {
-            const res = await axios.get("/api/hotel/property");
+            const res = await axios.get("/api/hotel/properties");
             setProperty(res.data.response);
         };
         getData();
@@ -70,7 +70,7 @@ export default function Contact() {
         
         if (confirmDelete) {
             try {
-                const response = await axios.delete(`/api/hotel/property/` + propertyID);
+                const response = await axios.delete(`/api/hotel/properties/` + propertyID);
                 alert("Propriedade removida com sucesso!");
             } catch (error) {
                 console.error("Erro ao remover Propriedade:", error.message);
@@ -153,7 +153,7 @@ export default function Contact() {
                                     <TableCell>{property.description}</TableCell>
                                     <TableCell>{property.abbreviation}</TableCell>
                                     <TableCell>{property.designation}</TableCell>
-                                    <TableCell>{property.organization_organizationID}</TableCell>
+                                    <TableCell>{property.organizationID}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>

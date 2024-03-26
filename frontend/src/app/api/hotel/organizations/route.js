@@ -6,9 +6,9 @@ export async function GET(request) {
 
     const prisma = new PrismaClient()
 
-    const organizationRecords = await prisma.organization.findMany()
+    const organizationsRecords = await prisma.organizations.findMany()
 
-    const response = organizationRecords
+    const response = organizationsRecords
 
     prisma.$disconnect()
 

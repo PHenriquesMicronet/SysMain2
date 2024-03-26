@@ -140,6 +140,9 @@ export default function Contact() {
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 ORGANIZATION ID
                             </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                ROLE ID
+                            </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
                             </TableColumn>
@@ -153,7 +156,8 @@ export default function Contact() {
                                     <TableCell>{user.country}</TableCell>
                                     <TableCell>{user.district}</TableCell>
                                     <TableCell>{user.zipCode}</TableCell>
-                                    <TableCell>{user.organization_organizationID}</TableCell>
+                                    <TableCell>{user.organizationID}</TableCell>
+                                    <TableCell>{user.roleID}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>

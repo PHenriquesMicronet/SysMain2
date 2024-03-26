@@ -49,7 +49,7 @@ export async function DELETE(request, context) {
 
         console.log(id)
 
-        const deleteRecord = await prisma.user.delete({
+        const deleteRecord = await prisma.users.delete({
             where: {
                 userID: parseInt(id),
             }

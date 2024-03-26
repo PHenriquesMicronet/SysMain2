@@ -18,37 +18,36 @@ const modelprofile = ({ buttonName, buttonIcon, modalHeader, formTypeModal, butt
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    //inserção na tabela profile
-    const [profile, setProfile] = useState({
+    //inserção na tabela roles
+    const [roles, setRoles] = useState({
         Name:'', 
         Description:'',
     })
 
     const handleInput = (event) => {
-        setProfile({ ...profile, [event.target.name]: event.target.value })
+        setRoles({ ...roles, [event.target.name]: event.target.value })
     }
     function handleSubmit(event) {
         event.preventDefault()
-        if (!profile.Name || !profile.Description ) {
+        if (!roles.Name || !roles.Description ) {
             alert("Preencha os campos corretamente");
             return;
         }
-        axios.put('/api/hotel/profile',{
+        axios.put('/api/hotel/roles',{
             data:{
-                Name: profile.Name,
-                Description: profile.Description
+                Name: roles.Name,
+                Description: roles.Description
             }
         }) 
             .then(response => console.log(response))
             .catch(err => console.log(err))
-            console.log(profile.Name)
     }
 
-    //final da inserção na tabela profile
+    //final da inserção na tabela roles
 
     return (
         <>
-            {formTypeModal === 10 && ( //profile
+            {formTypeModal === 10 && ( //roles
                 <>
                     <Button onPress={onOpen} color={buttonColor} className="w-fit">
                         {buttonName} {buttonIcon}

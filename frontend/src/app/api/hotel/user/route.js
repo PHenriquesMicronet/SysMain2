@@ -2,12 +2,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { PrismaClient } from "@prisma/client";
+import organization from "@/app/homepage/organization/page";
 
 export async function GET(request) {
 
     const prisma = new PrismaClient()
 
-    const usersRecords = await prisma.user.findMany()
+    const usersRecords = await prisma.users.findMany()
 
     const response = usersRecords
 
@@ -21,7 +22,7 @@ export async function PUT(request) {
 
     try {
         const { data } = await request.json();
-        const newRecord = await prisma.user.create({
+        const newRecord = await prisma.users.create({
             data: {
                 name: data.Name,
                 lastName: data.LastName,
@@ -33,7 +34,9 @@ export async function PUT(request) {
                 country : data.Country,
                 district : data.District,
                 zipCode : data.ZipCode,
-                password: data.Password
+                password: data.Password,
+                roleID: parseInt(data.RoleID),
+                organizationID: parseInt(data.OrganizationID)
             }
         });
 
