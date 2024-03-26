@@ -9,12 +9,8 @@ import {
     Input,
     Button,
     useDisclosure,
-
-    //imports de tabelas
-    Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination,
-
-    //imports de dropdown menu
-    DropdownTrigger, Dropdown, DropdownMenu, DropdownItem,
+    Badge,
+    Pagination,
 } from "@nextui-org/react"
 
 //imports de icons
@@ -22,6 +18,9 @@ import { GoGear } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
+import { FaUserTie } from "react-icons/fa";
+import { BsTrash, BsPerson, BsPencil } from 'react-icons/bs'
+
 
 import FormModals from "@/components/Modal/modalProfile";
 
@@ -31,13 +30,15 @@ const profilePage = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const [searchValue, setSearchValue] = React.useState("");
     const [profile, setProfile] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isInvisible, setIsInvisible] = React.useState(false);
 
     const filteredItems = React.useMemo(() => {
         return profile.filter((profile) =>
             profile.name.toLowerCase().includes(
                 searchValue.toLowerCase()
             ) ||
-            profile.perfilId.toString().toLowerCase().includes(
+            profile.profileID.toString().toLowerCase().includes(
                 searchValue.toLowerCase()
             )
         );
@@ -49,7 +50,7 @@ const profilePage = () => {
             setProfile(res.data.response);
         };
         getData();
-        }, []);
+    }, []);
 
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -57,6 +58,28 @@ const profilePage = () => {
 
         return filteredItems.slice(start, end);
     }, [page, filteredItems, rowsPerPage]);
+
+
+    const handleSearchChange = (value) => {
+        setSearchValue(value);
+        setPage(1);
+    };
+
+
+    const handleDelete = async (profileID) => {
+    
+        const confirmDelete = window.confirm("Tem certeza de que deseja excluir este perfil?");
+        
+        if (confirmDelete) {
+            try {
+                const response = await axios.delete(`/api/hotel/profile/` + profileID);
+                alert("Perfil removido com sucesso!");
+            } catch (error) {
+                console.error("Erro ao remover Perfil:", error.message);
+            }
+        }
+    };
+
 
     return (
         <>
@@ -87,67 +110,29 @@ const profilePage = () => {
                             formTypeModal={10}
                         ></FormModals>
                     </div>
-                    <div className="mx-5 h-[65vh] min-h-full">
-                    <Table
-                        isHeaderSticky={"true"}
-                        layout={"fixed"}
-                        removeWrapper
-                        classNames={{
-                            wrapper: "min-h-[222px]",
-                        }}
-                        className="h-full overflow-auto"
-                    >
-                        <TableHeader>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                ID
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                NAME
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                DESCRIPTION
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
-                                <GoGear size={20} />
-                            </TableColumn>
-                        </TableHeader>
-                        <TableBody>
-                            {items.map((perfil, index) => (
-                                <TableRow key={index}>
-                                    <TableCell>{perfil.profileID}</TableCell>
-                                    <TableCell>{perfil.name}</TableCell>
-                                    <TableCell>{perfil.description}</TableCell>
-                                    <TableCell className="flex justify-center">
-                                        <Dropdown>
-                                            <DropdownTrigger>
-                                                <Button
-                                                    variant="light"
-                                                    className="flex flex-row justify-center"
-                                                >
-                                                    <BsThreeDotsVertical size={20} className="text-gray-400" />
-                                                </Button>
-                                            </DropdownTrigger>
-                                            <DropdownMenu aria-label="Static Actions" closeOnSelect={false} isOpen={true}>
-                                                <DropdownItem key="edit">
-                                                    <FormModals
-                                                        buttonName={"Editar"}
-                                                        buttonColor={"transparent"}
-                                                        modalHeader={"Editar Grupo de Tipologias"}
-                                                        formTypeModal={10}
-                                                    ></FormModals>
-                                                </DropdownItem>
-                                                <DropdownItem key="delete">Remover</DropdownItem>
-                                                <DropdownItem key="delete">Ver</DropdownItem>
-                                            </DropdownMenu>
-                                        </Dropdown>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-24 p-4 mx-auto gap-y-8">
+                        {items.map((profile, index) => (
+                            <div key={index} className="border rounded-lg p-4 shadow-md h-[250px] w-[350px] text-center">
+                                <div className="flex justify-between items-center mb-2">
+                                    <h2 className="text-lg font-bold flex items-center">
+                                        <span>ID {profile.profileID}</span>
+                                        </h2>
+                                    <div className="flex ml-2 space-x-2">
+                                        <Badge color="success" content={5} isInvisible={isInvisible} shape="circle">
+                                        <BsPerson size={25} className="cursor-pointer text-gray-500 hover:text-gray-700" />
+                                        </Badge>
+                                        <BsPencil size={25} className="cursor-pointer text-gray-500 hover:text-gray-700" />
+                                        <BsTrash size={25}  onClick={() => handleDelete(profile.profileID)} className="cursor-pointer text-gray-500 hover:text-gray-700" />
+                                    </div>
+                                </div>
+                                <h1 className="text-gray-600 mb-2 text-xl font-bold mb-4">{profile.name}</h1>
+                                <Button color="transparent"><FaUserTie size={70} /></Button>
+                                <p className="text-gray-600 mt-4">{profile.description}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-                </div>
-                </main>
+            </main>
         </>
     );
 };

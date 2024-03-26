@@ -60,6 +60,24 @@ export default function Contact() {
         return filteredItems.slice(start, end);
     }, [page, filteredItems, rowsPerPage]);
 
+    const handleSearchChange = (value) => {
+        setSearchValue(value);
+        setPage(1);
+    };
+    const handleDelete = async (userID) => {
+    
+        const confirmDelete = window.confirm("Tem certeza de que deseja excluir este utilizador?");
+        
+        if (confirmDelete) {
+            try {
+                const response = await axios.delete(`/api/hotel/user/` + userID);
+                alert("Utilizador removido com sucesso!");
+            } catch (error) {
+                console.error("Erro ao remover Utilizador:", error.message);
+            }
+        }
+    };
+
     return (
         <>
             <main>
@@ -119,6 +137,9 @@ export default function Contact() {
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 ZIP CODE
                             </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                ORGANIZATION ID
+                            </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
                             </TableColumn>
@@ -132,6 +153,7 @@ export default function Contact() {
                                     <TableCell>{user.country}</TableCell>
                                     <TableCell>{user.district}</TableCell>
                                     <TableCell>{user.zipCode}</TableCell>
+                                    <TableCell>{user.organization_organizationID}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>
@@ -147,11 +169,11 @@ export default function Contact() {
                                                     <FormModals
                                                         buttonName={"Editar"}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={"Editar Grupo de Tipologias"}
+                                                        modalHeader={"Editar Utilizador"}
                                                         formTypeModal={10}
                                                     ></FormModals>
                                                 </DropdownItem>
-                                                <DropdownItem key="delete">Remover</DropdownItem>
+                                                <DropdownItem><button onClick={() => handleDelete(user.userID)}>Remover</button></DropdownItem>
                                                 <DropdownItem key="delete">Ver</DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>

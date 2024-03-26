@@ -20,11 +20,11 @@ export async function PUT(request) {
     const prisma = new PrismaClient();
 
     try {
-        const { Name, Description} = await request.json();
+        const {data} = await request.json();
         const newRecord = await prisma.profile.create({
             data: {
-                name: Name,
-                description: Description,
+                name: data.Name,
+                description: data.Description,
             }
         });
 
@@ -37,21 +37,20 @@ export async function PUT(request) {
     }
 }
 
-/*
+
 export async function PATCH(request) {
 
     const prisma = new PrismaClient()
 
     try {
-        const { idCarateristics, Description, Abreviature, Details } = await request.json();
-        const updateRecord = await prisma.characteristics.update({
+        const { ProfileID, Name, Description } = await request.json();
+        const updateRecord = await prisma.profile.update({
             where: {
-                characteristicID: idCarateristics,
+                profileID: ProfileID,
             },
             data: {
+                name:Name,
                 description: Description,
-                abreviature: Abreviature,
-                details: Details
             }
         })
         return new NextResponse(JSON.stringify({status: 200 }));
@@ -62,7 +61,7 @@ export async function PATCH(request) {
         await prisma.$disconnect();
     }
 }
-*/
+
 
 
 

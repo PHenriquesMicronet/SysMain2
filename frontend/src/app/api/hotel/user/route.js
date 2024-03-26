@@ -20,20 +20,20 @@ export async function PUT(request) {
     const prisma = new PrismaClient();
 
     try {
-        const { Name, LastName, Email, FiscalNumber, PhoneNumber, Address1, Address2, Country, District, ZipCode, Password } = await request.json();
+        const { data } = await request.json();
         const newRecord = await prisma.user.create({
             data: {
-                name: Name,
-                lastName: LastName,
-                email: Email,
-                fiscalNumber: FiscalNumber,
-                phoneNumber: PhoneNumber,
-                address1 : Address1,
-                address2 : Address2,
-                country : Country,
-                district : District,
-                zipCode : ZipCode,
-                password: Password
+                name: data.Name,
+                lastName: data.LastName,
+                email: data.Email,
+                fiscalNumber: parseInt(data.FiscalNumber),
+                phoneNumber: parseInt(data.PhoneNumber),
+                address1 : data.Address1,
+                address2 : data.Address2,
+                country : data.Country,
+                district : data.District,
+                zipCode : data.ZipCode,
+                password: data.Password
             }
         });
 
@@ -46,32 +46,6 @@ export async function PUT(request) {
     }
 }
 
-/*
-export async function PATCH(request) {
-
-    const prisma = new PrismaClient()
-
-    try {
-        const { idCarateristics, Description, Abreviature, Details } = await request.json();
-        const updateRecord = await prisma.characteristics.update({
-            where: {
-                characteristicID: idCarateristics,
-            },
-            data: {
-                description: Description,
-                abreviature: Abreviature,
-                details: Details
-            }
-        })
-        return new NextResponse(JSON.stringify({status: 200 }));
-
-    } catch (error) {
-        return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
-    } finally {
-        await prisma.$disconnect();
-    }
-}
-*/
 
 
 

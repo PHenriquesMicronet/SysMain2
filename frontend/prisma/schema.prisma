@@ -8,56 +8,88 @@ datasource db {
 }
 
 model organization {
-  organizationID Int    @id @default(autoincrement())
-  name           String @db.VarChar(250)
-  fiscalNumber   String @db.VarChar(50)
-  email          String @db.VarChar(250)
-  phoneNumber    String @db.VarChar(25)
-  address1       String @db.VarChar(250)
-  address2       String @db.VarChar(250)
-  country        String @db.VarChar(100)
-  district       String @db.VarChar(100)
-  zipCode        String @db.VarChar(45)
+  organizationID Int        @id @default(autoincrement())
+  name           String     @db.VarChar(250)
+  fiscalNumber   String     @db.VarChar(50)
+  email          String     @db.VarChar(250)
+  phoneNumber    String     @db.VarChar(25)
+  address1       String     @db.VarChar(250)
+  address2       String     @db.VarChar(250)
+  country        String     @db.VarChar(100)
+  district       String     @db.VarChar(100)
+  zipCode        String     @db.VarChar(45)
+  property       property[]
+  user           user[]
 }
 
 model user {
-  userID       Int    @id @default(autoincrement())
-  name         String @db.VarChar(250)
-  lastName     String @db.VarChar(250)
-  email        String @db.VarChar(250)
-  fiscalNumber Int
-  phoneNumber  Int
-  address1     String @db.VarChar(250)
-  address2     String @db.VarChar(250)
-  country      String @db.VarChar(250)
-  district     String @db.VarChar(250)
-  zipCode      String @db.VarChar(45)
-  password     String @unique(map: "password_UNIQUE") @db.VarChar(250)
+  userID                      Int          @id @default(autoincrement())
+  name                        String       @db.VarChar(250)
+  lastName                    String       @db.VarChar(250)
+  email                       String       @unique(map: "email_UNIQUE") @db.VarChar(250)
+  fiscalNumber                Int          @unique(map: "fiscalNumber_UNIQUE")
+  phoneNumber                 Int          @unique(map: "phoneNumber_UNIQUE")
+  address1                    String       @db.VarChar(250)
+  address2                    String       @db.VarChar(250)
+  country                     String       @db.VarChar(250)
+  district                    String       @db.VarChar(250)
+  zipCode                     String       @db.VarChar(45)
+  password                    String       @db.VarChar(250)
+  organization_organizationID Int
+  profile_profileID           Int
+  organization                organization @relation(fields: [organization_organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_organization")
+  profile                     profile      @relation(fields: [profile_profileID], references: [profileID], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profile1")
+
+  @@index([organization_organizationID], map: "fk_user_organization_idx")
+  @@index([profile_profileID], map: "fk_user_profile1_idx")
 }
 
 model aplication {
-  id           Int    @id @default(autoincrement())
-  description  String @default("") @db.VarChar(100)
-  abbreviation String @default("") @db.VarChar(10)
+  id                   Int                    @id @default(autoincrement())
+  description          String                 @default("") @db.VarChar(100)
+  abbreviation         String                 @default("") @db.VarChar(10)
+  property_application property_application[]
 }
 
 model property {
-  propertyID   Int    @id @default(autoincrement())
-  name         String @db.VarChar(250)
-  fiscalNumber String @db.VarChar(45)
-  email        String @db.VarChar(250)
-  phoneNumber  String @db.VarChar(45)
-  address1     String @db.VarChar(250)
-  country      String @db.VarChar(250)
-  district     String @db.VarChar(250)
-  zipCode      String @db.VarChar(45)
-  description  String @db.VarChar(250)
-  abbreviation String @db.VarChar(10)
-  designation  String @db.VarChar(50)
+  propertyID                  Int                    @id @default(autoincrement())
+  name                        String                 @db.VarChar(250)
+  fiscalNumber                Int
+  email                       String                 @db.VarChar(250)
+  phoneNumber                 String                 @db.VarChar(45)
+  address1                    String                 @db.VarChar(250)
+  country                     String                 @db.VarChar(250)
+  district                    String                 @db.VarChar(250)
+  zipCode                     String                 @db.VarChar(45)
+  description                 String                 @db.VarChar(250)
+  abbreviation                String                 @db.VarChar(10)
+  designation                 String                 @db.VarChar(50)
+  organization_organizationID Int
+  profile                     profile[]
+  organization                organization           @relation(fields: [organization_organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "fk_property_organization1")
+  property_application        property_application[]
+
+  @@index([organization_organizationID], map: "fk_property_organization1_idx")
 }
 
 model profile {
-  profileID   Int    @id @default(autoincrement())
-  name        String @default("") @db.VarChar(50)
-  description String @db.VarChar(250)
+  profileID           Int      @id @default(autoincrement())
+  name                String   @default("") @db.VarChar(50)
+  description         String   @db.VarChar(250)
+  property_propertyID Int
+  property            property @relation(fields: [property_propertyID], references: [propertyID], onDelete: NoAction, onUpdate: NoAction, map: "fk_profile_property1")
+  user                user[]
+
+  @@index([property_propertyID], map: "fk_profile_property1_idx")
+}
+
+model property_application {
+  idproperty_application Int        @id
+  property_propertyID    Int
+  aplication_id          Int
+  aplication             aplication @relation(fields: [aplication_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_property_application_aplication1")
+  property               property   @relation(fields: [property_propertyID], references: [propertyID], onDelete: NoAction, onUpdate: NoAction, map: "fk_property_application_property1")
+
+  @@index([aplication_id], map: "fk_property_application_aplication1_idx")
+  @@index([property_propertyID], map: "fk_property_application_property1_idx")
 }

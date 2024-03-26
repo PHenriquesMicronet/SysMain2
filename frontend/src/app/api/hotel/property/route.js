@@ -20,21 +20,20 @@ export async function PUT(request) {
     const prisma = new PrismaClient();
 
     try {
-        const { Name, Email, FiscalNumber, Address1, Address2, Country, District, ZipCode, PhoneNumber, Description, Abbreviation, Designation } = await request.json();
+        const { data } = await request.json();
         const newRecord = await prisma.property.create({
             data: {
-                name: Name,
-                email: Email,
-                FiscalNumber: FiscalNumber,
-                address1 : Address1,
-                address2 : Address2,
-                country : Country,
-                district : District,
-                zipCode : ZipCode,
-                phoneNumber: PhoneNumber,
-                description: Description,
-                abbreviation: Abbreviation,
-                designation: Designation
+                name: data.Name,
+                email: data.Email,
+                fiscalNumber: parseInt(data.FiscalNumber),
+                address1 : data.Address1,
+                country : data.Country,
+                district : data.District,
+                zipCode : data.ZipCode,
+                phoneNumber: data.PhoneNumber,
+                description: data.Description,
+                abbreviation: data.Abbreviation,
+                designation: data.Designation
             }
         });
 

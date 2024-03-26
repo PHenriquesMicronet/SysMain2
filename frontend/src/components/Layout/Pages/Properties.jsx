@@ -35,7 +35,7 @@ export default function Contact() {
 
     const filteredItems = React.useMemo(() => {
         return property.filter((property) =>
-            property.description.toLowerCase().includes(
+            property.name.toLowerCase().includes(
                 searchValue.toLowerCase()
             ) ||
             property.propertyID.toString().toLowerCase().includes(
@@ -58,6 +58,25 @@ export default function Contact() {
 
         return filteredItems.slice(start, end);
     }, [page, filteredItems, rowsPerPage]);
+
+    const handleSearchChange = (value) => {
+        setSearchValue(value);
+        setPage(1);
+    };
+
+    const handleDelete = async (propertyID) => {
+    
+        const confirmDelete = window.confirm("Tem certeza de que deseja excluir esta propriedade?");
+        
+        if (confirmDelete) {
+            try {
+                const response = await axios.delete(`/api/hotel/property/` + propertyID);
+                alert("Propriedade removida com sucesso!");
+            } catch (error) {
+                console.error("Erro ao remover Propriedade:", error.message);
+            }
+        }
+    };
 
     return (
         <>
@@ -118,6 +137,9 @@ export default function Contact() {
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 DESIGNATION
                             </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                ORGANIZATION ID
+                            </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
                             </TableColumn>
@@ -131,6 +153,7 @@ export default function Contact() {
                                     <TableCell>{property.description}</TableCell>
                                     <TableCell>{property.abbreviation}</TableCell>
                                     <TableCell>{property.designation}</TableCell>
+                                    <TableCell>{property.organization_organizationID}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>
@@ -150,8 +173,8 @@ export default function Contact() {
                                                         formTypeModal={10}
                                                     ></FormModals>
                                                 </DropdownItem>
-                                                <DropdownItem key="delete">Remover</DropdownItem>
-                                                <DropdownItem key="delete">Ver</DropdownItem>
+                                                <DropdownItem onClick={() => handleDelete(property.propertyID)}>Remover</DropdownItem>
+                                                <DropdownItem>Ver</DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </TableCell>
