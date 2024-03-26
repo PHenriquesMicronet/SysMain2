@@ -50,7 +50,7 @@ model properties {
 }
 
 model properties_applications {
-  propertyApplicationID         Int                             @id
+  propertyApplicationID         Int                             @id @default(autoincrement())
   propertyID                    Int
   applicationID                 Int
   applications                  applications                    @relation(fields: [applicationID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "properties_applications_applications")

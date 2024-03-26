@@ -1,14 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma"
 
 export async function GET(request) {
 
-    const prisma = new PrismaClient()
-
-    const organizationsRecords = await prisma.organizations.findMany()
-
-    const response = organizationsRecords
+    const response = await prisma.organizations.findMany()
 
     prisma.$disconnect()
 

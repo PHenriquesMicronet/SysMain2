@@ -1,15 +1,12 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma"
+
 
 export async function GET(request) {
 
-    const prisma = new PrismaClient()
-
-    const rolesRecords = await prisma.roles.findMany()
-
-    const response = rolesRecords
+    const response = await prisma.roles.findMany()
 
     prisma.$disconnect()
 
@@ -17,18 +14,17 @@ export async function GET(request) {
 }
 
 export async function PUT(request) {
-    const prisma = new PrismaClient();
 
     try {
-        const {data} = await request.json();
-        const newRecord = await prisma.roles.create({
+        const { data } = await request.json();
+        const response = await prisma.roles.create({
             data: {
                 name: data.Name,
                 description: data.Description,
             }
         });
 
-        return new NextResponse(JSON.stringify({newRecord, status: 200 }));
+        return new NextResponse(JSON.stringify({ response, status: 200 }));
 
     } catch (error) {
         return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
@@ -40,20 +36,18 @@ export async function PUT(request) {
 
 export async function PATCH(request) {
 
-    const prisma = new PrismaClient()
-
     try {
-        const { ProfileID, Name, Description } = await request.json();
-        const updateRecord = await prisma.profile.update({
+        const { roleID, Name, Description } = await request.json();
+        const response = await prisma.roles.update({
             where: {
-                profileID: ProfileID,
+                roleID: roleID,
             },
             data: {
-                name:Name,
+                name: Name,
                 description: Description,
             }
         })
-        return new NextResponse(JSON.stringify({status: 200 }));
+        return new NextResponse(JSON.stringify({ status: 200 }));
 
     } catch (error) {
         return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
