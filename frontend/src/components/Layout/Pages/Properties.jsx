@@ -26,10 +26,12 @@ import { FiPlus } from "react-icons/fi";
 
 import FormModals from "@/components/Modal/modalProperty";
 
+
 export default function Contact() {
 
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
+
     const [searchValue, setSearchValue] = React.useState("");
     const [property, setProperty] = useState([]);
 
@@ -50,7 +52,7 @@ export default function Contact() {
             setProperty(res.data.response);
         };
         getData();
-        }, []);
+    }, []);
 
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -65,9 +67,9 @@ export default function Contact() {
     };
 
     const handleDelete = async (propertyID) => {
-    
+
         const confirmDelete = window.confirm("Tem certeza de que deseja excluir esta propriedade?");
-        
+
         if (confirmDelete) {
             try {
                 const response = await axios.delete(`/api/hotel/properties/` + propertyID);
@@ -77,6 +79,21 @@ export default function Contact() {
             }
         }
     };
+
+    function fetchPropertyUsers(id) {
+        const users = axios.get('/api/hotel/properties/' + id + "/users")
+
+        console.log("aaaaaaaaa")
+    }
+
+    const handleGet = async (propertyID) => {
+        try {
+            const response = await axios.get(`/api/hotel/properties/` + propertyID);
+        } catch (error) {
+            console.error("Erro ao Enviar a  Propriedade:", error.message);
+        }
+};
+
 
     return (
         <>
@@ -174,7 +191,15 @@ export default function Contact() {
                                                     ></FormModals>
                                                 </DropdownItem>
                                                 <DropdownItem onClick={() => handleDelete(property.propertyID)}>Remover</DropdownItem>
-                                                <DropdownItem>Ver</DropdownItem>
+                                                <DropdownItem onClick={() => fetchPropertyUsers(property.propertyID)}>
+                                                    <FormModals
+                                                        buttonName={"Ver"}
+                                                        buttonColor={"transparent"}
+                                                        modalHeader={"Ver Detalhes da Propriedade"}
+                                                        formTypeModal={11}
+                                                        idProperty={property.propertyID}
+                                                    ></FormModals>
+                                                </DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </TableCell>
