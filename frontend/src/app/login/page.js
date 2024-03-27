@@ -1,13 +1,13 @@
-"use client"
-import React, { useEffect, useState } from "react";
-import Login from "@/components/Layout/Auth/Login"
+import React from "react";
+import Login from "@/components/Layout/Auth/Login";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 
-const login = () => {
-    return (
-        <>
-        <Login/>
-        </>
-    )
+export default async function login() {
+    const session = await getServerSession()
+    if (session) {
+        redirect("/")
+    }
+    return <Login />
 }
-export default login;

@@ -1,8 +1,10 @@
-import NextAuth from "next-auth/next";
+import NextAuth from "next-auth";
 
 import process from "process";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { Console } from "console";
+import prisma from "@/lib/prisma"
+import { strategy } from "sharp";
 
 
 export const authOptions = {
@@ -12,39 +14,54 @@ export const authOptions = {
         signOut: "/login",
         error: "/login",
     },
+
+    session: {
+        strategy: "jwt"
+    },
+
     providers: [
         CredentialsProvider({
 
             name: 'Credentials',
 
             credentials: {
-                username: { label: "Username", type: "text", placeholder: "jsmith" },
-                password: { label: "Password", type: "password" }
+                email: {},
+                password: {}
             },
             async authorize(credentials, req) {
+                const response = await prisma.users.findUnique({
+                    where: {
+                        email: credentials?.email
+                    }
+                })
 
-                
+                if (credentials?.password == response.password) {
+                    return {
+                        id: response.userID,
+                        email: response.email
+                    }
+                }
 
-                return { id: 0, name: "Diogo" }
+                return null
             }
         })
     ],
-    debug: true,
-    callbacks: {
-        async jwt({ token, user }) {
+    // debug: true,
+    // callbacks: {
+    //     async jwt({ token, user }) {
 
-            return { ...token, ...user };
-        },
+    //         return { ...token, ...user };
+    //     },
 
-        async session({ session, token }) {
+    //     async session({ session, token }) {
 
-            session.user.id = token.id
-            session.user.name = token.name;
-            return session;
-        },
+    //         session.user.id = token.id
+    //         session.user.name = token.name;
+    //         return session;
+    //     },
 
-    },
-    session: { strategy: "jwt" }//, maxAge: 10*60*60
+    // },
+    // session: { strategy: "jwt" }//, maxAge: 10*60*60
 }
 
 const handler = NextAuth(authOptions)

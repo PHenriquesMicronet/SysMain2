@@ -13,15 +13,16 @@ export const metadata = {
   description: "Management Software",
 };
 
-export default function RootLayout({ children }) {
-  
+export default async function RootLayout({ children }) {
+
+  const session = await getServerSession()
   return (
 
     <html lang="en">
       <body className={open_sans.className}>
         <Providers>
           <NextAuthProvider>
-          {children}
+            {children}
           </NextAuthProvider>
         </Providers>
       </body>

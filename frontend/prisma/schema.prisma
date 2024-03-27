@@ -57,8 +57,8 @@ model properties_applications {
   properties                    properties                      @relation(fields: [propertyID], references: [propertyID], onDelete: NoAction, onUpdate: NoAction, map: "properties_applications_properties")
   users_properties_applications users_properties_applications[]
 
+  @@unique([propertyID, applicationID], map: "propertyID_applicationID")
   @@index([applicationID], map: "properties_applications_applications")
-  @@index([propertyID], map: "properties_applications_properties")
 }
 
 model roles {
@@ -98,6 +98,6 @@ model users_properties_applications {
   properties_applications properties_applications @relation(fields: [propertyApplicationID], references: [propertyApplicationID], onDelete: NoAction, onUpdate: NoAction, map: "propertiesApplications_usersPropertiesApplications")
   users                   users                   @relation(fields: [userID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "users_usersPropertiesApplications")
 
-  @@index([propertyApplicationID], map: "propertiesApplications_usersPropertiesApplications")
+  @@unique([propertyApplicationID, userID], map: "propertyApplicationID_userID")
   @@index([userID], map: "users_usersPropertiesApplications")
 }
