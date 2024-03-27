@@ -5,7 +5,7 @@ import {
     Input,
     Checkbox,
     Divider,
-    Autocomplete, AutocompleteItem, Avatar,Button
+    Autocomplete, AutocompleteItem, Avatar, Button
 } from "@nextui-org/react"
 import axios from "axios";
 
@@ -16,162 +16,112 @@ import { MdClose } from "react-icons/md";
 
 const Contact = () => {
 
-    const variants = ["underlined", "light"];
+    const variants = ["underlined"];
     const [isExpanded, setIsExpanded] = useState(false);
+    const [organizations, setOrganizations] = useState([]);
+    const [page, setPage] = React.useState(1);
+    const [searchValue, setSearchValue] = React.useState("");
+    const [rowsPerPage, setRowsPerPage] = React.useState(15);
 
-    const Distritos = [
-        { label: "Viana do Castelo", value: "VianadoCastelo", description: "" },
-        { label: "Braga", value: "Braga", description: "" },
-        { label: "Porto", value: "Porto", description: "" },
-        { label: "Vila Real", value: "VilaReal", description: "" },
-        { label: "Viseu", value: "Viseu", description: "" },
-        { label: "Aveiro", value: "Aveiro", description: "" },
-        { label: "Guarda", value: "Guarda", description: "" }
-    ]
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
     const handleInput = (event) => {
-        setUser({ ...user, [event.target.name]: event.target.value })
+        setUser({ ...organizations, [event.target.name]: event.target.value })
     }
-   /* function handleSubmit(event) {
-        event.preventDefault()
-        if (!user.Name || !user.LastName || !user.Email || !user.FiscalNumber || !user.Address1 || !user.Address2 || !user.Country || !user.District || !user.ZipCode) {
-            alert("Preencha os campos corretamente");
-            return;
-        }
-        axios.put('/api/hotel/user', user)
-            .then(response => console.log(response))
-            .catch(err => console.log(err))
-    }*/
-    //final da inserção na tabela Organization
+    const filteredItems = React.useMemo(() => {
+        return organizations.filter((organizations) =>
+        organizations.name.toLowerCase().includes(
+                searchValue.toLowerCase()
+            ) ||
+            organizations.organizationID.toString().toLowerCase().includes(
+                searchValue.toLowerCase()
+            )
+        );
+    }, [organizations, searchValue]);
 
+
+    useEffect(() => {
+        const getData = async () => {
+            const res = await axios.get("/api/hotel/organizations");
+            setOrganizations(res.data.response);
+        };
+        getData();
+    }, []);
+
+    const items = React.useMemo(() => {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        return filteredItems.slice(start, end);
+    }, [page, filteredItems, rowsPerPage]);
 
     return (
         <>
-        <form /*onSubmit={handleSubmit}*/>
             <div className='flex flex-row items-center mr-5'>
                 <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
                 <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                 <Button color="transparent" variant="light"><MdClose size={30} /></Button>
             </div>
-            <div className="flex flex-col mx-16 my-8">
-                <div className="w-full flex flex-col gap-4 my-4">
-                    {variants.map((variant) => (
-                        <div key={variant} className="flex w-1/2 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                            <Input type="text" variant={variant} label="Name" />
-                        </div>
-                    ))}
-                </div>
-                <div className="w-full flex flex-col gap-4 my-4">
-                    {variants.map((variant) => (
-                        <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                            <Input type="text" variant={variant} label="Company Name" />
-                            <Input type="text" variant={variant} label="Fiscal Number" />
-                        </div>
-                    ))}
-                </div>
-                <div className="w-full flex flex-col gap-4 my-4">
-                    {variants.map((variant) => (
-                        <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                            <Input type="text" variant={variant} label="Email" />
-                            <Input type="text" variant={variant} label="Phone Number" />
-                        </div>
-                    ))}
-                </div>
-
-                <Divider className="my-8 horizontal" />
-
-                <div className="w-full flex flex-col gap-4">
-                    {variants.map((variant) => (
-                        <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                            <Input variant={variant} label="Address 1" />
-                        </div>
-                    ))}
-                </div>
-                <div className="w-full flex flex-col gap-4 my-4">
-                    {variants.map((variant) => (
-                        <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                            <Input variant={variant} label="Address 2" />
-                        </div>
-                    ))}
-                </div>
-                <div className="w-full flex flex-col gap-4">
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Autocomplete
-                            label="Select country"
-                        >
-                            <AutocompleteItem
-                                key="Portugal"
-                                startContent={<Avatar alt="Portugal" className="w-6 h-6" src="https://flagcdn.com/pt.svg" />}
-                            >
-                                Portugal
-                            </AutocompleteItem>
-                            <AutocompleteItem
-                                key="brazil"
-                                startContent={<Avatar alt="Brazil" className="w-6 h-6" src="https://flagcdn.com/br.svg" />}
-                            >
-                                Brazil
-                            </AutocompleteItem>
-                            <AutocompleteItem
-                                key="switzerland"
-                                startContent={
-                                    <Avatar alt="Switzerland" className="w-6 h-6" src="https://flagcdn.com/ch.svg" />
-                                }
-                            >
-                                Switzerland
-                            </AutocompleteItem>
-                            <AutocompleteItem
-                                key="germany"
-                                startContent={<Avatar alt="Germany" className="w-6 h-6" src="https://flagcdn.com/de.svg" />}
-                            >
-                                Germany
-                            </AutocompleteItem>
-                            <AutocompleteItem
-                                key="spain"
-                                startContent={<Avatar alt="Spain" className="w-6 h-6" src="https://flagcdn.com/es.svg" />}
-                            >
-                                Spain
-                            </AutocompleteItem>
-                            <AutocompleteItem
-                                key="france"
-                                startContent={<Avatar alt="France" className="w-6 h-6" src="https://flagcdn.com/fr.svg" />}
-                            >
-                                France
-                            </AutocompleteItem>
-                            <AutocompleteItem
-                                key="italy"
-                                startContent={<Avatar alt="Italy" className="w-6 h-6" src="https://flagcdn.com/it.svg" />}
-                            >
-                                Italy
-                            </AutocompleteItem>
-                            <AutocompleteItem
-                                key="mexico"
-                                startContent={<Avatar alt="Mexico" className="w-6 h-6" src="https://flagcdn.com/mx.svg" />}
-                            >
-                                Mexico
-                            </AutocompleteItem>
-                        </Autocomplete>
-                        <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                            {variants.map((variant) => (
-                                <div key={variant} className="w-full flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                    <Autocomplete
-                                        variant="outlined"
-                                        defaultItems={Distritos}
-                                        label="District"
-                                        className="max-w-lg"
-                                    >
-                                        {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
-                                    </Autocomplete>
-                                    <Input type="text" variant={variant} label="Zip Code" />
-                                </div>
-                            ))}</div>
+            {items.map((organizations, index) => (
+                <div key={index} className="flex flex-col mx-16 my-8">
+                    <div className="w-full flex flex-col gap-4 my-4">
+                        {variants.map((variant) => (
+                            <div key={variant} className="flex w-1/2 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                <Input type="text" variant={variant} label="Name" value={organizations.name}/> 
+                            </div>
+                        ))}
                     </div>
+                    <div className="w-full flex flex-col gap-4 my-4">
+                        {variants.map((variant) => (
+                            <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                <Input type="text" variant={variant} label="Company Name" value={organizations.name}/>
+                                <Input type="text" variant={variant} label="Fiscal Number" value={organizations.fiscalNumber}/>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="w-full flex flex-col gap-4 my-4">
+                        {variants.map((variant) => (
+                            <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                <Input type="text" variant={variant} label="Email" value={organizations.Email}/>
+                                <Input type="text" variant={variant} label="Phone Number" value={organizations.phoneNumber}/>
+                            </div>
+                        ))}
+                    </div>
+
+                    <Divider className="my-8 horizontal" />
+
+                    <div className="w-full flex flex-col gap-4">
+                        {variants.map((variant) => (
+                            <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                <Input variant={variant} label="Address 1" value={organizations.Address1}/>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="w-full flex flex-col gap-4 my-4">
+                        {variants.map((variant) => (
+                            <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                <Input variant={variant} label="Address 2" value={organizations.Address2}/>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="w-full flex flex-col gap-4">
+                        {variants.map((variant) => (
+                            <div
+                                key={variant}
+                                className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                            >
+                                <Input type="text" name="Country" onChange={handleInput} variant={variant} label="Country" value={organizations.country}/>
+                                <Input type="text" name="District" onChange={handleInput} variant={variant} label="District" value={organizations.district}/>
+                                <Input type="number" name="ZipCode" onChange={handleInput} variant={variant} label="zipCode" value={organizations.zipCode}/>
+                            </div>
+                        ))}
+                    </div>
+                    <Divider className="my-8 horizontal" />
                 </div>
-                <Divider className="my-8 horizontal" />
-            </div>
-            </form></>
+            ))}
+        </>
     );
 };
 

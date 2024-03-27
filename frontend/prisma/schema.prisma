@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model applications {
+  id                      Int                       @id @default(autoincrement())
+  description             String                    @default("") @db.VarChar(100)
+  abbreviation            String                    @default("") @db.VarChar(10)
+  properties_applications properties_applications[]
+}
+
+model organizations {
+  organizationID Int          @id @default(autoincrement())
+  name           String       @db.VarChar(250)
+  fiscalNumber   String       @db.VarChar(50)
+  email          String       @db.VarChar(250)
+  phoneNumber    String       @db.VarChar(25)
+  address1       String       @db.VarChar(250)
+  address2       String       @db.VarChar(250)
+  country        String       @db.VarChar(100)
+  district       String       @db.VarChar(100)
+  zipCode        String       @db.VarChar(45)
+  properties     properties[]
+  users          users[]
+}
+
+model properties {
+  propertyID              Int                       @id @default(autoincrement())
+  name                    String                    @db.VarChar(250)
+  fiscalNumber            Int
+  email                   String                    @db.VarChar(250)
+  phoneNumber             String                    @db.VarChar(45)
+  address1                String                    @db.VarChar(250)
+  country                 String                    @db.VarChar(250)
+  district                String                    @db.VarChar(250)
+  zipCode                 String                    @db.VarChar(45)
+  description             String                    @db.VarChar(250)
+  abbreviation            String                    @db.VarChar(10)
+  designation             String                    @db.VarChar(50)
+  organizationID          Int
+  organizations           organizations             @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "properties_organizations")
+  properties_applications properties_applications[]
+
+  @@index([organizationID], map: "properties_organizations")
+}
+
+model properties_applications {
+  propertyApplicationID         Int                             @id @default(autoincrement())
+  propertyID                    Int
+  applicationID                 Int
+  applications                  applications                    @relation(fields: [applicationID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "properties_applications_applications")
+  properties                    properties                      @relation(fields: [propertyID], references: [propertyID], onDelete: NoAction, onUpdate: NoAction, map: "properties_applications_properties")
+  users_properties_applications users_properties_applications[]
+
+  @@index([applicationID], map: "properties_applications_applications")
+  @@index([propertyID], map: "properties_applications_properties")
+}
+
+model roles {
+  roleID      Int     @id @default(autoincrement())
+  name        String  @default("") @db.VarChar(50)
+  description String  @db.VarChar(250)
+  users       users[]
+}
+
+model users {
+  userID                        Int                             @id @default(autoincrement())
+  name                          String                          @db.VarChar(250)
+  lastName                      String                          @db.VarChar(250)
+  email                         String                          @unique(map: "email_UNIQUE") @db.VarChar(250)
+  fiscalNumber                  Int                             @unique(map: "fiscalNumber_UNIQUE")
+  phoneNumber                   Int                             @unique(map: "phoneNumber_UNIQUE")
+  address1                      String                          @db.VarChar(250)
+  address2                      String                          @db.VarChar(250)
+  country                       String                          @db.VarChar(250)
+  district                      String                          @db.VarChar(250)
+  zipCode                       String                          @db.VarChar(45)
+  password                      String                          @db.VarChar(250)
+  organizationID                Int
+  roleID                        Int
+  organizations                 organizations                   @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "users_organizations")
+  roles                         roles                           @relation(fields: [roleID], references: [roleID], onDelete: NoAction, onUpdate: NoAction, map: "users_roles")
+  users_properties_applications users_properties_applications[]
+
+  @@index([organizationID], map: "users_organizations")
+  @@index([roleID], map: "users_roles")
+}
+
+model users_properties_applications {
+  ID                      Int                     @id @default(autoincrement())
+  propertyApplicationID   Int
+  userID                  Int
+  properties_applications properties_applications @relation(fields: [propertyApplicationID], references: [propertyApplicationID], onDelete: NoAction, onUpdate: NoAction, map: "propertiesApplications_usersPropertiesApplications")
+  users                   users                   @relation(fields: [userID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "users_usersPropertiesApplications")
+
+  @@index([propertyApplicationID], map: "propertiesApplications_usersPropertiesApplications")
+  @@index([userID], map: "users_usersPropertiesApplications")
+}

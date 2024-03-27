@@ -10,6 +10,7 @@ import { FaTruck } from "react-icons/fa";
 import { FaCalendarAlt } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { FaHotel } from "react-icons/fa";
+import { FaUserTie } from "react-icons/fa";
 
 const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
 
@@ -39,16 +40,26 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                     ref: "/homepage/organization", label: "Organizations" , active: true
                 },
                 {
+                    ref: "/homepage/properties", label: "Properties" , active: true
+                },
+                
+            ]
+        },
+
+        "Profiles":{
+            icon: <FaUserTie  size={20} />,
+            active: true,
+            items: [
+                {
                     ref: "/homepage/profile", label: "Profiles", active: true
                 },
                 {
-                    ref: "/homepage/users", label: "Users", active: true
+                    ref: "/homepage/users", label: "Manage Users", active: true
                 },
-                {
-                    ref: "/homepage/properties", label: "Properties" , active: true
-                },
+                
             ]
         }
+
     }
     return (
         <>

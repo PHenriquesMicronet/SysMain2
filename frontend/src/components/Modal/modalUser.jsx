@@ -8,40 +8,39 @@ import axios from 'axios';
 import { TfiSave } from "react-icons/tfi";
 import { LiaExpandSolid } from "react-icons/lia";
 import { MdClose } from "react-icons/md";
+import { FaRegUser } from "react-icons/fa";
 
 
 const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const variants = ["underlined"];
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    const Distritos = [
-        { label: "Viana do Castelo", value: "VianadoCastelo", description: "" },
-        { label: "Braga", value: "Braga", description: "" },
-        { label: "Porto", value: "Porto", description: "" },
-        { label: "Vila Real", value: "VilaReal", description: "" },
-        { label: "Viseu", value: "Viseu", description: "" },
-        { label: "Aveiro", value: "Aveiro", description: "" },
-        { label: "Guarda", value: "Guarda", description: "" }
-    ]
+    const toggleSecondModal = () => {
+        setIsSecondModalOpen(!isSecondModalOpen);
+    };
+
+
+
 
     //inserção na tabela user
     const [user, setUser] = useState({
-        Name:'',
-        LastName:'', 
-        Email:'', 
-        FiscalNumber:'', 
-        PhoneNumber:'',
-        Address1:'', 
-        Address2:'', 
-        Country:'', 
-        District:'', 
-        ZipCode:'',
-        Password:'',
+        Name: '',
+        LastName: '',
+        Email: '',
+        FiscalNumber: '',
+        PhoneNumber: '',
+        Address1: '',
+        Address2: '',
+        Country: '',
+        District: '',
+        ZipCode: '',
+        Password: '',
     })
 
     const handleInput = (event) => {
@@ -49,15 +48,32 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
     }
     function handleSubmit(event) {
         event.preventDefault()
-        if (!user.Name || !user.LastName || !user.Email || !user.FiscalNumber || !user.PhoneNumber ||!user.Address1 || !user.Address2 || !user.Country || !user.District || !user.ZipCode || !user.Password) {
+        if (!user.Name || !user.LastName || !user.Email || !user.FiscalNumber || !user.PhoneNumber || !user.Address1 || !user.Address2 || !user.Country || !user.District || !user.ZipCode || !user.Password || !user.OrganizationID || !user.RoleID) {
             alert("Preencha os campos corretamente");
             return;
         }
-        axios.put('/api/hotel/user', user)
+        axios.put('/api/hotel/user', {
+            data: {
+                Name: user.Name,
+                LastName: user.LastName,
+                Email: user.Email,
+                FiscalNumber: user.FiscalNumber,
+                PhoneNumber: user.PhoneNumber,
+                Address1: user.Address1,
+                Address2: user.Address2,
+                Country: user.Country,
+                District: user.Country,
+                ZipCode: user.ZipCode,
+                Password: user.Password,
+                OrganizationID: user.OrganizationID,
+                RoleID: user.RoleID
+            }
+        })
             .then(response => console.log(response))
             .catch(err => console.log(err))
     }
     //final da inserção na tabela user
+
 
     return (
         <>
@@ -79,149 +95,134 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                         <ModalContent>
                             {(onClose) => (
                                 <>
-                                <form onSubmit={handleSubmit}>
-                                    <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
-                                        <div className='flex flex-row items-center mr-5'>
-                                            <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
-                                            <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
-                                            <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
-                                        </div>
-                                    </ModalHeader>
-                                    <ModalBody className="flex flex-col mx-5 my-5 space-y-8">
-                                        <div className="w-full flex flex-col gap-4">
-                                            {variants.map((variant) => (
-                                                <div
-                                                    key={variant}
-                                                    className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                    <form onSubmit={handleSubmit}>
+                                        <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
+                                            <div className='flex flex-row items-center mr-5'>
+                                                <Button color="transparent" onPress={toggleSecondModal}><FaRegUser size={25} /></Button>
+                                                <Modal
+                                                    classNames={{
+                                                        base: "max-h-screen",
+                                                        wrapper: isExpanded
+                                                            ? "w-full h-screen"
+                                                            : "lg:pl-72 h-screen w-full",
+                                                        body: "h-full",
+                                                    }}
+                                                    size="full"
+                                                    hideCloseButton="true"
+                                                    isOpen={isSecondModalOpen}
+                                                    onClose={toggleSecondModal}
+                                                    isDismissable={false}
+                                                    isKeyboardDismissDisabled={true}
                                                 >
-                                                    <Input type="text" onChange={handleInput} variant={variant} label="Name" />
-                                                    <Input type="text"onChange={handleInput}  variant={variant} label="Last Number" />
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="w-full flex flex-col gap-4">
-                                            {variants.map((variant) => (
-                                                <div
-                                                    key={variant}
-                                                    className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
-                                                >
-                                                    <Input type="Email" onChange={handleInput} variant={variant} label="Email" />
-                                                    <Input type="text" onChange={handleInput} variant={variant} label="Fiscal Number" />
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="max-w-xs flex flex-col gap-4">
-                                            {variants.map((variant) => (
-                                                <div
-                                                    key={variant}
-                                                    className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
-                                                >
-                                                    <Input type="text" onChange={handleInput} variant={variant} label="Phone Number" />
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="w-full flex flex-col gap-4">
-                                            {variants.map((variant) => (
-                                                <div
-                                                    key={variant}
-                                                    className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
-                                                >
-                                                    <Input type="text" onChange={handleInput} variant={variant} label="Address 1" />
-                                                    <Input type="text" onChange={handleInput} variant={variant} label="Address 2" />
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="w-full flex flex-col gap-4">
-                                            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                <Autocomplete onChange={handleInput}
-                                                    label="Select country"
-                                                >
-                                                    <AutocompleteItem
-                                                        key="Portugal"
-                                                        startContent={<Avatar alt="Portugal" className="w-6 h-6" src="https://flagcdn.com/pt.svg" />}
-                                                    >
-                                                        Portugal
-                                                    </AutocompleteItem>
-                                                    <AutocompleteItem
-                                                        key="brazil"
-                                                        startContent={<Avatar alt="Brazil" className="w-6 h-6" src="https://flagcdn.com/br.svg" />}
-                                                    >
-                                                        Brazil
-                                                    </AutocompleteItem>
-                                                    <AutocompleteItem
-                                                        key="switzerland"
-                                                        startContent={
-                                                            <Avatar alt="Switzerland" className="w-6 h-6" src="https://flagcdn.com/ch.svg" />
-                                                        }
-                                                    >
-                                                        Switzerland
-                                                    </AutocompleteItem>
-                                                    <AutocompleteItem
-                                                        key="germany"
-                                                        startContent={<Avatar alt="Germany" className="w-6 h-6" src="https://flagcdn.com/de.svg" />}
-                                                    >
-                                                        Germany
-                                                    </AutocompleteItem>
-                                                    <AutocompleteItem
-                                                        key="spain"
-                                                        startContent={<Avatar alt="Spain" className="w-6 h-6" src="https://flagcdn.com/es.svg" />}
-                                                    >
-                                                        Spain
-                                                    </AutocompleteItem>
-                                                    <AutocompleteItem
-                                                        key="france"
-                                                        startContent={<Avatar alt="France" className="w-6 h-6" src="https://flagcdn.com/fr.svg" />}
-                                                    >
-                                                        France
-                                                    </AutocompleteItem>
-                                                    <AutocompleteItem
-                                                        key="italy"
-                                                        startContent={<Avatar alt="Italy" className="w-6 h-6" src="https://flagcdn.com/it.svg" />}
-                                                    >
-                                                        Italy
-                                                    </AutocompleteItem>
-                                                    <AutocompleteItem
-                                                        key="mexico"
-                                                        startContent={<Avatar alt="Mexico" className="w-6 h-6" src="https://flagcdn.com/mx.svg" />}
-                                                    >
-                                                        Mexico
-                                                    </AutocompleteItem>
-                                                </Autocomplete>
-                                                <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                    {variants.map((variant) => (
-                                                        <div key={variant} className="w-full flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                            <Autocomplete
-                                                                onChange={handleInput}
-                                                                variant="outlined"
-                                                                defaultItems={Distritos}
-                                                                label="Distrito"
-                                                                className="max-w-lg"
-                                                            >
-                                                                {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
-                                                            </Autocomplete>
-                                                            <Input type="text" onChange={handleInput} variant={variant} label="Zip Code" />
+                                                    <ModalContent>
+                                                        <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
+                                                        <div className='flex flex-row items-center mr-5'>
+                                                            <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                            <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                                         </div>
-                                                    ))}</div>                                           
+                                                        </ModalHeader>
+                                                        <ModalBody>
+                                                            <table>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Utilizador</th>
+                                                                        <th>Perfil</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Data 1</td>
+                                                                        <td>Data 2</td>
+                                                                        {/* Add more rows and data as needed */}
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </ModalBody>
+                                                    </ModalContent>
+                                                </Modal>
+                                                <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
+                                                <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                            </div>
+                                        </ModalHeader>
+                                        <ModalBody className="flex flex-col mx-5 my-5 space-y-8">
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Name" onChange={handleInput} variant={variant} label="Name" />
+                                                        <Input type="text" name="LastName" onChange={handleInput} variant={variant} label="Last Name" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Email" onChange={handleInput} variant={variant} label="Email" />
+                                                        <Input type="text" name="FiscalNumber" onChange={handleInput} variant={variant} label="Fiscal Number" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="max-w-xs flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
+                                                    >
+                                                        <Input type="text" name="PhoneNumber" onChange={handleInput} variant={variant} label="Phone Number" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Address1" onChange={handleInput} variant={variant} label="Address 1" />
+                                                        <Input type="text" name="Address2" onChange={handleInput} variant={variant} label="Address 2" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Country" onChange={handleInput} variant={variant} label="Country" />
+                                                        <Input type="text" name="District" onChange={handleInput} variant={variant} label="District" />
+                                                        <Input type="text" name="ZipCode" onChange={handleInput} variant={variant} label="zipCode" />
+
+                                                    </div>
+                                                ))}
                                             </div>
                                             <div className="w-1/2 flex flex-col gap-4">
-                                            {variants.map((variant) => (
-                                                <div
-                                                    key={variant}
-                                                    className="flex w-1/2flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
-                                                >
-                                                    <Input type="password" onChange={handleInput} variant={variant} label="Password" />
-                                                </div>
-                                            ))}
-                                        </div>
-                                        </div>
-                                    </ModalBody>
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-1/2flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="password" name="Password" onChange={handleInput} variant={variant} label="Password" />
+                                                        <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organiztion ID" />
+                                                        <Input type="number" name="RoleID" onChange={handleInput} variant={variant} label="Role ID" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </ModalBody>
                                     </form>
                                 </>
                             )}
                         </ModalContent>
                     </Modal>
                 </>
-            )}
+            )
+            }
         </>
     );
 };
