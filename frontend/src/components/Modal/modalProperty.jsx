@@ -1,6 +1,10 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import { Modal, ScrollShadow, ModalContent, Badge, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import {
+    Modal, ScrollShadow, ModalContent, Badge, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem,
+    //imports de tabelas
+    Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination,
+} from "@nextui-org/react";
 import { AiOutlineGlobal } from "react-icons/ai";
 import axios from 'axios';
 
@@ -10,31 +14,44 @@ import { LiaExpandSolid } from "react-icons/lia";
 import { MdClose } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
-import { BsStack } from "react-icons/bs";
+import { IoApps } from "react-icons/io5";
+import {GoGear} from "react-icons/fa";
 
 
-const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor }) => {
+const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idProperty }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isInvisible, setIsInvisible] = React.useState(false);
-    const [visible, setVisible] = useState(false);
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
     const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
+    const [propertyUsers, setPropertyUsers] = useState([]);
     const variants = ["underlined"];
+    const [isLoading, setIsLoading] = useState(true);
+    const [dataFetched, setDataFetched] = useState(false);
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-
-    const toggleSecondModal = () => {
+    const toggleSecondModal = async () => {
         setIsSecondModalOpen(!isSecondModalOpen);
+        if (!dataFetched) {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(`/api/hotel/properties/` + idProperty + `/users`);
+                setPropertyUsers(response.data.response);
+                setDataFetched(true);
+            } catch (error) {
+                console.error("Erro ao encontrar os utilizadores associados à propriedade:", error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
     };
 
-    const toggleThirdModal =() => {
+    const toggleThirdModal = () => {
         setIsThirdModalOpen(!isThirdModalOpen)
     }
-
 
     //inserção na tabela property
     const [property, setProperty] = useState({
@@ -81,8 +98,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     }
     //final da inserção na tabela property
 
-
-
     useEffect(() => {
         const getData = async () => {
             const res = await axios.get("/api/hotel/properties");
@@ -91,10 +106,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         getData();
     }, []);
 
- 
     return (
         <>
-
             {formTypeModal === 10 && ( //Properties
                 <>
                     <Button onPress={onOpen} color={buttonColor} className="w-fit">
@@ -174,14 +187,12 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     </div>
                                                 ))}
                                             </div>
-
                                             <div className="w-full flex flex-col gap-4">
                                                 {variants.map((variant) => (
                                                     <div
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-
                                                         <Input type="text" name="Description" onChange={handleInput} variant={variant} label="Description" />
                                                     </div>
                                                 ))}
@@ -192,7 +203,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-
                                                         <Input type="text" name="Abbreviation" onChange={handleInput} variant={variant} label="Abbreviation" />
                                                         <Input type="text" name="Designation" onChange={handleInput} variant={variant} label="Designation" />
                                                         <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organization" />
@@ -219,7 +229,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                             base: "max-h-screen",
                             wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
                             body: "h-full ",
-
                         }}
                         size="full"
                         hideCloseButton="true"
@@ -265,25 +274,45 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                 </div>
                                                             </ModalHeader>
                                                             <ModalBody>
-                                                                <table>
-                                                                <p>Propriedade</p>
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Utilizador</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>Data 2</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
+                                                                {isLoading ? (<p>A Carregar...</p>
+                                                                ) : (
+                                                                    <div className="mx-5 h-[65vh] min-h-full">
+                                                                    <Table
+                                                                        isHeaderSticky={"true"}
+                                                                        layout={"fixed"}
+                                                                        removeWrapper
+                                                                        classNames={{
+                                                                            wrapper: "min-h-[222px]",
+                                                                        }}
+                                                                        className="h-full overflow-auto"
+                                                                    >
+                                                                        <TableHeader>
+                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                Name
+                                                                            </TableColumn>
+                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                LASTNAME
+                                                                            </TableColumn>
+                                                                        </TableHeader>
+                                                                        <TableBody>
+                                                                                {propertyUsers.map((user, index) => (
+                                                                                    <TableRow key={index}>
+                                                                                    <TableCell>{user.name}</TableCell>
+                                                                                    <TableCell>{user.lastName}</TableCell>
+                                                                                    </TableRow>
+                                                                                ))}
+                                                                        </TableBody>
+                                                                    </Table>
+                                                                    </div>
+                                                                )}
                                                             </ModalBody>
                                                         </ModalContent>
                                                     </Modal>
                                                 </div>
                                                 <div className="bg-gray-100 p-1 rounded border border-gray-300">
-                                                    <Button color="transparent" onPress={toggleThirdModal}><BsStack size={20} className="text-gray-500"/></Button>
+                                                    <Button color="transparent" onPress={toggleThirdModal}>
+                                                        <IoApps size={20} className="text-gray-500" />
+                                                    </Button>
                                                     <Modal
                                                         classNames={{
                                                             base: "max-h-screen",
@@ -379,14 +408,12 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     </div>
                                                 ))}
                                             </div>
-
                                             <div className="w-full flex flex-col gap-4">
                                                 {variants.map((variant) => (
                                                     <div
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-
                                                         <Input type="text" name="Description" onChange={handleInput} variant={variant} label="Description" />
                                                     </div>
                                                 ))}
@@ -397,14 +424,12 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-
                                                         <Input type="text" name="Abbreviation" onChange={handleInput} variant={variant} label="Abbreviation" />
                                                         <Input type="text" name="Designation" onChange={handleInput} variant={variant} label="Designation" />
                                                         <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organization" />
                                                     </div>
                                                 ))}
                                             </div>
-
                                         </ModalBody>
                                     </form>
                                 </>
