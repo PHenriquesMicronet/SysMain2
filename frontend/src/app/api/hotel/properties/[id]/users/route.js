@@ -50,9 +50,26 @@ export async function GET(request, context) {
         distinct: ["userID"]
     })
 
-    const response = users.map(user => ({
-        id: user.userID,
-        name: user.name + " " + user.lastName
+    const response = await Promise.all(users.map(async (user) => {
+        const userData = {
+            id: user.userID,
+            name: user.name,
+            surname: user.lastName,
+            email: user.email,
+            role: ''
+        };
+
+        const role = await prisma.roles.findUnique({
+            where: {
+                roleID: user.roleID
+            }
+        });
+
+        if (role) {
+            userData.role = role.name;
+        }
+
+        return userData;
     }));
 
     if (!response) {
