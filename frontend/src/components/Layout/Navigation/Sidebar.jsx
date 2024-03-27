@@ -37,12 +37,12 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
             active: true,
             items: [
                 {
-                    ref: "/homepage/organization", label: "Organizations" , active: true
+                    ref: "/homepage/organization", label: "Account" , active: true
                 },
                 {
                     ref: "/homepage/properties", label: "Properties" , active: true
                 },
-                
+
             ]
         },
 
