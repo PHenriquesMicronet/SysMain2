@@ -47,7 +47,7 @@ export default function Contact() {
 
     useEffect(() => {
         const getData = async () => {
-            const res = await axios.get("/api/hotel/user");
+            const res = await axios.get("/api/hotel/users");
             setUser(res.data.response);
         };
         getData();
@@ -70,7 +70,7 @@ export default function Contact() {
         
         if (confirmDelete) {
             try {
-                const response = await axios.delete(`/api/hotel/user/` + userID);
+                const response = await axios.delete(`/api/hotel/users/` + userID);
                 alert("Utilizador removido com sucesso!");
             } catch (error) {
                 console.error("Erro ao remover Utilizador:", error.message);

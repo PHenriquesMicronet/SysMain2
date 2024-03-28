@@ -52,7 +52,7 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
             alert("Preencha os campos corretamente");
             return;
         }
-        axios.put('/api/hotel/user', {
+        axios.put('/api/hotel/users', {
             data: {
                 Name: user.Name,
                 LastName: user.LastName,
@@ -198,7 +198,6 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                                                         <Input type="text" name="Country" onChange={handleInput} variant={variant} label="Country" />
                                                         <Input type="text" name="District" onChange={handleInput} variant={variant} label="District" />
                                                         <Input type="text" name="ZipCode" onChange={handleInput} variant={variant} label="zipCode" />
-
                                                     </div>
                                                 ))}
                                             </div>

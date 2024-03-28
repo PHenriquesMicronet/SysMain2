@@ -33,6 +33,7 @@ export default function Contact() {
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const [searchValue, setSearchValue] = React.useState("");
     const [property, setProperty] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
 
     const filteredItems = property.filter(
         (property) =>
@@ -170,11 +171,12 @@ export default function Contact() {
                                                 <Button
                                                     variant="light"
                                                     className="flex flex-row justify-center"
+                                                    
                                                 >
                                                     <BsThreeDotsVertical size={20} className="text-gray-400" />
                                                 </Button>
                                             </DropdownTrigger>
-                                            <DropdownMenu aria-label="Static Actions" closeOnSelect={false} isOpen={true}>
+                                            <DropdownMenu aria-label="Static Actions" isOpen={true}  closeOnSelect={false}>
                                                 <DropdownItem key="edit">
                                                     <FormModals
                                                         buttonName={"Editar"}

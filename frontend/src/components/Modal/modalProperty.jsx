@@ -49,9 +49,21 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         }
     };
 
-    const toggleThirdModal = () => {
-        setIsThirdModalOpen(!isThirdModalOpen)
-    }
+    const toggleThirdModal = async () => {
+        setIsThirdModalOpen(!isThirdModalOpen);
+        if (!dataFetched) {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(`/api/hotel/properties/`+ idProperty +`/applications`);
+                setPropertyUsers(response.data.response);
+                setDataFetched(true);
+            } catch (error) {
+                console.error("Erro ao encontrar as aplicações associadas à propriedade:", error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    };
 
     //inserção na tabela property
     const [property, setProperty] = useState({
@@ -221,7 +233,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
 
             {formTypeModal === 11 && ( //Properties view
                 <>
-                    <Button fullWidth={true} size="md" onPress={onOpen} color={buttonColor} className="-h-3 flex justify-start -p-3">
+                    <Button fullWidth={true} size="md" onPress={onOpen} color={buttonColor} className="-h-3 flex justify-start -p-3" >
                         {buttonName} {buttonIcon}
                     </Button>
                     <Modal
@@ -288,17 +300,25 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                     >
                                                                         <TableHeader>
                                                                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                Name
+                                                                                NAME
                                                                             </TableColumn>
                                                                             <TableColumn className="bg-primary-600 text-white font-bold">
                                                                                 LASTNAME
+                                                                            </TableColumn>
+                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                EMAIL
+                                                                            </TableColumn>
+                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                PERFIL
                                                                             </TableColumn>
                                                                         </TableHeader>
                                                                         <TableBody>
                                                                                 {propertyUsers.map((user, index) => (
                                                                                     <TableRow key={index}>
                                                                                     <TableCell>{user.name}</TableCell>
-                                                                                    <TableCell>{user.lastName}</TableCell>
+                                                                                    <TableCell>{user.surname}</TableCell>
+                                                                                    <TableCell>{user.email}</TableCell>
+                                                                                    <TableCell>{user.role}</TableCell>
                                                                                     </TableRow>
                                                                                 ))}
                                                                         </TableBody>
@@ -335,21 +355,37 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                 </div>
                                                             </ModalHeader>
                                                             <ModalBody>
-                                                                <table>
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Aplicações</th>
-                                                                            <th>Propriedade</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>Data 1</td>
-                                                                            <td>Data 2</td>
-                                                                            {/* Add more rows and data as needed */}
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
+                                                            {isLoading ? (<p>A Carregar...</p>
+                                                                ) : (
+                                                                    <div className="mx-5 h-[65vh] min-h-full">
+                                                                    <Table
+                                                                        isHeaderSticky={"true"}
+                                                                        layout={"fixed"}
+                                                                        removeWrapper
+                                                                        classNames={{
+                                                                            wrapper: "min-h-[222px]",
+                                                                        }}
+                                                                        className="h-full overflow-auto"
+                                                                    >
+                                                                        <TableHeader>
+                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                NAME
+                                                                            </TableColumn>
+                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                LASTNAME
+                                                                            </TableColumn>
+                                                                        </TableHeader>
+                                                                        <TableBody>
+                                                                                {propertyUsers.map((application, index) => (
+                                                                                    <TableRow key={index}>
+                                                                                    <TableCell>{application.name}</TableCell>
+                                                                                    <TableCell>{application.surname}</TableCell>
+                                                                                    </TableRow>
+                                                                                ))}
+                                                                        </TableBody>
+                                                                    </Table>
+                                                                    </div>
+                                                                )}
                                                             </ModalBody>
                                                         </ModalContent>
                                                     </Modal>

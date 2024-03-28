@@ -45,6 +45,7 @@ model properties {
   organizationID          Int
   organizations           organizations             @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "properties_organizations")
   properties_applications properties_applications[]
+  properties_users        properties_users[]
 
   @@index([organizationID], map: "properties_organizations")
 }
@@ -83,6 +84,7 @@ model users {
   password                      String                          @db.VarChar(250)
   organizationID                Int
   roleID                        Int
+  properties_users              properties_users[]
   organizations                 organizations                   @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "users_organizations")
   roles                         roles                           @relation(fields: [roleID], references: [roleID], onDelete: NoAction, onUpdate: NoAction, map: "users_roles")
   users_properties_applications users_properties_applications[]
@@ -92,12 +94,23 @@ model users {
 }
 
 model users_properties_applications {
-  ID                      Int                     @id @default(autoincrement())
-  propertyApplicationID   Int
-  userID                  Int
-  properties_applications properties_applications @relation(fields: [propertyApplicationID], references: [propertyApplicationID], onDelete: NoAction, onUpdate: NoAction, map: "propertiesApplications_usersPropertiesApplications")
-  users                   users                   @relation(fields: [userID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "users_usersPropertiesApplications")
+  userPropertyApplicationID Int                     @id @default(autoincrement())
+  propertyApplicationID     Int
+  userID                    Int
+  properties_applications   properties_applications @relation(fields: [propertyApplicationID], references: [propertyApplicationID], onDelete: NoAction, onUpdate: NoAction, map: "propertiesApplications_usersPropertiesApplications")
+  users                     users                   @relation(fields: [userID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "users_usersPropertiesApplications")
 
   @@unique([propertyApplicationID, userID], map: "propertyApplicationID_userID")
-  @@index([userID], map: "users_usersPropertiesApplications")
+  @@index([userID], map: "usersPropertiesApplications_users")
+}
+
+model properties_users {
+  propertyUserID Int        @id @default(autoincrement())
+  propertyID     Int        @default(0)
+  userID         Int        @default(0)
+  properties     properties @relation(fields: [propertyID], references: [propertyID], onDelete: NoAction, onUpdate: NoAction, map: "propertiesUsers_properties")
+  users          users      @relation(fields: [userID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "propertiesUsers_users")
+
+  @@index([propertyID], map: "propertiesUsers_properties")
+  @@index([userID], map: "propertiesUsers_users")
 }
