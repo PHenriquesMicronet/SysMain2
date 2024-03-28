@@ -26,6 +26,7 @@ import { FiPlus } from "react-icons/fi";
 
 import FormModals from "@/components/Modal/modalProperty";
 
+
 export default function Contact() {
 
     const [page, setPage] = React.useState(1);
@@ -33,31 +34,25 @@ export default function Contact() {
     const [searchValue, setSearchValue] = React.useState("");
     const [property, setProperty] = useState([]);
 
-    const filteredItems = React.useMemo(() => {
-        return property.filter((property) =>
-            property.name.toLowerCase().includes(
-                searchValue.toLowerCase()
-            ) ||
-            property.propertyID.toString().toLowerCase().includes(
-                searchValue.toLowerCase()
-            )
-        );
-    }, [property, searchValue]);
+    const filteredItems = property.filter(
+        (property) =>
+            property.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+            property.propertyID.toString().toLowerCase().includes(searchValue.toLowerCase())
+    );
+    const items = filteredItems.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
     useEffect(() => {
         const getData = async () => {
-            const res = await axios.get("/api/hotel/properties");
-            setProperty(res.data.response);
+            try {
+                const res = await axios.get("/api/hotel/properties");
+                setProperty(res.data.response);
+            } catch (error) {
+                console.error("Erro ao obter as propriedades:", error.message);
+            }
         };
         getData();
-        }, []);
+    }, []);
 
-    const items = React.useMemo(() => {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-
-        return filteredItems.slice(start, end);
-    }, [page, filteredItems, rowsPerPage]);
 
     const handleSearchChange = (value) => {
         setSearchValue(value);
@@ -65,9 +60,9 @@ export default function Contact() {
     };
 
     const handleDelete = async (propertyID) => {
-    
+
         const confirmDelete = window.confirm("Tem certeza de que deseja excluir esta propriedade?");
-        
+
         if (confirmDelete) {
             try {
                 const response = await axios.delete(`/api/hotel/properties/` + propertyID);
@@ -77,6 +72,25 @@ export default function Contact() {
             }
         }
     };
+
+    const fetchPropertyUsers = async (id) => {
+        try {
+            const response = await axios.get(`/api/hotel/properties/` + id + `/users` );
+            console.log(response.data); 
+        } catch (error) {
+            console.error("Erro ao encontrar os utilizadores associados à propriedade:", error.message);
+        }
+    };
+
+
+    const handleGet = async (propertyID) => {
+        try {
+            await fetchPropertyUsers(propertyID);
+        } catch (error) {
+            console.error("Erro ao Enviar a Propriedade:", error.message);
+        }
+    };
+
 
     return (
         <>
@@ -137,9 +151,6 @@ export default function Contact() {
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 DESIGNATION
                             </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                ORGANIZATION ID
-                            </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
                             </TableColumn>
@@ -153,7 +164,6 @@ export default function Contact() {
                                     <TableCell>{property.description}</TableCell>
                                     <TableCell>{property.abbreviation}</TableCell>
                                     <TableCell>{property.designation}</TableCell>
-                                    <TableCell>{property.organizationID}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>
@@ -174,7 +184,15 @@ export default function Contact() {
                                                     ></FormModals>
                                                 </DropdownItem>
                                                 <DropdownItem onClick={() => handleDelete(property.propertyID)}>Remover</DropdownItem>
-                                                <DropdownItem>Ver</DropdownItem>
+                                                <DropdownItem onClick={() => handleGet(property.propertyID)}>
+                                                    <FormModals
+                                                        buttonName={"Ver"}
+                                                        buttonColor={"transparent"}
+                                                        modalHeader={"Ver Detalhes da Propriedade"}
+                                                        formTypeModal={11}
+                                                        idProperty={property.propertyID}
+                                                    ></FormModals>
+                                                </DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </TableCell>
