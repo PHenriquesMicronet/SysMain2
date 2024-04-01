@@ -8,24 +8,16 @@ export async function GET(request, context) {
 
     const { id } = context.params;
 
-    const userPropertiesApplications = await prisma.users_properties_applications.findMany({
+    const properties_users = await prisma.properties_users.findMany({
         where: {
             userID: parseInt(id)
         }
     })
 
-    const properties_applications = await prisma.properties_applications.findMany({
-        where: {
-            propertyApplicationID: {
-                in: userPropertiesApplications.map(userPropertyApplication => userPropertyApplication.propertyApplicationID)
-            }
-        },
-    })
-
     const properties = await prisma.properties.findMany({
         where: {
             propertyID: {
-                in: properties_applications.map(propertyApplication => propertyApplication.propertyID)
+                in: properties_users.map(property_user => property_user.propertyID)
             }
         },
     })

@@ -23,33 +23,31 @@ export async function GET(request, context) {
     return new NextResponse(JSON.stringify({ response, status: 200 }));
 }
 
-/*export async function PATCH(request, context) {
-
-    const prisma = new PrismaClient()
+export async function PATCH(request, context) {
 
     try {
         const { id } = context.params;
         const { data } = await request.json();
 
-        const updateRecord = await prisma.property.update({
+        const response = await prisma.properties.update({
             where: {
-                userID: parseInt(id),
+                propertyID: parseInt(id),
             },
             data: {
-                name: data.Name,
-                lastName: data.LastName,
-                email: data.Email,
-                fiscalNumber: data.FiscalNumber,
-                phoneNumber: data.PhoneNumber,
-                address1 : data.Address1,
-                address2 : data.Address2,
-                country : data.Country,
-                district : data.District,
-                zipCode : data.ZipCode,
-                password: data.Password
+                name: data.name,
+                fiscalNumber: data.fiscalNumber,
+                email: data.email,
+                phoneNumber: data.phoneNumber,
+                address1: data.address1,
+                country: data.country,
+                district: data.district,
+                zipCode: data.zipCode,
+                description: data.description,
+                abbreviation: data.abbreviation,
+                designation: data.designation,
             }
         })
-        return new NextResponse(JSON.stringify({status: 200 }));
+        return new NextResponse(JSON.stringify({ status: 200 }));
 
     } catch (error) {
         return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
@@ -57,7 +55,7 @@ export async function GET(request, context) {
         await prisma.$disconnect();
     }
 
-}*/
+}
 export async function DELETE(request, context) {
 
     try {
