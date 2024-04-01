@@ -47,20 +47,20 @@ export const authOptions = {
         })
     ],
     // debug: true,
-    // callbacks: {
-    //     async jwt({ token, user }) {
+    callbacks: {
+        async jwt({ token, user }) {
 
-    //         return { ...token, ...user };
-    //     },
+            return { ...token, ...user };
+        },
 
-    //     async session({ session, token }) {
+        async session({ session, token }) {
 
-    //         session.user.id = token.id
-    //         session.user.name = token.name;
-    //         return session;
-    //     },
+            session.user.id = token.id
+            session.user.name = token.name;
+            return session;
+        },
 
-    // },
+    },
     // session: { strategy: "jwt" }//, maxAge: 10*60*60
 }
 
