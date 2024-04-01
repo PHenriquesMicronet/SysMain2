@@ -38,7 +38,8 @@ export const authOptions = {
                 if (credentials?.password == response.password) {
                     return {
                         id: response.userID,
-                        email: response.email
+                        email: response.email,
+                        organization: response.organizationID
                     }
                 }
 
@@ -56,12 +57,12 @@ export const authOptions = {
         async session({ session, token }) {
 
             session.user.id = token.id
-            session.user.name = token.name;
+            session.user.name = token.name
+            session.user.organization = token.organization
+
             return session;
         },
-
-    },
-    // session: { strategy: "jwt" }//, maxAge: 10*60*60
+    }
 }
 
 const handler = NextAuth(authOptions)
