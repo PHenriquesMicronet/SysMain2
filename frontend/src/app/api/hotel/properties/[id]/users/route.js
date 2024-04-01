@@ -8,46 +8,18 @@ export async function GET(request, context) {
 
     const { id } = context.params;
 
-    // const propertiesApplications = await prisma.properties_applications.findMany({
-    //     where: {
-    //         propertyID: parseInt(id)
-    //     },
-    // })
-
-    // const usersPropertiesApplications = await prisma.users_properties_applications.findMany({
-    //     where: {
-    //         propertyApplicationID: {
-    //             in: propertiesApplications.map(propertyApplication => propertyApplication.propertyApplicationID)
-    //         }
-    //     },
-    // })
-
-    // const users = await prisma.users.findMany({
-    //     where: {
-    //         userID: {
-    //             in: usersPropertiesApplications.map(userPropertyApplication => userPropertyApplication.userID)
-    //         }
-    //     },
-    // })
+    const propertiesUsers = await prisma.properties_users.findMany({
+        where: {
+            propertyID: parseInt(id)
+        },
+    })
 
     const users = await prisma.users.findMany({
         where: {
-            users_properties_applications: {
-                some: {
-                    properties_applications: {
-                        propertyID: parseInt(id)
-                    }
-                }
+            userID: {
+                in: propertiesUsers.map(propertiesUsers => propertiesUsers.userID)
             }
         },
-        include: {
-            users_properties_applications: {
-                include: {
-                    properties_applications: true
-                }
-            }
-        },
-        distinct: ["userID"]
     })
 
     const response = await Promise.all(users.map(async (user) => {
