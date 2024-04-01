@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma"
 
 export async function GET(request) {
 
-    const response = await prisma.organizations.findMany()
+    const response = await prisma.users.findMany()
 
     prisma.$disconnect()
 
