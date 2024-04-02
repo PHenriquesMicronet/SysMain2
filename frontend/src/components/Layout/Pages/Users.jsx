@@ -51,16 +51,13 @@ export default function Contact() {
 
     useEffect(() => {
         const getData = async () => {
-<<<<<<< HEAD
-            if (status !== "loading"){
-                const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/users`);
-                setUser(res.data.response);
-=======
-            if (status !== "loading") {
+            /*if (status !== "loading") {
                 const res = await axios.get(`/api/hotel/organizations/` + session.user.organization + `/users`);
                 console.log("API Response:", res.data);
-                setUser(res.data.response.map(user => ({ ...user, userID: user.id })));
->>>>>>> 0abc6667b57d2e216ca44e93e087fae1951cbdca
+                setUser(res.data.response.map(user => ({ ...user, userID: user.id })));*/
+                if (status !== "loading"){
+                    const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/users`);
+                    setUser(res.data.response);
             }
         };
         getData();
@@ -133,9 +130,9 @@ export default function Contact() {
                         className="h-full overflow-auto"
                     >
                         <TableHeader>
-                        <TableColumn className="bg-primary-600 text-white font-bold">
+                        {/*<TableColumn className="bg-primary-600 text-white font-bold">
                                 ID
-                            </TableColumn>
+                    </TableColumn>`*/}
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 NAME
                             </TableColumn>
@@ -155,7 +152,7 @@ export default function Contact() {
                         <TableBody>
                             {items.map((user, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>{user.userID}</TableCell>
+                                    {/*<TableCell>{user.id}</TableCell>*/}
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.role}</TableCell>
@@ -178,12 +175,12 @@ export default function Contact() {
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Utilizador"}
                                                         modalEditArrow={<BsArrowRight size={25} />}
-                                                        modalEdit={`ID: ${user.userID}`}
+                                                        modalEdit={`ID: ${user.id}`}
                                                         formTypeModal={11}
-                                                        idUser={user.userID}
+                                                        idUser={user.id}
                                                     ></Modaluser>
                                                 </DropdownItem>
-                                                <DropdownItem><button onClick={() => handleDelete(user.userID)}>Remover</button></DropdownItem>
+                                                <DropdownItem><button onClick={() => handleDelete(user.id)}>Remover</button></DropdownItem>
                                                 <DropdownItem key="delete">Ver</DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>

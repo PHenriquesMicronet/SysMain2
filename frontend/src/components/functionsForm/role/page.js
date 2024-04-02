@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-export default function roleEdit(idRole){
+export default function roleEdit(id){
     //edição na tabela role
     const [valuesRole, setValuesRole] = useState({
         name: '',
@@ -11,7 +11,7 @@ export default function roleEdit(idRole){
 
 
     useEffect(() => {
-        axios.get('/api/hotel/roles/' + idRole)
+        axios.get('/api/hotel/roles/' + id)
             .then(res => {
                 setValuesRole({ ...valuesRole,
                     name: res.data.response.name,
@@ -24,7 +24,7 @@ export default function roleEdit(idRole){
 
     function handleUpdateRole(e) {
         e.preventDefault()
-        axios.patch('/api/hotel/roles/' + idRole, {
+        axios.patch('/api/hotel/roles/' + id, {
             data: {
                 name: valuesRole.name,
                 description: valuesRole.description
