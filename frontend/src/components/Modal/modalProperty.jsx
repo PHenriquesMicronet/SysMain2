@@ -15,12 +15,20 @@ import { MdClose } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { IoApps } from "react-icons/io5";
-import { GoGear } from "react-icons/fa";
-import { FaArrowLeft } from "react-icons/fa";
-import { BsPencil } from 'react-icons/bs'
+import {GoGear} from "react-icons/fa";
 
 
-const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idProperty }) => {
+const modalpropertie = ({
+    buttonName,
+    buttonIcon,
+    modalHeader,
+    formTypeModal,
+    buttonColor,
+    idProperty,
+    editIcon,
+    modalEditArrow,
+    modalEdit
+}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isInvisible, setIsInvisible] = React.useState(false);
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
@@ -59,27 +67,11 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         if (!dataFetched) {
             setIsLoading(true);
             try {
-                const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications`);
-                setPropertyApplications(response.data.response);
+                const response = await axios.get(`/api/hotel/properties/`+ idProperty +`/applications`);
+                setPropertyUsers(response.data.response);
                 setDataFetched(true);
             } catch (error) {
                 console.error("Erro ao encontrar as aplicações associadas à propriedade:", error.message);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-    };
-
-    const toggleFourthModal = async () => {
-        setIsFourthModalOpen(!isFourthModalOpen);
-        if (!dataFetched) {
-            setIsLoading(true);
-            try {
-                const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications/` + applicationID + `/users`);
-                setPropertyApplicationsUsers(response.data.response);
-                setDataFetched(true);
-            } catch (error) {
-                console.error("Erro ao encontrar as aplicações associadas à aplicação:", error.message);
             } finally {
                 setIsLoading(false);
             }
@@ -139,6 +131,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         getData();
     }, []);
 
+    const { handleInputProperty, handleSubmitProperty,  setProperty } = propertyInsert();
+    const { handleUpdateProperty, setValuesProperty, valuesProperty } = propertyEdit(idProperty);
+
     return (
         <>
             {formTypeModal === 10 && ( //Properties
@@ -158,7 +153,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                         <ModalContent>
                             {(onClose) => (
                                 <>
-                                    <form onSubmit={handleSubmit}>
+                                    <form onSubmit={handleSubmitProperty}>
                                         <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
                                             <div className='flex flex-row items-center mr-5'>
                                                 <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
@@ -173,8 +168,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Name" onChange={handleInput} variant={variant} label="Name" />
-                                                        <Input type="number" name="FiscalNumber" onChange={handleInput} variant={variant} label="Fiscal Number" />
+                                                        <Input type="text" name="Name" onChange={handleInputProperty} variant={variant} label="Name" />
+                                                        <Input type="number" name="FiscalNumber" onChange={handleInputProperty} variant={variant} label="Fiscal Number" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -184,7 +179,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input onChange={handleInput} name="Email" type="text" variant={variant} label="Email" />
+                                                        <Input onChange={handleInputProperty} name="Email" type="text" variant={variant} label="Email" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -194,7 +189,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
                                                     >
-                                                        <Input type="number" name="PhoneNumber" onChange={handleInput} variant={variant} label="Phone Number" />
+                                                        <Input type="number" name="PhoneNumber" onChange={handleInputProperty} variant={variant} label="Phone Number" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -204,7 +199,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Address1" onChange={handleInput} variant={variant} label="Address 1" />
+                                                        <Input type="text" name="Address1" onChange={handleInputProperty} variant={variant} label="Address 1" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -214,9 +209,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Country" onChange={handleInput} variant={variant} label="Country" />
-                                                        <Input type="text" name="District" onChange={handleInput} variant={variant} label="District" />
-                                                        <Input type="number" name="ZipCode" onChange={handleInput} variant={variant} label="zipCode" />
+                                                        <Input type="text" name="Country" onChange={handleInputProperty} variant={variant} label="Country" />
+                                                        <Input type="text" name="District" onChange={handleInputProperty} variant={variant} label="District" />
+                                                        <Input type="number" name="ZipCode" onChange={handleInputProperty} variant={variant} label="zipCode" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -226,7 +221,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Description" onChange={handleInput} variant={variant} label="Description" />
+                                                        <Input type="text" name="Description" onChange={handleInputProperty} variant={variant} label="Description" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -236,9 +231,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Abbreviation" onChange={handleInput} variant={variant} label="Abbreviation" />
-                                                        <Input type="text" name="Designation" onChange={handleInput} variant={variant} label="Designation" />
-                                                        <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organization" />
+                                                        <Input type="text" name="Abbreviation" onChange={handleInputProperty} variant={variant} label="Abbreviation" />
+                                                        <Input type="text" name="Designation" onChange={handleInputProperty} variant={variant} label="Designation" />
+                                                        <Input type="number" name="OrganizationID" onChange={handleInputProperty} variant={variant} label="Organization" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -381,86 +376,28 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                 {isLoading ? (<p>A Carregar...</p>
                                                                 ) : (
                                                                     <div className="mx-5 h-[65vh] min-h-full">
-                                                                        <Table
-                                                                            isHeaderSticky={"true"}
-                                                                            layout={"fixed"}
-                                                                            removeWrapper
-                                                                            classNames={{
-                                                                                wrapper: "min-h-[222px]",
-                                                                            }}
-                                                                            className="h-full overflow-auto"
-                                                                        >
-                                                                            <TableHeader>
-                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                    SYSTEM
-                                                                                </TableColumn>
-                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                    AVAILABLE
-                                                                                </TableColumn>
-                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                    FEATURES
-                                                                                </TableColumn>
-                                                                            </TableHeader>
-                                                                            <TableBody>
-                                                                                {propertyApplication.map((application, index) => (
+                                                                    <Table
+                                                                        isHeaderSticky={"true"}
+                                                                        layout={"fixed"}
+                                                                        removeWrapper
+                                                                        classNames={{
+                                                                            wrapper: "min-h-[222px]",
+                                                                        }}
+                                                                        className="h-full overflow-auto"
+                                                                    >
+                                                                        <TableHeader>
+                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                NAME
+                                                                            </TableColumn>
+                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                LASTNAME
+                                                                            </TableColumn>
+                                                                        </TableHeader>
+                                                                        <TableBody>
+                                                                                {propertyUsers.map((application, index) => (
                                                                                     <TableRow key={index}>
-                                                                                        <TableCell><Button variant="invisible" onPress={toggleFourthModal}>{application.description}</Button>
-                                                                                            <Modal
-                                                                                                classNames={{
-                                                                                                    base: "max-h-screen",
-                                                                                                    wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
-                                                                                                    body: "h-full",
-                                                                                                }}
-                                                                                                size="full"
-                                                                                                hideCloseButton="true"
-                                                                                                isOpen={isFourthModalOpen}
-                                                                                                onClose={toggleFourthModal}
-                                                                                                isDismissable={false}
-                                                                                                isKeyboardDismissDisabled={true}
-                                                                                            >
-                                                                                                <ModalContent>
-                                                                                                    <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                                                                                        {modalHeader}
-                                                                                                        <div className='flex flex-row items-center mr-5'>
-                                                                                                            <Button color="transparent" onClick={toggleThirdModal}><FaArrowLeft size={25}/></Button>
-                                                                                                            <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
-                                                                                                            <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
-                                                                                                        </div>
-                                                                                                    </ModalHeader>
-                                                                                                    <ModalBody>
-                                                                                                        {isLoading ? (<p>A Carregar...</p>
-                                                                                                        ) : (
-                                                                                                            <div className="mx-5 h-[65vh] min-h-full">
-                                                                                                                <Table
-                                                                                                                    isHeaderSticky={"true"}
-                                                                                                                    layout={"fixed"}
-                                                                                                                    removeWrapper
-                                                                                                                    classNames={{
-                                                                                                                        wrapper: "min-h-[222px]",
-                                                                                                                    }}
-                                                                                                                    className="h-full overflow-auto"
-                                                                                                                >
-                                                                                                                    <TableHeader>
-                                                                                                                        <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                                                            Name
-                                                                                                                        </TableColumn>
-                                                                                                                    </TableHeader>
-                                                                                                                    <TableBody>
-                                                                                                                    {propertyApplicationsUsers.map((user, index) => (
-                                                                                                                        <TableRow key={index}>
-                                                                                                                            <TableCell>{user.name}</TableCell>
-                                                                                                                        </TableRow>
-                                                                                                                        ))}
-                                                                                                                    </TableBody>
-                                                                                                                </Table>
-                                                                                                            </div>
-                                                                                                        )}
-                                                                                                    </ModalBody>
-                                                                                                </ModalContent>
-                                                                                            </Modal>
-                                                                                        </TableCell>
-                                                                                        <TableCell><Switch defaultSelected size="sm" color="success" /></TableCell>
-                                                                                        <TableCell><BsPencil></BsPencil></TableCell>
+                                                                                    <TableCell>{application.name}</TableCell>
+                                                                                    <TableCell>{application.surname}</TableCell>
                                                                                     </TableRow>
                                                                                 ))}
                                                                             </TableBody>
@@ -544,6 +481,254 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         <Input type="text" name="Abbreviation" onChange={handleInput} variant={variant} label="Abbreviation" />
                                                         <Input type="text" name="Designation" onChange={handleInput} variant={variant} label="Designation" />
                                                         <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organization" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </ModalBody>
+                                    </form>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
+                </>
+            )}
+
+
+            {formTypeModal === 12 && ( //Properties edit
+                <>
+                    <Button fullWidth={true} size="md" onPress={onOpen} color={buttonColor} className="-h-3 flex justify-start -p-3" >
+                        {buttonName} {buttonIcon}
+                    </Button>
+                    <Modal
+                        classNames={{
+                            base: "max-h-screen",
+                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                            body: "h-full ",
+                        }}
+                        size="full"
+                        hideCloseButton="true"
+                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <form onSubmit={(e) => handleUpdateProperty(e)}>
+                                        <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                        <div className="flex flex-row justify-start gap-4">
+                                                {editIcon} {modalHeader} {modalEditArrow} {modalEdit}
+                                            </div>
+                                            <div className='flex flex-row items-center mr-5'>
+                                                <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
+                                                <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                            </div>
+                                        </ModalHeader>
+                                        <ModalBody className="flex flex-col mx-5 my-5 space-y-4">
+                                            <div className="flex justify-end gap-2">
+                                                <div className="bg-gray-100 p-1 rounded border border-gray-300 mr-2">
+                                                    <Badge color="success" content={5} isInvisible={isInvisible} shape="circle">
+                                                        <Button color="transparent" onPress={toggleSecondModal}>
+                                                            <FaUser size={20} className="text-gray-500" />
+                                                        </Button>
+                                                    </Badge>
+                                                    <Modal
+                                                        classNames={{
+                                                            base: "max-h-screen",
+                                                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                                                            body: "h-full",
+                                                        }}
+                                                        size="full"
+                                                        hideCloseButton="true"
+                                                        isOpen={isSecondModalOpen}
+                                                        onClose={toggleSecondModal}
+                                                        isDismissable={false}
+                                                        isKeyboardDismissDisabled={true}
+                                                    >
+                                                        <ModalContent>
+                                                            <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                                                {modalHeader}
+                                                                <div className='flex flex-row items-center mr-5'>
+                                                                    <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                                    <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                                                </div>
+                                                            </ModalHeader>
+                                                            <ModalBody>
+                                                                {isLoading ? (<p>A Carregar...</p>
+                                                                ) : (
+                                                                    <div className="mx-5 h-[65vh] min-h-full">
+                                                                        <Table
+                                                                            isHeaderSticky={"true"}
+                                                                            layout={"fixed"}
+                                                                            removeWrapper
+                                                                            classNames={{
+                                                                                wrapper: "min-h-[222px]",
+                                                                            }}
+                                                                            className="h-full overflow-auto"
+                                                                        >
+                                                                            <TableHeader>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    NAME
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    LASTNAME
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    EMAIL
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    PERFIL
+                                                                                </TableColumn>
+                                                                            </TableHeader>
+                                                                            <TableBody>
+                                                                                {propertyUsers.map((user, index) => (
+                                                                                    <TableRow key={index}>
+                                                                                        <TableCell>{user.name}</TableCell>
+                                                                                        <TableCell>{user.surname}</TableCell>
+                                                                                        <TableCell>{user.email}</TableCell>
+                                                                                        <TableCell>{user.role}</TableCell>
+                                                                                    </TableRow>
+                                                                                ))}
+                                                                            </TableBody>
+                                                                        </Table>
+                                                                    </div>
+                                                                )}
+                                                            </ModalBody>
+                                                        </ModalContent>
+                                                    </Modal>
+                                                </div>
+                                                <div className="bg-gray-100 p-1 rounded border border-gray-300">
+                                                    <Button color="transparent" onPress={toggleThirdModal}>
+                                                        <IoApps size={20} className="text-gray-500" />
+                                                    </Button>
+                                                    <Modal
+                                                        classNames={{
+                                                            base: "max-h-screen",
+                                                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                                                            body: "h-full",
+                                                        }}
+                                                        size="full"
+                                                        hideCloseButton="true"
+                                                        isOpen={isThirdModalOpen}
+                                                        onClose={toggleThirdModal}
+                                                        isDismissable={false}
+                                                        isKeyboardDismissDisabled={true}
+                                                    >
+                                                        <ModalContent>
+                                                            <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                                                {modalHeader}
+                                                                <div className='flex flex-row items-center mr-5'>
+                                                                    <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                                    <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                                                </div>
+                                                            </ModalHeader>
+                                                            <ModalBody>
+                                                                {isLoading ? (<p>A Carregar...</p>
+                                                                ) : (
+                                                                    <div className="mx-5 h-[65vh] min-h-full">
+                                                                        <Table
+                                                                            isHeaderSticky={"true"}
+                                                                            layout={"fixed"}
+                                                                            removeWrapper
+                                                                            classNames={{
+                                                                                wrapper: "min-h-[222px]",
+                                                                            }}
+                                                                            className="h-full overflow-auto"
+                                                                        >
+                                                                            <TableHeader>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    NAME
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    LASTNAME
+                                                                                </TableColumn>
+                                                                            </TableHeader>
+                                                                            <TableBody>
+                                                                                {propertyUsers.map((application, index) => (
+                                                                                    <TableRow key={index}>
+                                                                                        <TableCell>{application.name}</TableCell>
+                                                                                        <TableCell>{application.surname}</TableCell>
+                                                                                    </TableRow>
+                                                                                ))}
+                                                                            </TableBody>
+                                                                        </Table>
+                                                                    </div>
+                                                                )}
+                                                            </ModalBody>
+                                                        </ModalContent>
+                                                    </Modal>
+                                                </div>
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Name" value={valuesProperty.Name} onChange={e => setValuesProperty({ ...valuesProperty, Name: e.target.value })} variant={variant} label="Name" />
+                                                        <Input type="number" name="FiscalNumber" value={valuesProperty.FiscalNumber} onChange={e => setValuesProperty({ ...valuesProperty, FiscalNumber: e.target.value })} variant={variant} label="Fiscal Number" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input value={valuesProperty.Email} onChange={e => setValuesProperty({ ...valuesProperty, Email: e.target.value })} name="Email" type="text" variant={variant} label="Email" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="max-w-xs flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
+                                                    >
+                                                        <Input type="number" name="PhoneNumber" value={valuesProperty.PhoneNumber} onChange={e => setValuesProperty({ ...valuesProperty, PhoneNumber: e.target.value })} variant={variant} label="Phone Number" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Address1" value={valuesProperty.Address1} onChange={e => setValuesProperty({ ...valuesProperty, Address1: e.target.value })} variant={variant} label="Address 1" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Country" value={valuesProperty.Country} onChange={e => setValuesProperty({ ...valuesProperty, Country: e.target.value })} variant={variant} label="Country" />
+                                                        <Input type="text" name="District" value={valuesProperty.District} onChange={e => setValuesProperty({ ...valuesProperty, District: e.target.value })} variant={variant} label="District" />
+                                                        <Input type="number" name="ZipCode" value={valuesProperty.ZipCode} onChange={e => setValuesProperty({ ...valuesProperty, ZipCode: e.target.value })} variant={variant} label="zipCode" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Description" value={valuesProperty.Description} onChange={e => setValuesProperty({ ...valuesProperty, Description: e.target.value })} variant={variant} label="Description" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Abbreviation" value={valuesProperty.Abbreviation} onChange={e => setValuesProperty({ ...valuesProperty, Abbreviation: e.target.value })} variant={variant} label="Abbreviation" />
+                                                        <Input type="text" name="Designation" value={valuesProperty.Designation} onChange={e => setValuesProperty({ ...valuesProperty, Designation: e.target.value })} variant={variant} label="Designation" />
+                                                        <Input type="number" name="OrganizationID" variant={variant} label="Organization" />
                                                     </div>
                                                 ))}
                                             </div>

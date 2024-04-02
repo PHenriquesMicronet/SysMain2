@@ -22,7 +22,8 @@ import { GoGear } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
-
+import { FiEdit3 } from "react-icons/fi";
+import { BsArrowRight } from "react-icons/bs";
 
 import FormModals from "@/components/Modal/modalProperty";
 
@@ -181,9 +182,13 @@ export default function Contact() {
                                                 <DropdownItem key="edit">
                                                     <FormModals
                                                         buttonName={"Editar"}
+                                                        editIcon={<FiEdit3 size={25}/>}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={"Editar Grupo de Tipologias"}
-                                                        formTypeModal={10}
+                                                        modalHeader={"Editar Propriedade"}
+                                                        modalEditArrow={<BsArrowRight size={25}/>}
+                                                        modalEdit={`ID: ${property.propertyID}`}
+                                                        formTypeModal={12}
+                                                        idProperty={property.propertyID}
                                                     ></FormModals>
                                                 </DropdownItem>
                                                 <DropdownItem onClick={() => handleDelete(property.propertyID)}>Remover</DropdownItem>
@@ -192,7 +197,7 @@ export default function Contact() {
                                                         buttonName={"Ver"}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Ver Detalhes da Propriedade"}
-                                                        formTypeModal={11}
+                                                        formTypeModal={12}
                                                         idProperty={property.propertyID}
                                                     ></FormModals>
                                                 </DropdownItem>

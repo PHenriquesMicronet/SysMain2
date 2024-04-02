@@ -4,25 +4,25 @@ import { useSession } from "next-auth/react"
 import axios from 'axios';
 
 const ChooseOrganization = () => {
-    const [isHovered1, setIsHovered1] = useState(false);
-    const [properties, setProperties] = useState([]); // State to store fetched properties
+    const [isHovered1, setIsHovered1] = useState(false)
+    const [properties, setProperties] = useState([])
 
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession()
 
     useEffect(() => {
         const getData = async () => {
             if (status !== "loading") {
                 try {
-                    const userID = session.user.id; // Extract user ID from session
-                    const res = await axios.get('/api/hotel/users/'+userID+'/properties');
-                    setProperties(res.data.response); // Store fetched properties in state
+                    const userID = session.user.id;
+                    const res = await axios.get('/api/hotel/users/'+userID+'/properties')
+                    setProperties(res.data.response)
                 } catch (error) {
-                    console.error("Error fetching data:", error);
+                    console.error("Error fetching data:", error)
                 }
             }
         };
-        getData();
-    }, [session]); // Include session as a dependency
+        getData()
+    }, [session])
 
     return (
         <>
@@ -30,7 +30,7 @@ const ChooseOrganization = () => {
             <div className="flex justify-center items-center mt-20">
                 <div className="grid grid-cols-2 gap-4">
                     {properties.map((property, index) => (
-                        <a href="/homepage" className="card-link" key={property.propertyUserID}>
+                        <a className="card-link" key={property.id}>
                             <div
                                 className={`card mx-auto ${isHovered1 ? 'hover:scale-105 shadow-lg rounded-lg shadow-slate-300' : ''}`}
                                 onMouseEnter={() => setIsHovered1(true)}
