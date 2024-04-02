@@ -20,7 +20,7 @@ export default function LoginForm() {
       console.log(response)
 
       if (!response?.error) {
-        router.push("/")
+        router.push("/properties")
         router.refresh()
       }
     }

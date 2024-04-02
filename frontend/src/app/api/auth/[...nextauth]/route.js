@@ -38,7 +38,8 @@ export const authOptions = {
                 if (credentials?.password == response.password) {
                     return {
                         id: response.userID,
-                        email: response.email
+                        email: response.email,
+                        organization: response.organizationID
                     }
                 }
 
@@ -47,21 +48,21 @@ export const authOptions = {
         })
     ],
     // debug: true,
-    // callbacks: {
-    //     async jwt({ token, user }) {
+    callbacks: {
+        async jwt({ token, user }) {
 
-    //         return { ...token, ...user };
-    //     },
+            return { ...token, ...user };
+        },
 
-    //     async session({ session, token }) {
+        async session({ session, token }) {
 
-    //         session.user.id = token.id
-    //         session.user.name = token.name;
-    //         return session;
-    //     },
+            session.user.id = token.id
+            session.user.name = token.name
+            session.user.organization = token.organization
 
-    // },
-    // session: { strategy: "jwt" }//, maxAge: 10*60*60
+            return session;
+        },
+    }
 }
 
 const handler = NextAuth(authOptions)

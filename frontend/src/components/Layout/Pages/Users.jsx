@@ -3,6 +3,7 @@ import React from "react";
 
 //import de axios para BD
 import axios from "axios";
+import { useSession } from "next-auth/react"
 
 import { useState, useEffect } from "react";
 import {
@@ -33,7 +34,9 @@ export default function Contact() {
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const [searchValue, setSearchValue] = React.useState("");
     const [user, setUser] = useState([]);
+    const { data: session, status } = useSession()
     
+
 
     const filteredItems = React.useMemo(() => {
         return user.filter((user) =>
@@ -46,10 +49,14 @@ export default function Contact() {
         );
     }, [user, searchValue]);
 
+    
     useEffect(() => {
         const getData = async () => {
-            const res = await axios.get("/api/hotel/users");
-            setUser(res.data.response);
+            if (status !== "loading"){
+                const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/users`);
+                console.log(session.user.id)
+                setUser(res.data.response);
+            }
         };
         getData();
         }, []);
@@ -121,28 +128,16 @@ export default function Contact() {
                     >
                         <TableHeader>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                ID
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
                                 NAME
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 EMAIL
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                COUNTRY
+                                ROLE
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                DISTRICT
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                ZIP CODE
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                ORGANIZATION ID
-                            </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                ROLE ID
+                                PROPERTIE
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
@@ -151,14 +146,10 @@ export default function Contact() {
                         <TableBody>
                             {items.map((user, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>{user.userID}</TableCell>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
-                                    <TableCell>{user.country}</TableCell>
-                                    <TableCell>{user.district}</TableCell>
-                                    <TableCell>{user.zipCode}</TableCell>
-                                    <TableCell>{user.organizationID}</TableCell>
-                                    <TableCell>{user.roleID}</TableCell>
+                                    <TableCell>{user.role}</TableCell>
+                                    <TableCell>{user.properties}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>

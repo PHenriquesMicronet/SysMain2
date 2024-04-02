@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import {
-    Modal, ScrollShadow, ModalContent, Badge, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem,
+    Modal, Switch, ModalContent, Badge, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem,
     //imports de tabelas
     Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination,
 } from "@nextui-org/react";
@@ -16,25 +16,19 @@ import { FaRegUser } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { IoApps } from "react-icons/io5";
 import { GoGear } from "react-icons/fa";
-import propertyInsert, { propertyEdit } from "../functionsForm/property/page";
+import { FaArrowLeft } from "react-icons/fa";
+import { BsPencil } from 'react-icons/bs'
 
 
-const modalpropertie = ({
-    buttonName,
-    buttonIcon,
-    modalHeader,
-    formTypeModal,
-    buttonColor,
-    idProperty,
-    editIcon,
-    modalEditArrow,
-    modalEdit
-}) => {
+const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idProperty }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isInvisible, setIsInvisible] = React.useState(false);
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
     const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
+    const [isFourthModalOpen, setIsFourthModalOpen] = useState(false);
     const [propertyUsers, setPropertyUsers] = useState([]);
+    const [propertyApplication, setPropertyApplications] = useState([]);
+    const [propertyApplicationsUsers, setPropertyApplicationsUsers] = useState([]);
     const variants = ["underlined"];
     const [isLoading, setIsLoading] = useState(true);
     const [dataFetched, setDataFetched] = useState(false);
@@ -66,7 +60,7 @@ const modalpropertie = ({
             setIsLoading(true);
             try {
                 const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications`);
-                setPropertyUsers(response.data.response);
+                setPropertyApplications(response.data.response);
                 setDataFetched(true);
             } catch (error) {
                 console.error("Erro ao encontrar as aplicações associadas à propriedade:", error.message);
@@ -76,6 +70,67 @@ const modalpropertie = ({
         }
     };
 
+    const toggleFourthModal = async () => {
+        setIsFourthModalOpen(!isFourthModalOpen);
+        if (!dataFetched) {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications/` + applicationID + `/users`);
+                setPropertyApplicationsUsers(response.data.response);
+                setDataFetched(true);
+            } catch (error) {
+                console.error("Erro ao encontrar as aplicações associadas à aplicação:", error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    };
+
+    //inserção na tabela property
+    const [property, setProperty] = useState({
+        Name: '',
+        Email: '',
+        FiscalNumber: '',
+        Address1: '',
+        Country: '',
+        District: '',
+        ZipCode: '',
+        PhoneNumber: '',
+        Description: '',
+        Abbreviation: '',
+        Designation: '',
+    })
+
+    const handleInput = (event) => {
+        setProperty({ ...property, [event.target.name]: event.target.value })
+    }
+    function handleSubmit(event) {
+        event.preventDefault()
+        if (!property.Name || !property.Email || !property.PhoneNumber || !property.FiscalNumber || !property.Address1 || !property.Country || !property.District || !property.ZipCode || !property.Abbreviation || !property.Description || !property.Designation || !property.OrganizationID) {
+            alert("Preencha os campos corretamente");
+            return;
+        }
+        axios.put('/api/hotel/properties', {
+            data: {
+                Name: property.Name,
+                Email: property.Email,
+                FiscalNumber: property.FiscalNumber,
+                Address1: property.Address1,
+                Country: property.Country,
+                District: property.District,
+                ZipCode: property.ZipCode,
+                PhoneNumber: property.PhoneNumber,
+                Description: property.Description,
+                Abbreviation: property.Abbreviation,
+                Designation: property.Designation,
+                OrganizationID: property.OrganizationID
+            }
+        })
+            .then(response => console.log(response))
+            .catch(err => console.log(err))
+    }
+    //final da inserção na tabela property
+
     useEffect(() => {
         const getData = async () => {
             const res = await axios.get("/api/hotel/properties");
@@ -83,9 +138,6 @@ const modalpropertie = ({
         };
         getData();
     }, []);
-
-    const { handleInputProperty, handleSubmitProperty,  setProperty } = propertyInsert();
-    const { handleUpdateProperty, setValuesProperty, valuesProperty } = propertyEdit(idProperty);
 
     return (
         <>
@@ -106,7 +158,7 @@ const modalpropertie = ({
                         <ModalContent>
                             {(onClose) => (
                                 <>
-                                    <form onSubmit={handleSubmitProperty}>
+                                    <form onSubmit={handleSubmit}>
                                         <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
                                             <div className='flex flex-row items-center mr-5'>
                                                 <Button color="transparent" onPress={onClose} type="submit"><TfiSave size={25} /></Button>
@@ -121,8 +173,8 @@ const modalpropertie = ({
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Name" onChange={handleInputProperty} variant={variant} label="Name" />
-                                                        <Input type="number" name="FiscalNumber" onChange={handleInputProperty} variant={variant} label="Fiscal Number" />
+                                                        <Input type="text" name="Name" onChange={handleInput} variant={variant} label="Name" />
+                                                        <Input type="number" name="FiscalNumber" onChange={handleInput} variant={variant} label="Fiscal Number" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -132,7 +184,7 @@ const modalpropertie = ({
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input onChange={handleInputProperty} name="Email" type="text" variant={variant} label="Email" />
+                                                        <Input onChange={handleInput} name="Email" type="text" variant={variant} label="Email" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -142,7 +194,7 @@ const modalpropertie = ({
                                                         key={variant}
                                                         className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
                                                     >
-                                                        <Input type="number" name="PhoneNumber" onChange={handleInputProperty} variant={variant} label="Phone Number" />
+                                                        <Input type="number" name="PhoneNumber" onChange={handleInput} variant={variant} label="Phone Number" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -152,7 +204,7 @@ const modalpropertie = ({
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Address1" onChange={handleInputProperty} variant={variant} label="Address 1" />
+                                                        <Input type="text" name="Address1" onChange={handleInput} variant={variant} label="Address 1" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -162,9 +214,9 @@ const modalpropertie = ({
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Country" onChange={handleInputProperty} variant={variant} label="Country" />
-                                                        <Input type="text" name="District" onChange={handleInputProperty} variant={variant} label="District" />
-                                                        <Input type="number" name="ZipCode" onChange={handleInputProperty} variant={variant} label="zipCode" />
+                                                        <Input type="text" name="Country" onChange={handleInput} variant={variant} label="Country" />
+                                                        <Input type="text" name="District" onChange={handleInput} variant={variant} label="District" />
+                                                        <Input type="number" name="ZipCode" onChange={handleInput} variant={variant} label="zipCode" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -174,7 +226,7 @@ const modalpropertie = ({
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Description" onChange={handleInputProperty} variant={variant} label="Description" />
+                                                        <Input type="text" name="Description" onChange={handleInput} variant={variant} label="Description" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -184,9 +236,9 @@ const modalpropertie = ({
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Abbreviation" onChange={handleInputProperty} variant={variant} label="Abbreviation" />
-                                                        <Input type="text" name="Designation" onChange={handleInputProperty} variant={variant} label="Designation" />
-                                                        <Input type="number" name="OrganizationID" onChange={handleInputProperty} variant={variant} label="Organization" />
+                                                        <Input type="text" name="Abbreviation" onChange={handleInput} variant={variant} label="Abbreviation" />
+                                                        <Input type="text" name="Designation" onChange={handleInput} variant={variant} label="Designation" />
+                                                        <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organization" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -250,6 +302,7 @@ const modalpropertie = ({
                                                             <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
                                                                 {modalHeader}
                                                                 <div className='flex flex-row items-center mr-5'>
+                                                                    
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                     <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                                                 </div>
@@ -319,6 +372,7 @@ const modalpropertie = ({
                                                             <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
                                                                 {modalHeader}
                                                                 <div className='flex flex-row items-center mr-5'>
+                                                                <Button color="transparent" onClick={toggleSecondModal}><FaArrowLeft size={25}/></Button>
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                     <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                                                 </div>
@@ -338,17 +392,75 @@ const modalpropertie = ({
                                                                         >
                                                                             <TableHeader>
                                                                                 <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                    NAME
+                                                                                    SYSTEM
                                                                                 </TableColumn>
                                                                                 <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                    LASTNAME
+                                                                                    AVAILABLE
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    FEATURES
                                                                                 </TableColumn>
                                                                             </TableHeader>
                                                                             <TableBody>
-                                                                                {propertyUsers.map((application, index) => (
+                                                                                {propertyApplication.map((application, index) => (
                                                                                     <TableRow key={index}>
-                                                                                        <TableCell>{application.name}</TableCell>
-                                                                                        <TableCell>{application.surname}</TableCell>
+                                                                                        <TableCell><Button variant="invisible" onPress={toggleFourthModal}>{application.description}</Button>
+                                                                                            <Modal
+                                                                                                classNames={{
+                                                                                                    base: "max-h-screen",
+                                                                                                    wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                                                                                                    body: "h-full",
+                                                                                                }}
+                                                                                                size="full"
+                                                                                                hideCloseButton="true"
+                                                                                                isOpen={isFourthModalOpen}
+                                                                                                onClose={toggleFourthModal}
+                                                                                                isDismissable={false}
+                                                                                                isKeyboardDismissDisabled={true}
+                                                                                            >
+                                                                                                <ModalContent>
+                                                                                                    <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                                                                                        {modalHeader}
+                                                                                                        <div className='flex flex-row items-center mr-5'>
+                                                                                                            <Button color="transparent" onClick={toggleThirdModal}><FaArrowLeft size={25}/></Button>
+                                                                                                            <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                                                                            <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                                                                                        </div>
+                                                                                                    </ModalHeader>
+                                                                                                    <ModalBody>
+                                                                                                        {isLoading ? (<p>A Carregar...</p>
+                                                                                                        ) : (
+                                                                                                            <div className="mx-5 h-[65vh] min-h-full">
+                                                                                                                <Table
+                                                                                                                    isHeaderSticky={"true"}
+                                                                                                                    layout={"fixed"}
+                                                                                                                    removeWrapper
+                                                                                                                    classNames={{
+                                                                                                                        wrapper: "min-h-[222px]",
+                                                                                                                    }}
+                                                                                                                    className="h-full overflow-auto"
+                                                                                                                >
+                                                                                                                    <TableHeader>
+                                                                                                                        <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                                                            Name
+                                                                                                                        </TableColumn>
+                                                                                                                    </TableHeader>
+                                                                                                                    <TableBody>
+                                                                                                                    {propertyApplicationsUsers.map((user, index) => (
+                                                                                                                        <TableRow key={index}>
+                                                                                                                            <TableCell>{user.name}</TableCell>
+                                                                                                                        </TableRow>
+                                                                                                                        ))}
+                                                                                                                    </TableBody>
+                                                                                                                </Table>
+                                                                                                            </div>
+                                                                                                        )}
+                                                                                                    </ModalBody>
+                                                                                                </ModalContent>
+                                                                                            </Modal>
+                                                                                        </TableCell>
+                                                                                        <TableCell><Switch defaultSelected size="sm" color="success" /></TableCell>
+                                                                                        <TableCell><BsPencil></BsPencil></TableCell>
                                                                                     </TableRow>
                                                                                 ))}
                                                                             </TableBody>
