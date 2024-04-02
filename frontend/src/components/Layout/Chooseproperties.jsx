@@ -6,6 +6,7 @@ import axios from 'axios';
 const ChooseOrganization = () => {
     const [isHovered1, setIsHovered1] = useState(false)
     const [properties, setProperties] = useState([])
+    const [apps, setApps] = useState([])
 
     const { data: session, status } = useSession()
 
@@ -14,7 +15,7 @@ const ChooseOrganization = () => {
             if (status !== "loading") {
                 try {
                     const userID = session.user.id;
-                    const res = await axios.get('/api/hotel/users/'+userID+'/properties')
+                    const res = await axios.get('/api/hotel/users/' + userID + '/properties')
                     setProperties(res.data.response)
                 } catch (error) {
                     console.error("Error fetching data:", error)
@@ -23,6 +24,18 @@ const ChooseOrganization = () => {
         };
         getData()
     }, [session])
+
+    const handleApps = async () => {
+        if (status !== "loading") {
+            try {
+                const response = await axios.get(`/api/hotel/users/` + userID + `/properties/` + propertyID + `/applications`)
+                setApps(response.data.response)
+            } catch (error) {
+                console.error("Erro ao encontrar as aplicações associadas à aplicação:", error.message);
+            }
+        }
+    }
+
 
     return (
         <>
@@ -36,12 +49,12 @@ const ChooseOrganization = () => {
                                 onMouseEnter={() => setIsHovered1(true)}
                                 onMouseLeave={() => setIsHovered1(false)}
                             >
-                                <Card className="w-80 h-80 flex flex-col justify-center items-center">
+                                <Card className="w-80 h-80 flex flex-col justify-center items-center" onPress={handleApps} key={property.id}>
                                     <CardHeader className="flex flex-col items-center justify-center">
-                                        <Button color="transparent"className="text-large text-center mb-10"> {property.name}</Button>
+                                        <Button color="transparent" className="text-large text-center mb-10"> {property.name}</Button>
                                         <Image className="w-52 h-52"
                                             src="/images/Logo-Login.png"
-                                        />  
+                                        />
                                     </CardHeader>
                                 </Card>
                             </div>
