@@ -34,17 +34,17 @@ export async function PATCH(request, context) {
                 propertyID: parseInt(id),
             },
             data: {
-                name: data.name,
-                fiscalNumber: data.fiscalNumber,
-                email: data.email,
-                phoneNumber: data.phoneNumber,
-                address1: data.address1,
-                country: data.country,
-                district: data.district,
-                zipCode: data.zipCode,
-                description: data.description,
-                abbreviation: data.abbreviation,
-                designation: data.designation,
+                name: data.Name,
+                email: data.Email,
+                fiscalNumber: parseInt(data.FiscalNumber),
+                address1: data.Address1,
+                country: data.Country,
+                district: data.District,
+                zipCode: data.ZipCode,
+                phoneNumber: data.PhoneNumber,
+                description: data.Description,
+                abbreviation: data.Abbreviation,
+                designation: data.Designation
             }
         })
         return new NextResponse(JSON.stringify({ status: 200 }));
