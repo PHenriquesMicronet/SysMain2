@@ -54,7 +54,6 @@ export default function Contact() {
         const getData = async () => {
             if (status !== "loading"){
                 const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/users`);
-                console.log(session.user.id)
                 setUser(res.data.response);
             }
         };
@@ -138,7 +137,7 @@ export default function Contact() {
                                 ROLE
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                PROPERTIE
+                                PROPERTY
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />

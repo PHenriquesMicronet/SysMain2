@@ -34,6 +34,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     const [isLoading, setIsLoading] = useState(true);
     const [dataFetched, setDataFetched] = useState(false);
 
+    const { handleInputProperty , handleSubmitProperty, setProperty, property } = propertyInsert();
+    const { handleUpdateProperty, setValuesProperty, valuesProperty } = propertyEdit(idProperty);
+
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
@@ -95,9 +98,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         getData();
     }, []);
 
-
-    const { handleInputProperty , handleSubmitProperty, setProperty, property } = propertyInsert();
-    const { handleUpdateProperty, setValuesProperty, valuesProperty } = propertyEdit(idProperty);
 
     return (
         <>
