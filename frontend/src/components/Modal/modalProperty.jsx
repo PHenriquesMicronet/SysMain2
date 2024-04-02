@@ -18,9 +18,10 @@ import { IoApps } from "react-icons/io5";
 import { GoGear } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 import { BsPencil } from 'react-icons/bs'
+import propertyInsert, { propertyEdit } from "../functionsForm/property/page";
 
 
-const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idProperty }) => {
+const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idProperty, editIcon, modalEditArrow, modalEdit }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isInvisible, setIsInvisible] = React.useState(false);
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
@@ -86,51 +87,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         }
     };
 
-    //inserção na tabela property
-    const [property, setProperty] = useState({
-        Name: '',
-        Email: '',
-        FiscalNumber: '',
-        Address1: '',
-        Country: '',
-        District: '',
-        ZipCode: '',
-        PhoneNumber: '',
-        Description: '',
-        Abbreviation: '',
-        Designation: '',
-    })
-
-    const handleInput = (event) => {
-        setProperty({ ...property, [event.target.name]: event.target.value })
-    }
-    function handleSubmit(event) {
-        event.preventDefault()
-        if (!property.Name || !property.Email || !property.PhoneNumber || !property.FiscalNumber || !property.Address1 || !property.Country || !property.District || !property.ZipCode || !property.Abbreviation || !property.Description || !property.Designation || !property.OrganizationID) {
-            alert("Preencha os campos corretamente");
-            return;
-        }
-        axios.put('/api/hotel/properties', {
-            data: {
-                Name: property.Name,
-                Email: property.Email,
-                FiscalNumber: property.FiscalNumber,
-                Address1: property.Address1,
-                Country: property.Country,
-                District: property.District,
-                ZipCode: property.ZipCode,
-                PhoneNumber: property.PhoneNumber,
-                Description: property.Description,
-                Abbreviation: property.Abbreviation,
-                Designation: property.Designation,
-                OrganizationID: property.OrganizationID
-            }
-        })
-            .then(response => console.log(response))
-            .catch(err => console.log(err))
-    }
-    //final da inserção na tabela property
-
     useEffect(() => {
         const getData = async () => {
             const res = await axios.get("/api/hotel/properties");
@@ -138,6 +94,10 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         };
         getData();
     }, []);
+
+
+    const { handleInputProperty , handleSubmitProperty, setProperty, property } = propertyInsert();
+    const { handleUpdateProperty, setValuesProperty, valuesProperty } = propertyEdit(idProperty);
 
     return (
         <>
@@ -158,7 +118,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                         <ModalContent>
                             {(onClose) => (
                                 <>
-                                    <form onSubmit={handleSubmit}>
+                                    <form onSubmit={handleSubmitProperty}>
                                         <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
                                             <div className='flex flex-row items-center mr-5'>
                                                 <Button color="transparent" onPress={onClose} type="submit"><TfiSave size={25} /></Button>
@@ -173,8 +133,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Name" onChange={handleInput} variant={variant} label="Name" />
-                                                        <Input type="number" name="FiscalNumber" onChange={handleInput} variant={variant} label="Fiscal Number" />
+                                                        <Input type="text" name="Name" onChange={handleInputProperty} variant={variant} label="Name" />
+                                                        <Input type="number" name="FiscalNumber" onChange={handleInputProperty} variant={variant} label="Fiscal Number" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -184,7 +144,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input onChange={handleInput} name="Email" type="text" variant={variant} label="Email" />
+                                                        <Input onChange={handleInputProperty} name="Email" type="text" variant={variant} label="Email" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -194,7 +154,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
                                                     >
-                                                        <Input type="number" name="PhoneNumber" onChange={handleInput} variant={variant} label="Phone Number" />
+                                                        <Input type="number" name="PhoneNumber" onChange={handleInputProperty} variant={variant} label="Phone Number" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -204,7 +164,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Address1" onChange={handleInput} variant={variant} label="Address 1" />
+                                                        <Input type="text" name="Address1" onChange={handleInputProperty} variant={variant} label="Address 1" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -214,9 +174,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Country" onChange={handleInput} variant={variant} label="Country" />
-                                                        <Input type="text" name="District" onChange={handleInput} variant={variant} label="District" />
-                                                        <Input type="number" name="ZipCode" onChange={handleInput} variant={variant} label="zipCode" />
+                                                        <Input type="text" name="Country" onChange={handleInputProperty} variant={variant} label="Country" />
+                                                        <Input type="text" name="District" onChange={handleInputProperty} variant={variant} label="District" />
+                                                        <Input type="number" name="ZipCode" onChange={handleInputProperty} variant={variant} label="zipCode" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -226,7 +186,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Description" onChange={handleInput} variant={variant} label="Description" />
+                                                        <Input type="text" name="Description" onChange={handleInputProperty} variant={variant} label="Description" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -236,9 +196,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Abbreviation" onChange={handleInput} variant={variant} label="Abbreviation" />
-                                                        <Input type="text" name="Designation" onChange={handleInput} variant={variant} label="Designation" />
-                                                        <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organization" />
+                                                        <Input type="text" name="Abbreviation" onChange={handleInputProperty} variant={variant} label="Abbreviation" />
+                                                        <Input type="text" name="Designation" onChange={handleInputProperty} variant={variant} label="Designation" />
+                                                        <Input type="number" name="OrganizationID" onChange={handleInputProperty} variant={variant} label="Organization" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -269,7 +229,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                         <ModalContent>
                             {(onClose) => (
                                 <>
-                                    <form onSubmit={handleSubmit}>
+                                    <form onSubmit={handleSubmitProperty}>
                                         <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
                                             <div className='flex flex-row items-center mr-5'>
                                                 <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
@@ -478,8 +438,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Name" onChange={handleInput} variant={variant} label="Name" />
-                                                        <Input type="number" name="FiscalNumber" onChange={handleInput} variant={variant} label="Fiscal Number" />
+                                                        <Input type="text" name="Name" onChange={handleInputProperty} variant={variant} label="Name" />
+                                                        <Input type="number" name="FiscalNumber" onChange={handleInputProperty} variant={variant} label="Fiscal Number" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -489,7 +449,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input onChange={handleInput} name="Email" type="text" variant={variant} label="Email" />
+                                                        <Input onChange={handleInputProperty} name="Email" type="text" variant={variant} label="Email" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -499,7 +459,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
                                                     >
-                                                        <Input type="number" name="PhoneNumber" onChange={handleInput} variant={variant} label="Phone Number" />
+                                                        <Input type="number" name="PhoneNumber" onChange={handleInputProperty} variant={variant} label="Phone Number" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -509,7 +469,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Address1" onChange={handleInput} variant={variant} label="Address 1" />
+                                                        <Input type="text" name="Address1" onChange={handleInputProperty} variant={variant} label="Address 1" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -519,9 +479,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Country" onChange={handleInput} variant={variant} label="Country" />
-                                                        <Input type="text" name="District" onChange={handleInput} variant={variant} label="District" />
-                                                        <Input type="number" name="ZipCode" onChange={handleInput} variant={variant} label="zipCode" />
+                                                        <Input type="text" name="Country" onChange={handleInputProperty} variant={variant} label="Country" />
+                                                        <Input type="text" name="District" onChange={handleInputProperty} variant={variant} label="District" />
+                                                        <Input type="number" name="ZipCode" onChange={handleInputProperty} variant={variant} label="zipCode" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -531,7 +491,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Description" onChange={handleInput} variant={variant} label="Description" />
+                                                        <Input type="text" name="Description" onChange={handleInputProperty} variant={variant} label="Description" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -541,9 +501,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Abbreviation" onChange={handleInput} variant={variant} label="Abbreviation" />
-                                                        <Input type="text" name="Designation" onChange={handleInput} variant={variant} label="Designation" />
-                                                        <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organization" />
+                                                        <Input type="text" name="Abbreviation" onChange={handleInputProperty} variant={variant} label="Abbreviation" />
+                                                        <Input type="text" name="Designation" onChange={handleInputProperty} variant={variant} label="Designation" />
+                                                        <Input type="number" name="OrganizationID" onChange={handleInputProperty} variant={variant} label="Organization" />
                                                     </div>
                                                 ))}
                                             </div>
