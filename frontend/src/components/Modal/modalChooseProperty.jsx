@@ -73,7 +73,8 @@ const modalchooseproperty = ({
                                     </ModalHeader>
                                     <ModalBody className="flex flex-col mx-10 my-5 space-y-8">
                                 {apps.map((application, index) => (
-                                    <Card className="w-80 h-80 flex flex-col justify-center items-center">
+                                    <a href="/homepage">
+                                    <Card className="w-80 h-80 flex flex-col justify-center items-center" >
                                     <CardHeader className="flex flex-col items-center justify-center">
                                         <p>{application.id}</p> 
                                         <p>{application.name}</p> 
@@ -82,6 +83,7 @@ const modalchooseproperty = ({
                                         />
                                     </CardHeader>
                                 </Card>
+                                </a>
                                 ))}
                                     </ModalBody>
                                 </>
