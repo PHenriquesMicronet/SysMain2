@@ -3,6 +3,8 @@ import { Card, CardHeader, Image, Button } from "@nextui-org/react";
 import { useSession } from "next-auth/react"
 import axios from 'axios';
 
+import FormModals from "@/components/Modal/modalChooseProperty";
+
 const ChooseOrganization = () => {
     const [isHovered1, setIsHovered1] = useState(false)
     const [properties, setProperties] = useState([])
@@ -25,18 +27,6 @@ const ChooseOrganization = () => {
         getData()
     }, [session])
 
-    const handleApps = async (propertyID) => {
-        if (status !== "loading") {
-            try {
-                const response = await axios.get(`/api/hotel/users/` + session.user.id + `/properties/` + propertyID + `/applications`)
-                setApps(response.data.response)
-                console.log(response)
-            } catch (error) {
-                console.error("Erro ao encontrar as aplicações associadas à aplicação:", error.message);
-            }
-        }
-    }
-
 
     return (
         <>
@@ -50,9 +40,15 @@ const ChooseOrganization = () => {
                                 onMouseEnter={() => setIsHovered1(true)}
                                 onMouseLeave={() => setIsHovered1(false)}
                             >
-                                <Card className="w-80 h-80 flex flex-col justify-center items-center" onPress={handleApps} key={property.id}>
+                                <Card className="w-80 h-80 flex flex-col justify-center items-center">
                                     <CardHeader className="flex flex-col items-center justify-center">
-                                        <Button color="transparent" className="text-large text-center mb-10"  onPress={() => handleApps(property.id)} > {property.name}</Button>
+                                    <FormModals
+                                                        buttonName={property.name}
+                                                        buttonColor={"transparent"}
+                                                        modalHeader={"Escolha que aplicação quer utilizar"}
+                                                        formTypeModal={10}
+                                                        idProperty={property.id}
+                                                    ></FormModals>
                                         <Image className="w-52 h-52"
                                             src="/images/Logo-Login.png"
                                         />
