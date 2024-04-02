@@ -105,7 +105,7 @@ const modaluser = ({
                                                         </ModalBody>
                                                     </ModalContent>
                                                 </Modal>
-                                                <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
+                                                <Button color="transparent" onPress={onClose} type="submit"><TfiSave size={25} /></Button>
                                                 <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                 <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                             </div>
@@ -213,7 +213,7 @@ const modaluser = ({
                                             </div>
                                             <div className='flex flex-row items-center mr-5'>
                                                 <Button color="transparent" onPress={toggleSecondModal}><FaRegUser size={25} /></Button>
-                                                <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
+                                                <Button color="transparent" onPress={onClose} type="submit"><TfiSave size={25} /></Button>
                                                 <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                 <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                             </div>

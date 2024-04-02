@@ -80,6 +80,11 @@ const RolesPage = () => {
         }
     };
 
+    const [editID, setEditID] = useState(-1)
+
+    const handleEdit = (id) => {
+        setEditID(id)
+    }
 
     return (
         <>
@@ -112,6 +117,14 @@ const RolesPage = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-24 p-4 mx-auto gap-y-8">
                         {items.map((roles, index) => (
+                            roles.roleID === editID ?
+                            <tr>
+                                <td>{roles.roleID}</td>
+                                <td><input type="text" value={roles.name}/></td>
+                                <td><input type="text" value={roles.description}/></td>
+                                <td><button>update</button></td>
+                            </tr>
+                            :
                             <div key={index} className="border rounded-lg p-4 shadow-md h-[250px] w-[350px] text-center">
                                 <div className="flex justify-between items-center mb-2">
                                     <h2 className="text-lg font-bold flex items-center">
@@ -121,7 +134,7 @@ const RolesPage = () => {
                                         <Badge color="success" content={5} isInvisible={isInvisible} shape="circle">
                                         <BsPerson size={25} className="cursor-pointer text-gray-500 hover:text-gray-700" />
                                         </Badge>
-                                        <BsPencil size={25} className="cursor-pointer text-gray-500 hover:text-gray-700" />
+                                        <BsPencil onClick={() => handleEdit(roles.roleID)} size={25} className="cursor-pointer text-gray-500 hover:text-gray-700" />
                                         <BsTrash size={25}  onClick={() => handleDelete(roles.roleID)} className="cursor-pointer text-gray-500 hover:text-gray-700" />
                                     </div>
                                 </div>
