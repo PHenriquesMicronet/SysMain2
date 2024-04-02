@@ -89,7 +89,7 @@ export function propertyEdit(idProperty){
             .catch(err => console.log(err))
     }, [])
 
-    /*useEffect(() => {
+   /* useEffect(() => {
         axios.get('/api/hotel/properties/' + idProperty) // Makes a GET request to the specified API endpoint
             .then(res => {
                 console.log(res) // Logs the response data to the console
