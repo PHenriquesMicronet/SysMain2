@@ -51,13 +51,10 @@ export default function Contact() {
 
     useEffect(() => {
         const getData = async () => {
-            /*if (status !== "loading") {
-                const res = await axios.get(`/api/hotel/organizations/` + session.user.organization + `/users`);
-                console.log("API Response:", res.data);
-                setUser(res.data.response.map(user => ({ ...user, userID: user.id })));*/
-                if (status !== "loading"){
-                    const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/users`);
-                    setUser(res.data.response);
+
+            if (status !== "loading"){
+                const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/users`);
+                setUser(res.data.response);
             }
         };
         getData();
