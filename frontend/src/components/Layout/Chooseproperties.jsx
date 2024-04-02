@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, Image } from "@nextui-org/react";
+import { Card, CardHeader, Image, Button } from "@nextui-org/react";
 import { useSession } from "next-auth/react"
 import axios from 'axios';
 
@@ -38,10 +38,10 @@ const ChooseOrganization = () => {
                             >
                                 <Card className="w-80 h-80 flex flex-col justify-center items-center">
                                     <CardHeader className="flex flex-col items-center justify-center">
-                                        <p className="text-large text-center mb-10">Propriedade {property.name}</p>
+                                        <Button color="transparent"className="text-large text-center mb-10"> {property.name}</Button>
                                         <Image className="w-52 h-52"
                                             src="/images/Logo-Login.png"
-                                        />
+                                        />  
                                     </CardHeader>
                                 </Card>
                             </div>

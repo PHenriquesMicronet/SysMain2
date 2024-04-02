@@ -77,6 +77,7 @@ export default function Contact() {
     const fetchPropertyUsers = async (id) => {
         try {
             const response = await axios.get(`/api/hotel/properties/` + id + `/users` );
+            console.log(id)
             console.log(response.data); 
         } catch (error) {
             console.error("Erro ao encontrar os utilizadores associados à propriedade:", error.message);

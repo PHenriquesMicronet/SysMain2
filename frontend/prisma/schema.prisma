@@ -111,6 +111,6 @@ model properties_users {
   properties     properties @relation(fields: [propertyID], references: [propertyID], onDelete: NoAction, onUpdate: NoAction, map: "propertiesUsers_properties")
   users          users      @relation(fields: [userID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "propertiesUsers_users")
 
-  @@index([propertyID], map: "propertiesUsers_properties")
+  @@unique([propertyID, userID], map: "propertyID_userID")
   @@index([userID], map: "propertiesUsers_users")
 }

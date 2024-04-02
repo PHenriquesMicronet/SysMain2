@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import {
-    Modal, ScrollShadow, ModalContent, Badge, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem,
+    Modal, Switch, ModalContent, Badge, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem,
     //imports de tabelas
     Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination,
 } from "@nextui-org/react";
@@ -15,7 +15,9 @@ import { MdClose } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { IoApps } from "react-icons/io5";
-import {GoGear} from "react-icons/fa";
+import { GoGear } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
+import { BsPencil } from 'react-icons/bs'
 
 
 const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idProperty }) => {
@@ -23,7 +25,10 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     const [isInvisible, setIsInvisible] = React.useState(false);
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
     const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
+    const [isFourthModalOpen, setIsFourthModalOpen] = useState(false);
     const [propertyUsers, setPropertyUsers] = useState([]);
+    const [propertyApplication, setPropertyApplications] = useState([]);
+    const [propertyApplicationsUsers, setPropertyApplicationsUsers] = useState([]);
     const variants = ["underlined"];
     const [isLoading, setIsLoading] = useState(true);
     const [dataFetched, setDataFetched] = useState(false);
@@ -54,11 +59,27 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         if (!dataFetched) {
             setIsLoading(true);
             try {
-                const response = await axios.get(`/api/hotel/properties/`+ idProperty +`/applications`);
-                setPropertyUsers(response.data.response);
+                const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications`);
+                setPropertyApplications(response.data.response);
                 setDataFetched(true);
             } catch (error) {
                 console.error("Erro ao encontrar as aplicações associadas à propriedade:", error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    };
+
+    const toggleFourthModal = async () => {
+        setIsFourthModalOpen(!isFourthModalOpen);
+        if (!dataFetched) {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications/` + applicationID + `/users`);
+                setPropertyApplicationsUsers(response.data.response);
+                setDataFetched(true);
+            } catch (error) {
+                console.error("Erro ao encontrar as aplicações associadas à aplicação:", error.message);
             } finally {
                 setIsLoading(false);
             }
@@ -281,6 +302,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                             <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
                                                                 {modalHeader}
                                                                 <div className='flex flex-row items-center mr-5'>
+                                                                    
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                     <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                                                 </div>
@@ -289,40 +311,40 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                 {isLoading ? (<p>A Carregar...</p>
                                                                 ) : (
                                                                     <div className="mx-5 h-[65vh] min-h-full">
-                                                                    <Table
-                                                                        isHeaderSticky={"true"}
-                                                                        layout={"fixed"}
-                                                                        removeWrapper
-                                                                        classNames={{
-                                                                            wrapper: "min-h-[222px]",
-                                                                        }}
-                                                                        className="h-full overflow-auto"
-                                                                    >
-                                                                        <TableHeader>
-                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                NAME
-                                                                            </TableColumn>
-                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                LASTNAME
-                                                                            </TableColumn>
-                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                EMAIL
-                                                                            </TableColumn>
-                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                PERFIL
-                                                                            </TableColumn>
-                                                                        </TableHeader>
-                                                                        <TableBody>
+                                                                        <Table
+                                                                            isHeaderSticky={"true"}
+                                                                            layout={"fixed"}
+                                                                            removeWrapper
+                                                                            classNames={{
+                                                                                wrapper: "min-h-[222px]",
+                                                                            }}
+                                                                            className="h-full overflow-auto"
+                                                                        >
+                                                                            <TableHeader>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    NAME
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    LASTNAME
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    EMAIL
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    PERFIL
+                                                                                </TableColumn>
+                                                                            </TableHeader>
+                                                                            <TableBody>
                                                                                 {propertyUsers.map((user, index) => (
                                                                                     <TableRow key={index}>
-                                                                                    <TableCell>{user.name}</TableCell>
-                                                                                    <TableCell>{user.surname}</TableCell>
-                                                                                    <TableCell>{user.email}</TableCell>
-                                                                                    <TableCell>{user.role}</TableCell>
+                                                                                        <TableCell>{user.name}</TableCell>
+                                                                                        <TableCell>{user.surname}</TableCell>
+                                                                                        <TableCell>{user.email}</TableCell>
+                                                                                        <TableCell>{user.role}</TableCell>
                                                                                     </TableRow>
                                                                                 ))}
-                                                                        </TableBody>
-                                                                    </Table>
+                                                                            </TableBody>
+                                                                        </Table>
                                                                     </div>
                                                                 )}
                                                             </ModalBody>
@@ -350,40 +372,99 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                             <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
                                                                 {modalHeader}
                                                                 <div className='flex flex-row items-center mr-5'>
+                                                                <Button color="transparent" onClick={toggleSecondModal}><FaArrowLeft size={25}/></Button>
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                     <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                                                 </div>
                                                             </ModalHeader>
                                                             <ModalBody>
-                                                            {isLoading ? (<p>A Carregar...</p>
+                                                                {isLoading ? (<p>A Carregar...</p>
                                                                 ) : (
                                                                     <div className="mx-5 h-[65vh] min-h-full">
-                                                                    <Table
-                                                                        isHeaderSticky={"true"}
-                                                                        layout={"fixed"}
-                                                                        removeWrapper
-                                                                        classNames={{
-                                                                            wrapper: "min-h-[222px]",
-                                                                        }}
-                                                                        className="h-full overflow-auto"
-                                                                    >
-                                                                        <TableHeader>
-                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                NAME
-                                                                            </TableColumn>
-                                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                LASTNAME
-                                                                            </TableColumn>
-                                                                        </TableHeader>
-                                                                        <TableBody>
-                                                                                {propertyUsers.map((application, index) => (
+                                                                        <Table
+                                                                            isHeaderSticky={"true"}
+                                                                            layout={"fixed"}
+                                                                            removeWrapper
+                                                                            classNames={{
+                                                                                wrapper: "min-h-[222px]",
+                                                                            }}
+                                                                            className="h-full overflow-auto"
+                                                                        >
+                                                                            <TableHeader>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    SYSTEM
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    AVAILABLE
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    FEATURES
+                                                                                </TableColumn>
+                                                                            </TableHeader>
+                                                                            <TableBody>
+                                                                                {propertyApplication.map((application, index) => (
                                                                                     <TableRow key={index}>
-                                                                                    <TableCell>{application.name}</TableCell>
-                                                                                    <TableCell>{application.surname}</TableCell>
+                                                                                        <TableCell><Button variant="invisible" onPress={toggleFourthModal}>{application.description}</Button>
+                                                                                            <Modal
+                                                                                                classNames={{
+                                                                                                    base: "max-h-screen",
+                                                                                                    wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                                                                                                    body: "h-full",
+                                                                                                }}
+                                                                                                size="full"
+                                                                                                hideCloseButton="true"
+                                                                                                isOpen={isFourthModalOpen}
+                                                                                                onClose={toggleFourthModal}
+                                                                                                isDismissable={false}
+                                                                                                isKeyboardDismissDisabled={true}
+                                                                                            >
+                                                                                                <ModalContent>
+                                                                                                    <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                                                                                        {modalHeader}
+                                                                                                        <div className='flex flex-row items-center mr-5'>
+                                                                                                            <Button color="transparent" onClick={toggleThirdModal}><FaArrowLeft size={25}/></Button>
+                                                                                                            <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                                                                            <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                                                                                        </div>
+                                                                                                    </ModalHeader>
+                                                                                                    <ModalBody>
+                                                                                                        {isLoading ? (<p>A Carregar...</p>
+                                                                                                        ) : (
+                                                                                                            <div className="mx-5 h-[65vh] min-h-full">
+                                                                                                                <Table
+                                                                                                                    isHeaderSticky={"true"}
+                                                                                                                    layout={"fixed"}
+                                                                                                                    removeWrapper
+                                                                                                                    classNames={{
+                                                                                                                        wrapper: "min-h-[222px]",
+                                                                                                                    }}
+                                                                                                                    className="h-full overflow-auto"
+                                                                                                                >
+                                                                                                                    <TableHeader>
+                                                                                                                        <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                                                            Name
+                                                                                                                        </TableColumn>
+                                                                                                                    </TableHeader>
+                                                                                                                    <TableBody>
+                                                                                                                    {propertyApplicationsUsers.map((user, index) => (
+                                                                                                                        <TableRow key={index}>
+                                                                                                                            <TableCell>{user.name}</TableCell>
+                                                                                                                        </TableRow>
+                                                                                                                        ))}
+                                                                                                                    </TableBody>
+                                                                                                                </Table>
+                                                                                                            </div>
+                                                                                                        )}
+                                                                                                    </ModalBody>
+                                                                                                </ModalContent>
+                                                                                            </Modal>
+                                                                                        </TableCell>
+                                                                                        <TableCell><Switch defaultSelected size="sm" color="success" /></TableCell>
+                                                                                        <TableCell><BsPencil></BsPencil></TableCell>
                                                                                     </TableRow>
                                                                                 ))}
-                                                                        </TableBody>
-                                                                    </Table>
+                                                                            </TableBody>
+                                                                        </Table>
                                                                     </div>
                                                                 )}
                                                             </ModalBody>
