@@ -22,9 +22,10 @@ import { GoGear } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
+import { FiEdit3 } from "react-icons/fi";
+import { BsArrowRight } from "react-icons/bs";
 
-
-import FormModals from "@/components/Modal/modalUser";
+import Modaluser from "@/components/Modal/modalUser";
 
 export default function Contact() {
 
@@ -98,14 +99,14 @@ export default function Contact() {
                                 />
                             </div>
                         </div>
-                        <FormModals
+                        <Modaluser
                             buttonName={"Inserir Utilizador"}
                             buttonIcon={<FiPlus size={15} />}
                             buttonColor={"primary"}
                             modalHeader={"Inserir Utilizador"}
                             modalIcons={"bg-red"}
                             formTypeModal={10}
-                        ></FormModals>
+                        ></Modaluser>
                     </div>
                 </div>
                 <div className="mx-5 h-[65vh] min-h-full">
@@ -170,12 +171,16 @@ export default function Contact() {
                                             </DropdownTrigger>
                                             <DropdownMenu aria-label="Static Actions" closeOnSelect={false} isOpen={true}>
                                                 <DropdownItem key="edit">
-                                                    <FormModals
+                                                    <Modaluser
                                                         buttonName={"Editar"}
+                                                        editIcon={<FiEdit3 size={25}/>}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Utilizador"}
-                                                        formTypeModal={10}
-                                                    ></FormModals>
+                                                        modalEditArrow={<BsArrowRight size={25}/>}
+                                                        modalEdit={`ID: ${user.userID}`}
+                                                        formTypeModal={11}
+                                                        idUser={user.userID}
+                                                    ></Modaluser>
                                                 </DropdownItem>
                                                 <DropdownItem><button onClick={() => handleDelete(user.userID)}>Remover</button></DropdownItem>
                                                 <DropdownItem key="delete">Ver</DropdownItem>

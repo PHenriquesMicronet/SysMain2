@@ -9,9 +9,20 @@ import { TfiSave } from "react-icons/tfi";
 import { LiaExpandSolid } from "react-icons/lia";
 import { MdClose } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
+import userInsert, { userEdit } from "../functionsForm/user/page";
 
 
-const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor }) => {
+const modaluser = ({
+    idUser,
+    buttonName,
+    buttonIcon,
+    modalHeader,
+    formTypeModal,
+    buttonColor,
+    editIcon,
+    modalEditArrow,
+    modalEdit
+}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const variants = ["underlined"];
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -26,54 +37,8 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
     };
 
 
-
-
-    //inserção na tabela user
-    const [user, setUser] = useState({
-        Name: '',
-        LastName: '',
-        Email: '',
-        FiscalNumber: '',
-        PhoneNumber: '',
-        Address1: '',
-        Address2: '',
-        Country: '',
-        District: '',
-        ZipCode: '',
-        Password: '',
-    })
-
-    const handleInput = (event) => {
-        setUser({ ...user, [event.target.name]: event.target.value })
-    }
-    function handleSubmit(event) {
-        event.preventDefault()
-        if (!user.Name || !user.LastName || !user.Email || !user.FiscalNumber || !user.PhoneNumber || !user.Address1 || !user.Address2 || !user.Country || !user.District || !user.ZipCode || !user.Password || !user.OrganizationID || !user.RoleID) {
-            alert("Preencha os campos corretamente");
-            return;
-        }
-        axios.put('/api/hotel/users', {
-            data: {
-                Name: user.Name,
-                LastName: user.LastName,
-                Email: user.Email,
-                FiscalNumber: user.FiscalNumber,
-                PhoneNumber: user.PhoneNumber,
-                Address1: user.Address1,
-                Address2: user.Address2,
-                Country: user.Country,
-                District: user.Country,
-                ZipCode: user.ZipCode,
-                Password: user.Password,
-                OrganizationID: user.OrganizationID,
-                RoleID: user.RoleID
-            }
-        })
-            .then(response => console.log(response))
-            .catch(err => console.log(err))
-    }
-    //final da inserção na tabela user
-
+    const { handleInputUser, handleSubmitUser } = userInsert();
+    const { handleUpdateUser, setValuesUser, valuesUser } = userEdit(idUser);
 
     return (
         <>
@@ -95,7 +60,7 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                         <ModalContent>
                             {(onClose) => (
                                 <>
-                                    <form onSubmit={handleSubmit}>
+                                    <form onSubmit={handleSubmitUser}>
                                         <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
                                             <div className='flex flex-row items-center mr-5'>
                                                 <Button color="transparent" onPress={toggleSecondModal}><FaRegUser size={25} /></Button>
@@ -116,10 +81,10 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                                                 >
                                                     <ModalContent>
                                                         <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
-                                                        <div className='flex flex-row items-center mr-5'>
-                                                            <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
-                                                            <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
-                                                        </div>
+                                                            <div className='flex flex-row items-center mr-5'>
+                                                                <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                                <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                                            </div>
                                                         </ModalHeader>
                                                         <ModalBody>
                                                             <table>
@@ -152,8 +117,8 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Name" onChange={handleInput} variant={variant} label="Name" />
-                                                        <Input type="text" name="LastName" onChange={handleInput} variant={variant} label="Last Name" />
+                                                        <Input type="text" name="Name" onChange={handleInputUser} variant={variant} label="Name" />
+                                                        <Input type="text" name="LastName" onChange={handleInputUser} variant={variant} label="Last Name" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -163,8 +128,8 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Email" onChange={handleInput} variant={variant} label="Email" />
-                                                        <Input type="text" name="FiscalNumber" onChange={handleInput} variant={variant} label="Fiscal Number" />
+                                                        <Input type="text" name="Email" onChange={handleInputUser} variant={variant} label="Email" />
+                                                        <Input type="text" name="FiscalNumber" onChange={handleInputUser} variant={variant} label="Fiscal Number" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -174,7 +139,7 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                                                         key={variant}
                                                         className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
                                                     >
-                                                        <Input type="text" name="PhoneNumber" onChange={handleInput} variant={variant} label="Phone Number" />
+                                                        <Input type="text" name="PhoneNumber" onChange={handleInputUser} variant={variant} label="Phone Number" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -184,8 +149,8 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Address1" onChange={handleInput} variant={variant} label="Address 1" />
-                                                        <Input type="text" name="Address2" onChange={handleInput} variant={variant} label="Address 2" />
+                                                        <Input type="text" name="Address1" onChange={handleInputUser} variant={variant} label="Address 1" />
+                                                        <Input type="text" name="Address2" onChange={handleInputUser} variant={variant} label="Address 2" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -195,9 +160,9 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" name="Country" onChange={handleInput} variant={variant} label="Country" />
-                                                        <Input type="text" name="District" onChange={handleInput} variant={variant} label="District" />
-                                                        <Input type="text" name="ZipCode" onChange={handleInput} variant={variant} label="zipCode" />
+                                                        <Input type="text" name="Country" onChange={handleInputUser} variant={variant} label="Country" />
+                                                        <Input type="text" name="District" onChange={handleInputUser} variant={variant} label="District" />
+                                                        <Input type="text" name="ZipCode" onChange={handleInputUser} variant={variant} label="zipCode" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -207,9 +172,117 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
                                                         key={variant}
                                                         className="flex w-1/2flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="password" name="Password" onChange={handleInput} variant={variant} label="Password" />
-                                                        <Input type="number" name="OrganizationID" onChange={handleInput} variant={variant} label="Organiztion ID" />
-                                                        <Input type="number" name="RoleID" onChange={handleInput} variant={variant} label="Role ID" />
+                                                        <Input type="password" name="Password" onChange={handleInputUser} variant={variant} label="Password" />
+                                                        <Input type="number" name="OrganizationID" onChange={handleInputUser} variant={variant} label="Organiztion ID" />
+                                                        <Input type="number" name="RoleID" onChange={handleInputUser} variant={variant} label="Role ID" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </ModalBody>
+                                    </form>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
+                </>
+            )
+            }
+
+
+            {formTypeModal === 11 && ( //Users edit
+                <>
+                    <Button onPress={onOpen} color={buttonColor} className="w-fit">
+                        {buttonName} {buttonIcon}
+                    </Button>
+                    <Modal
+                        classNames={{
+                            base: "max-h-screen",
+                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                            body: "h-full ",
+
+                        }}
+                        size="full"
+                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true} hideCloseButton={true}>
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <form onSubmit={(e) => handleUpdateUser(e)}>
+                                        <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                        <div className="flex flex-row justify-start gap-4">
+                                                {editIcon} {modalHeader} {modalEditArrow} {modalEdit}
+                                            </div>
+                                            <div className='flex flex-row items-center mr-5'>
+                                                <Button color="transparent" onPress={toggleSecondModal}><FaRegUser size={25} /></Button>
+                                                <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
+                                                <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                            </div>
+                                        </ModalHeader>
+                                        <ModalBody className="flex flex-col mx-5 my-5 space-y-8">
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Name" value={valuesUser.Name} onChange={e => setValuesUser({ ...valuesUser, Name: e.target.value })} variant={variant} label="Name" />
+                                                        <Input type="text" name="LastName" value={valuesUser.LastName} onChange={e => setValuesUser({ ...valuesUser, LastName: e.target.value })} variant={variant} label="Last Name" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Email" value={valuesUser.Email} onChange={e => setValuesUser({ ...valuesUser, Email: e.target.value })} variant={variant} label="Email" />
+                                                        <Input type="text" name="FiscalNumber" value={valuesUser.FiscalNumber} onChange={e => setValuesUser({ ...valuesUser, FiscalNumber: e.target.value })} variant={variant} label="Fiscal Number" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="max-w-xs flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
+                                                    >
+                                                        <Input type="text" name="PhoneNumber" value={valuesUser.PhoneNumber} onChange={e => setValuesUser({ ...valuesUser, PhoneNumber: e.target.value })} variant={variant} label="Phone Number" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Address1" value={valuesUser.Address1} onChange={e => setValuesUser({ ...valuesUser, Address1: e.target.value })} variant={variant} label="Address 1" />
+                                                        <Input type="text" name="Address2" value={valuesUser.Address2} onChange={e => setValuesUser({ ...valuesUser, Address2: e.target.value })} variant={variant} label="Address 2" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Country" value={valuesUser.Country} onChange={e => setValuesUser({ ...valuesUser, Country: e.target.value })} variant={variant} label="Country" />
+                                                        <Input type="text" name="District" value={valuesUser.District} onChange={e => setValuesUser({ ...valuesUser, District: e.target.value })} variant={variant} label="District" />
+                                                        <Input type="text" name="ZipCode" value={valuesUser.ZipCode} onChange={e => setValuesUser({ ...valuesUser, ZipCode: e.target.value })} variant={variant} label="zipCode" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-1/2 flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-1/2flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="password" name="Password" value={valuesUser.Password} onChange={e => setValuesUser({ ...valuesUser, Password: e.target.value })} variant={variant} label="Password" />
+                                                        <Input type="number" name="OrganizationID" variant={variant} label="Organiztion ID" />
+                                                        <Input type="number" name="RoleID" value={valuesUser.RoleID} onChange={e => setValuesUser({ ...valuesUser, RoleID: e.target.value })} variant={variant} label="Role ID" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -226,4 +299,4 @@ const modeluser = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonC
     );
 };
 
-export default modeluser;
+export default modaluser;
