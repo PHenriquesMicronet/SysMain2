@@ -29,13 +29,12 @@ import { BsArrowRight } from "react-icons/bs";
 import Modaluser from "@/components/Modal/modalUser";
 
 export default function Contact() {
-
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const [searchValue, setSearchValue] = React.useState("");
     const [user, setUser] = useState([]);
     const { data: session, status } = useSession()
-    
+
 
 
     const filteredItems = React.useMemo(() => {
@@ -49,17 +48,17 @@ export default function Contact() {
         );
     }, [user, searchValue]);
 
-    
+
     useEffect(() => {
         const getData = async () => {
-            if (status !== "loading"){
-                const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/users`);
-                console.log(session.user.id)
-                setUser(res.data.response);
+            if (status !== "loading") {
+                const res = await axios.get(`/api/hotel/organizations/` + session.user.organization + `/users`);
+                console.log("API Response:", res.data);
+                setUser(res.data.response.map(user => ({ ...user, userID: user.id })));
             }
         };
         getData();
-        }, []);
+    }, []);
 
 
     const items = React.useMemo(() => {
@@ -74,9 +73,9 @@ export default function Contact() {
         setPage(1);
     };
     const handleDelete = async (userID) => {
-    
+
         const confirmDelete = window.confirm("Tem certeza de que deseja excluir este utilizador?");
-        
+
         if (confirmDelete) {
             try {
                 const response = await axios.delete(`/api/hotel/users/` + userID);
@@ -128,6 +127,9 @@ export default function Contact() {
                         className="h-full overflow-auto"
                     >
                         <TableHeader>
+                        <TableColumn className="bg-primary-600 text-white font-bold">
+                                ID
+                            </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 NAME
                             </TableColumn>
@@ -147,6 +149,7 @@ export default function Contact() {
                         <TableBody>
                             {items.map((user, index) => (
                                 <TableRow key={index}>
+                                    <TableCell>{user.userID}</TableCell>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.role}</TableCell>
@@ -165,10 +168,10 @@ export default function Contact() {
                                                 <DropdownItem key="edit">
                                                     <Modaluser
                                                         buttonName={"Editar"}
-                                                        editIcon={<FiEdit3 size={25}/>}
+                                                        editIcon={<FiEdit3 size={25} />}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Utilizador"}
-                                                        modalEditArrow={<BsArrowRight size={25}/>}
+                                                        modalEditArrow={<BsArrowRight size={25} />}
                                                         modalEdit={`ID: ${user.userID}`}
                                                         formTypeModal={11}
                                                         idUser={user.userID}
@@ -202,7 +205,7 @@ export default function Contact() {
                             </span>
                             <select
                                 value={rowsPerPage}
-                                //onChange={handleChangeRowsPerPage}
+                                onChange={(e) => setRowsPerPage(parseInt(e.target.value))}
                                 className="ml-2 py-1 px-2 border rounded bg-transparent text-sm text-default-600 mx-5"
                             >
                                 <option value={15}>15</option>
