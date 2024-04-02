@@ -197,7 +197,7 @@ export default function Contact() {
                                                         buttonName={"Ver"}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Ver Detalhes da Propriedade"}
-                                                        formTypeModal={12}
+                                                        formTypeModal={11}
                                                         idProperty={property.propertyID}
                                                     ></FormModals>
                                                 </DropdownItem>
