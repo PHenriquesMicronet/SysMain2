@@ -51,10 +51,16 @@ export default function Contact() {
 
     useEffect(() => {
         const getData = async () => {
+<<<<<<< HEAD
+            if (status !== "loading"){
+                const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/users`);
+                setUser(res.data.response);
+=======
             if (status !== "loading") {
                 const res = await axios.get(`/api/hotel/organizations/` + session.user.organization + `/users`);
                 console.log("API Response:", res.data);
                 setUser(res.data.response.map(user => ({ ...user, userID: user.id })));
+>>>>>>> 0abc6667b57d2e216ca44e93e087fae1951cbdca
             }
         };
         getData();
@@ -140,7 +146,7 @@ export default function Contact() {
                                 ROLE
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                PROPERTIE
+                                PROPERTY
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
