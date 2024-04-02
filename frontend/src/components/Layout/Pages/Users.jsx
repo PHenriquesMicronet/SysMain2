@@ -148,7 +148,7 @@ export default function Contact() {
                         <TableBody>
                             {items.map((user, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>{user.userID}</TableCell>
+                                    <TableCell>{user.id}</TableCell>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.role}</TableCell>
@@ -171,9 +171,9 @@ export default function Contact() {
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Utilizador"}
                                                         modalEditArrow={<BsArrowRight size={25} />}
-                                                        modalEdit={`ID: ${user.userID}`}
+                                                        modalEdit={`ID: ${user.id}`}
                                                         formTypeModal={11}
-                                                        idUser={user.userID}
+                                                        idUser={user.id}
                                                     ></Modaluser>
                                                 </DropdownItem>
                                                 <DropdownItem><button onClick={() => handleDelete(user.userID)}>Remover</button></DropdownItem>
