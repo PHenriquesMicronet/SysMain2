@@ -11,6 +11,7 @@ import axios from "axios";
 
 //icons
 import { TfiSave } from "react-icons/tfi";
+import { BsPencil } from 'react-icons/bs'
 import { LiaExpandSolid } from "react-icons/lia";
 import { MdClose } from "react-icons/md";
 
@@ -59,10 +60,8 @@ const Contact = () => {
 
     return (
         <>
-            <div className='flex flex-row items-center mr-5'>
-                <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
-                <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
-                <Button color="transparent" variant="light"><MdClose size={30} /></Button>
+            <div className='flex flex-row justify-end items-center mr-5 bg-primary-600 py-2 w-full'>
+                <Button color="transparent" type="submit"><BsPencil size={20} color={"white"}/></Button>
             </div>
             {items.map((organizations, index) => (
                 <div key={index} className="flex flex-col mx-16 my-8">
