@@ -16,3 +16,35 @@ export async function GET(request, context) {
 
     return new NextResponse(JSON.stringify({ response, status: 200 }));
 }
+
+export async function PATCH(request, context) {
+
+    try {
+        const { id } = context.params;
+        const { data } = await request.json();
+
+        const response = await prisma.organizations.update({
+            where: {
+                organizationID: parseInt(id),
+            },
+            data: {
+                name: data.Name,
+                email: data.Email,
+                fiscalNumber: data.FiscalNumber,
+                address1: data.Address1,
+                address2: data.Address2,
+                phoneNumber: data.PhoneNumber,
+                country: data.Country,
+                district: data.District,
+                zipCode: data.ZipCode
+            }
+        })
+        return new NextResponse(JSON.stringify({ status: 200 }));
+
+    } catch (error) {
+        return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
+    } finally {
+        await prisma.$disconnect();
+    }
+
+}

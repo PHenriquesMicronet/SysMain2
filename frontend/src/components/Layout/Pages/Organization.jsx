@@ -14,6 +14,11 @@ import { TfiSave } from "react-icons/tfi";
 import { BsPencil } from 'react-icons/bs'
 import { LiaExpandSolid } from "react-icons/lia";
 import { MdClose } from "react-icons/md";
+import { FiEdit3 } from "react-icons/fi";
+import { BsArrowRight } from "react-icons/bs";
+
+
+import Modalorg from "@/components/Modal/modalOrganization"
 
 const Contact = () => {
 
@@ -33,7 +38,7 @@ const Contact = () => {
     }
     const filteredItems = React.useMemo(() => {
         return organizations.filter((organizations) =>
-        organizations.name.toLowerCase().includes(
+            organizations.name.toLowerCase().includes(
                 searchValue.toLowerCase()
             ) ||
             organizations.organizationID.toString().toLowerCase().includes(
@@ -60,31 +65,41 @@ const Contact = () => {
 
     return (
         <>
-            <div className='flex flex-row justify-end items-center mr-5 bg-primary-600 py-2 w-full'>
-                <Button color="transparent" type="submit"><BsPencil size={20} color={"white"}/></Button>
-            </div>
             {items.map((organizations, index) => (
                 <div key={index} className="flex flex-col mx-16 my-8">
+                    <div className='flex flex-row justify-end items-center mr-5 bg-primary-600 py-2 w-full'>
+                        <Modalorg
+                            buttonIcon={<BsPencil size={20} color={"white"} />}
+                            buttonColor={""}
+                            modalHeader={"Editar Organização"}
+                            modalIcons={"bg-red"}
+                            formTypeModal={10}
+                            idOrg={organizations.organizationID}
+                            editIcon={<FiEdit3 size={25} />}
+                            modalEditArrow={<BsArrowRight size={25} />}
+                            modalEdit={`ID: ${organizations.organizationID}`}
+                        ></Modalorg>
+                    </div>
                     <div className="w-full flex flex-col gap-4 my-4">
                         {variants.map((variant) => (
                             <div key={variant} className="flex w-1/2 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                <Input type="text" variant={variant} label="Name" value={organizations.name}/> 
+                                <Input type="text" variant={variant} label="Name" value={organizations.name} />
                             </div>
                         ))}
                     </div>
                     <div className="w-full flex flex-col gap-4 my-4">
                         {variants.map((variant) => (
                             <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                <Input type="text" variant={variant} label="Company Name" value={organizations.name}/>
-                                <Input type="text" variant={variant} label="Fiscal Number" value={organizations.fiscalNumber}/>
+                                <Input type="text" variant={variant} label="Company Name" value={organizations.name} />
+                                <Input type="text" variant={variant} label="Fiscal Number" value={organizations.fiscalNumber} />
                             </div>
                         ))}
                     </div>
                     <div className="w-full flex flex-col gap-4 my-4">
                         {variants.map((variant) => (
                             <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                <Input type="text" variant={variant} label="Email" value={organizations.email}/>
-                                <Input type="text" variant={variant} label="Phone Number" value={organizations.phoneNumber}/>
+                                <Input type="text" variant={variant} label="Email" value={organizations.email} />
+                                <Input type="text" variant={variant} label="Phone Number" value={organizations.phoneNumber} />
                             </div>
                         ))}
                     </div>
@@ -94,14 +109,14 @@ const Contact = () => {
                     <div className="w-full flex flex-col gap-4">
                         {variants.map((variant) => (
                             <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                <Input variant={variant} label="Address 1" value={organizations.address1}/>
+                                <Input variant={variant} label="Address 1" value={organizations.address1} />
                             </div>
                         ))}
                     </div>
                     <div className="w-full flex flex-col gap-4 my-4">
                         {variants.map((variant) => (
                             <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                <Input variant={variant} label="Address 2" value={organizations.address2}/>
+                                <Input variant={variant} label="Address 2" value={organizations.address2} />
                             </div>
                         ))}
                     </div>
@@ -111,9 +126,9 @@ const Contact = () => {
                                 key={variant}
                                 className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                             >
-                                <Input type="text" name="Country" onChange={handleInput} variant={variant} label="Country" value={organizations.country}/>
-                                <Input type="text" name="District" onChange={handleInput} variant={variant} label="District" value={organizations.district}/>
-                                <Input type="number" name="ZipCode" onChange={handleInput} variant={variant} label="zipCode" value={organizations.zipCode}/>
+                                <Input type="text" name="Country" onChange={handleInput} variant={variant} label="Country" value={organizations.country} />
+                                <Input type="text" name="District" onChange={handleInput} variant={variant} label="District" value={organizations.district} />
+                                <Input type="number" name="ZipCode" onChange={handleInput} variant={variant} label="zipCode" value={organizations.zipCode} />
                             </div>
                         ))}
                     </div>
