@@ -50,7 +50,7 @@ const ChooseOrganization = () => {
                                 onMouseEnter={() => setIsHovered1(true)}
                                 onMouseLeave={() => setIsHovered1(false)}
                             >
-                                <Card className="w-80 h-80 flex flex-col justify-center items-center" key={property.id}>
+                                <Card className="w-80 h-80 flex flex-col justify-center items-center" onPress={handleApps} key={property.id}>
                                     <CardHeader className="flex flex-col items-center justify-center">
                                         <Button color="transparent" className="text-large text-center mb-10"  onPress={() => handleApps(property.id)} > {property.name}</Button>
                                         <Image className="w-52 h-52"
