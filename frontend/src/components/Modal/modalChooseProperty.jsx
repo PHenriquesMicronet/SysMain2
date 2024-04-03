@@ -71,14 +71,13 @@ const modalchooseproperty = ({
                                             <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                         </div>
                                     </ModalHeader>
-                                    <ModalBody className="flex flex-col mx-10 my-5 space-y-8">
+                                    <ModalBody className="flex flex-col mx-10 my-5">
                                 {apps.map((application, index) => (
                                     <a href="/homepage">
-                                    <Card className="w-80 h-80 flex flex-col justify-center items-center" >
+                                    <Card className="w-44 h-44 flex flex-col justify-center items-center border-4 border-green-600 ml-auto mr-auto mt-16">
                                     <CardHeader className="flex flex-col items-center justify-center">
-                                        <p>{application.id}</p> 
                                         <p>{application.name}</p> 
-                                        <Image className="w-52 h-52"
+                                        <Image className="w-20 h-20 mt-2"
                                             src="/images/Logo-Login.png"
                                         />
                                     </CardHeader>
