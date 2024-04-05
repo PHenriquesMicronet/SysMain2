@@ -39,7 +39,8 @@ export const authOptions = {
                     return {
                         id: response.userID,
                         email: response.email,
-                        organization: response.organizationID
+                        organization: response.organizationID,
+                        role: response.role
                     }
                 }
 
@@ -59,6 +60,7 @@ export const authOptions = {
             session.user.id = token.id
             session.user.name = token.name
             session.user.organization = token.organization
+            session.user.role = token.role
 
             return session;
         },
