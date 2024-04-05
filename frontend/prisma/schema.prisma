@@ -44,6 +44,7 @@ model properties {
   abbreviation            String                    @db.VarChar(10)
   designation             String                    @db.VarChar(50)
   organizationID          Int
+  licenses                licenses[]
   organizations           organizations             @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "properties_organizations")
   properties_applications properties_applications[]
   properties_users        properties_users[]
@@ -55,6 +56,9 @@ model properties_applications {
   propertyApplicationID           Int                               @id @default(autoincrement())
   propertyID                      Int
   applicationID                   Int
+  ip                              String                            @db.VarChar(50)
+  port                            Int                               @default(0)
+  prefix                          String                            @db.VarChar(50)
   applications                    applications                      @relation(fields: [applicationID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "properties_applications_applications")
   properties                      properties                        @relation(fields: [propertyID], references: [propertyID], onDelete: NoAction, onUpdate: NoAction, map: "properties_applications_properties")
   properties_applications_plugins properties_applications_plugins[]
@@ -140,4 +144,67 @@ model properties_applications_plugins {
 
   @@index([pluginID], map: "propertiesApplicationsPlugins_plugins")
   @@index([propertyApplicationID], map: "propertiesApplicationsPlugins_propertiesApplications")
+}
+
+model pmsgroup {
+  pmsg         Int    @id @default(autoincrement())
+  name         String @default("") @db.VarChar(50)
+  abbreviature String @default("") @db.VarChar(20)
+}
+
+model xmodules {
+  ID        Int     @id @default(autoincrement())
+  pmsHotel  Int     @default(-1)
+  modRef    Int     @default(-1)
+  modName   String  @default("") @db.VarChar(50)
+  generic   String  @default("") @db.VarChar(50)
+  param1    String  @default("") @db.VarChar(50)
+  param2    String  @default("") @db.VarChar(50)
+  param3    String  @default("") @db.VarChar(50)
+  param4    String  @default("") @db.VarChar(50)
+  param5    String  @default("") @db.VarChar(50)
+  license   String  @default("") @db.VarChar(50)
+  startDate String  @default("") @db.VarChar(50)
+  expDate   String  @default("") @db.VarChar(50)
+  del       Boolean @default(dbgenerated("(b'0')")) @db.Bit(1)
+}
+
+model licenses {
+  pmsh          Int        @id @default(autoincrement())
+  pmsg          Int        @default(-1)
+  pmsLic        Int        @default(-1)
+  pmsHq         Int        @default(-1)
+  pmsHqcl       Int        @default(-1)
+  pmsPool       Int        @default(-1)
+  demoID        Int        @default(-1)
+  smartLicid    Int        @default(-1)
+  smartOption   String     @default("") @db.VarChar(250)
+  customerId    Int        @default(-1)
+  lang          Int        @default(-1)
+  license       Int        @default(-1)
+  hotel         String     @default("") @db.VarChar(100)
+  abbreviation  String     @default("") @db.VarChar(100)
+  homepage      String     @default("") @db.VarChar(200)
+  dealerName    String     @default("") @db.VarChar(50)
+  hotelnum      String     @default("") @db.VarChar(100)
+  hotelnum2     String     @default("") @db.VarChar(100)
+  startDate     String     @default("") @db.VarChar(30)
+  expiryDate    String     @default("") @db.VarChar(30)
+  numOfRooms    Int        @default(-1)
+  workstationId Int        @default(-1)
+  code          Int        @default(-1)
+  locationRef   Int        @default(-1)
+  roomTypeColor Int        @default(-1)
+  hotelTypeRef  Int        @default(-1)
+  class0Ref     Int        @default(-1)
+  class1Ref     Int        @default(-1)
+  class2Ref     Int        @default(-1)
+  class3Ref     Int        @default(-1)
+  class4Ref     Int        @default(-1)
+  inet          Int        @default(-1)
+  deletionMark  Int        @default(-1)
+  propertyID    Int
+  properties    properties @relation(fields: [propertyID], references: [propertyID], onDelete: NoAction, onUpdate: NoAction, map: "licenses_properties")
+
+  @@index([propertyID], map: "licenses_properties")
 }
