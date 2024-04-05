@@ -30,7 +30,7 @@ const ChooseOrganization = () => {
 
     return (
         <>
-            <p className="text-center text-3xl mt-24 antialiased">Selecione a propriedade que deseja abrir</p>
+            <p className="text-center text-3xl mt-60 antialiased">Selecione a propriedade que deseja abrir:</p>
             <div className="flex justify-center items-center mt-20">
                 <div className="grid grid-cols-2 gap-4">
                     {properties.map((property, index) => (
@@ -39,8 +39,9 @@ const ChooseOrganization = () => {
                                 className={`card mx-auto ${isHovered1 ? 'hover:scale-105 shadow-lg rounded-lg shadow-slate-300' : ''}`}
                                 onMouseEnter={() => setIsHovered1(true)}
                                 onMouseLeave={() => setIsHovered1(false)}
+                                
                             >
-                                <Card className="w-80 h-80 flex flex-col justify-center items-center">
+                                <Card className="w-44 h-44 flex flex-col justify-center items-center border-4 border-green-600">
                                     <CardHeader className="flex flex-col items-center justify-center">
                                     <FormModals
                                                         buttonName={property.name}
@@ -49,8 +50,8 @@ const ChooseOrganization = () => {
                                                         formTypeModal={10}
                                                         idProperty={property.id}
                                                     ></FormModals>
-                                        <Image className="w-52 h-52"
-                                            src="/images/Logo-Login.png"
+                                        <Image className="w-20 h-20"
+                                            src="/images/hotel.png"
                                         />
                                     </CardHeader>
                                 </Card>
