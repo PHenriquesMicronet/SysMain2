@@ -46,7 +46,7 @@ export default function LoginForm() {
           <Image src="/images/imagem-login.png" alt="management hotel" className="h-dvh"></Image>
         </div>
         <div className="flex flex-col justify-center p-40">
-          <div className="">
+          <div  className="w-full">
             <Image src="/images/Logo-Login.png" alt="Logotipo" width={250} height={250} />
           </div>
           <p className="text-sm text-gray-600">E-mail</p>

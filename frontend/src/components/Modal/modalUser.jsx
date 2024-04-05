@@ -32,10 +32,6 @@ const modaluser = ({
         setIsExpanded(!isExpanded);
     };
 
-    const toggleSecondModal = () => {
-        setIsSecondModalOpen(!isSecondModalOpen);
-    };
-
 
     const { handleInputUser, handleSubmitUser } = userInsert();
     const { handleUpdateUser, setValuesUser, valuesUser } = userEdit(idUser);
@@ -212,7 +208,6 @@ const modaluser = ({
                                                 {editIcon} {modalHeader} {modalEditArrow} {modalEdit}
                                             </div>
                                             <div className='flex flex-row items-center mr-5'>
-                                                <Button color="transparent" onPress={toggleSecondModal}><FaRegUser size={25} /></Button>
                                                 <Button color="transparent" onPress={onClose} type="submit"><TfiSave size={25} /></Button>
                                                 <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                 <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>

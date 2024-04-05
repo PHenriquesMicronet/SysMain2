@@ -3,6 +3,7 @@ import React from "react";
 
 //import de axios para BD
 import axios from "axios";
+import { useSession } from "next-auth/react"
 
 import { useState, useEffect } from "react";
 import {
@@ -24,6 +25,7 @@ import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
 import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
+import { BiSpreadsheet } from "react-icons/bi";
 
 import FormModals from "@/components/Modal/modalProperty";
 
@@ -35,6 +37,7 @@ export default function Contact() {
     const [searchValue, setSearchValue] = React.useState("");
     const [property, setProperty] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const { data: session, status } = useSession()
 
     const filteredItems = property.filter(
         (property) =>
@@ -45,13 +48,15 @@ export default function Contact() {
 
     useEffect(() => {
         const getData = async () => {
-            try {
-                const res = await axios.get("/api/hotel/properties");
-                setProperty(res.data.response);
-            } catch (error) {
-                console.error("Erro ao obter as propriedades:", error.message);
+            if (status !== "loading"){
+                try {
+                    const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/properties`);
+                    setProperty(res.data.response);
+                } catch (error) {
+                    console.error("Erro ao obter as propriedades:", error.message);
             }
         };
+        }
         getData();
     }, []);
 
@@ -201,7 +206,17 @@ export default function Contact() {
                                                     ></FormModals>
                                                 </DropdownItem>
                                             </DropdownMenu>
-                                        </Dropdown>
+                                        </Dropdown>       
+                                        
+                                        <FormModals
+                                                        buttonName={<BiSpreadsheet  size={20} className="text-gray-400"/>}
+                                                        buttonColor={"transparent"}
+                                                        modalHeader={"Licença"}
+                                                        variant="light"
+                                                        className="flex flex-row justify-center"    
+                                                        formTypeModal={13}
+                                                        idProperty={property.propertyID}
+                                                    ></FormModals>
                                     </TableCell>
                                 </TableRow>
                             ))}

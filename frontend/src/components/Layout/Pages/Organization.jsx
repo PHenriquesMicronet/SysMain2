@@ -8,6 +8,7 @@ import {
     Autocomplete, AutocompleteItem, Avatar, Button
 } from "@nextui-org/react"
 import axios from "axios";
+import { useSession } from "next-auth/react"
 
 //icons
 import { TfiSave } from "react-icons/tfi";
@@ -16,9 +17,11 @@ import { LiaExpandSolid } from "react-icons/lia";
 import { MdClose } from "react-icons/md";
 import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
+import { BiSpreadsheet } from "react-icons/bi";
 
 
 import Modalorg from "@/components/Modal/modalOrganization"
+import FormModals from "@/components/Modal/modalOrganization"
 
 const Contact = () => {
 
@@ -28,6 +31,7 @@ const Contact = () => {
     const [page, setPage] = React.useState(1);
     const [searchValue, setSearchValue] = React.useState("");
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
+    const { data: session, status } = useSession()
 
 
     const toggleExpand = () => {
@@ -48,12 +52,17 @@ const Contact = () => {
     }, [organizations, searchValue]);
 
 
-    useEffect(() => {
+    useEffect(() => { 
         const getData = async () => {
-            const res = await axios.get("/api/hotel/organizations");
+            if (status !== "loading"){
+                try{
+            const res = await axios.get(`/api/hotel/organizations/`+  session.user.organization);
             setOrganizations(res.data.response);
-        };
-        getData();
+            }catch (error) {
+                console.error("Erro ao obter as propriedades:", error.message);
+            }
+        }
+    };getData();
     }, []);
 
     const items = React.useMemo(() => {
@@ -67,7 +76,7 @@ const Contact = () => {
         <>
             {items.map((organizations, index) => (
                 <div key={index} className="flex flex-col mx-16 my-8">
-                    <div className='flex flex-row justify-end items-center mr-5 bg-primary-600 py-2 w-full'>
+                    <div className='flex flex-row justify-end items-center mr-5 bg-primary-600 py-2 w-full rounded-2xl'>
                         <Modalorg
                             buttonIcon={<BsPencil size={20} color={"white"} />}
                             buttonColor={""}
@@ -79,6 +88,15 @@ const Contact = () => {
                             modalEditArrow={<BsArrowRight size={25} />}
                             modalEdit={`ID: ${organizations.organizationID}`}
                         ></Modalorg>
+                        <FormModals
+                            buttonName={<BiSpreadsheet size={20} color={"white"}/>}
+                            buttonColor={""}
+                            modalHeader={"Todas as Licenças das Propriedades"}
+                            variant="light"
+                            className="flex flex-row justify-center"
+                            formTypeModal={13}
+                            idOrg={organizations.organizationID}
+                        ></FormModals>
                     </div>
                     <div className="w-full flex flex-col gap-4 my-4">
                         {variants.map((variant) => (
