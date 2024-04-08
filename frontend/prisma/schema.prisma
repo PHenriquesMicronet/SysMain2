@@ -26,6 +26,7 @@ model organizations {
   country        String       @db.VarChar(100)
   district       String       @db.VarChar(100)
   zipCode        String       @db.VarChar(45)
+  del            Boolean      @default(dbgenerated("(b'0')")) @db.Bit(1)
   properties     properties[]
   users          users[]
 }
@@ -44,6 +45,7 @@ model properties {
   abbreviation            String                    @db.VarChar(10)
   designation             String                    @db.VarChar(50)
   organizationID          Int
+  del                     Boolean                   @default(dbgenerated("(b'0')")) @db.Bit(1)
   licenses                licenses[]
   organizations           organizations             @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "properties_organizations")
   properties_applications properties_applications[]
