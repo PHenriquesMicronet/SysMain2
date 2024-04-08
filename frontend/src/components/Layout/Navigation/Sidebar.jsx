@@ -11,9 +11,14 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { FaHotel } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
+import axios from 'axios';
 
-const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
-
+const Sidebar = ({ showSidebar, setShowSidebar, children, name}) => {
+    /* const { data: session, status} = useSession()
+    const roleID = session.user.role;
+    if (status !== "loading"){
+        console.log(roleID)
+    } */
     const hotelSetup = process.env.NEXT_PUBLIC_HOTEL_SETUP === "true";
 
     const listItems = {
@@ -42,7 +47,12 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                 {
                     ref: "/homepage/properties", label: "Properties" , active: true
                 },
-
+                {
+                    ref: "/homepage/organizations",
+                    label: "Organizations",
+                    //active: roleID == 18//
+                    active: true
+                },
             ]
         },
 
