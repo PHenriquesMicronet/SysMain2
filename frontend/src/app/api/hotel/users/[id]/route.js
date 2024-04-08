@@ -46,7 +46,7 @@ export async function PATCH(request, context) {
                 roleID: parseInt(data.roleID)
             }
         })
-        return new NextResponse(JSON.stringify({updateRecord, status: 200 }));
+        return new NextResponse(JSON.stringify({ updateRecord, status: 200 }));
 
     } catch (error) {
         return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
@@ -55,24 +55,24 @@ export async function PATCH(request, context) {
     }
 }
 
-// export async function DELETE(request, context) {
+export async function DELETE(request, context) {
 
-//     try {
-//         const { id } = context.params;
+    try {
+        const { id } = context.params;
 
-//         const response = await prisma.properties_applications.delete({
-//             where: {
-//                 propertyApplicationID: parseInt(id),
-//             }
-//         })
-//         return new NextResponse(JSON.stringify({ status: 200 }));
+        const response = await prisma.users.delete({
+            where: {
+                userID: parseInt(id),
+            }
+        })
+        return new NextResponse(JSON.stringify({ status: 200 }));
 
-//     } catch (error) {
-//         return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
-//     } finally {
-//         await prisma.$disconnect();
-//     }
-// }
+    } catch (error) {
+        return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
+    } finally {
+        await prisma.$disconnect();
+    }
+}
 
 
 
