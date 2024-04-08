@@ -1,6 +1,6 @@
 "use client"
-import React, { useState } from "react";
-import { Modal, ScrollShadow, ModalContent, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import React, { useState, useEffect } from "react";
+import { Modal, ScrollShadow, ModalContent, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem,Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, } from "@nextui-org/react";
 import { AiOutlineGlobal } from "react-icons/ai";
 import axios from 'axios';
 
@@ -11,6 +11,7 @@ import { MdClose } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import userInsert, { userEdit } from "../functionsForm/user/page";
 import OrgEdit from "../functionsForm/organization/page";
+import organization from "@/app/homepage/organization/page";
 
 
 const modalorg = ({
@@ -29,6 +30,9 @@ const modalorg = ({
     const variants = ["underlined"];
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+    const [organizationsLicenses, setOrganizationsLicenses] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [dataFetched, setDataFetched] = useState(false);
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
@@ -40,6 +44,24 @@ const modalorg = ({
 
 
     const { handleUpdateOrg, setValuesOrg, valuesOrg } = OrgEdit(idOrg);
+
+    useEffect(() => {
+        const getData = async () => {
+            if (!dataFetched){
+                setIsLoading(true);
+                try {
+                    const res = await axios.get(`/api/hotel/organizations/` + idOrg + `/properties/licenses`);
+                    setOrganizationsLicenses(res.data.response);
+                    setDataFetched(true);
+                } catch (error) {
+                    console.error("Erro ao encontrar as licenças associadas à organização:", error.message);
+            }finally {
+                setIsLoading(false);
+            }
+        };
+        }
+        getData();
+    }, []);
 
     return (
         <>
@@ -120,6 +142,82 @@ const modalorg = ({
                                                     </div>
                                                 ))}
                                             </div>
+                                        </ModalBody>
+                                    </form>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
+                </>
+            )
+            }
+
+{formTypeModal === 13 && ( //organization
+                <>
+                    <Button onPress={onOpen} color={buttonColor} className="w-fit">
+                        {buttonName} {buttonIcon}
+                    </Button>
+                    <Modal
+                        classNames={{
+                            base: "max-h-screen",
+                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                            body: "h-full ",
+
+                        }}
+                        size="full"
+                        hideCloseButton="true"
+                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <form onSubmit={(e) => handleUpdateOrg(e)}>
+                                        <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                        {editIcon} {modalHeader} {modalEditArrow} {modalEdit}
+                                            <div className='flex flex-row items-center mr-5'>
+                                                <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                            </div>
+                                        </ModalHeader>
+                                        <ModalBody className="flex flex-col mx-5 my-5 space-y-8">
+                                        {isLoading ? (<p>A Carregar...</p>
+                                            ) : (
+                                                <div className="mx-5 h-[65vh] min-h-full">
+                                                    <Table
+                                                        isHeaderSticky={"true"}
+                                                        layout={"fixed"}
+                                                        removeWrapper
+                                                        classNames={{
+                                                            wrapper: "min-h-[222px]",
+                                                        }}
+                                                        className="h-full overflow-auto"
+                                                    >
+                                                        <TableHeader>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                ID
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                ABBREVIATION
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                BEDROOMS
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                WORKSTATIONS
+                                                            </TableColumn>
+                                                        </TableHeader>
+                                                        <TableBody>
+                                                        {organizationsLicenses.map((licenses, index) => (
+                                                            <TableRow key={index}>
+                                                                <TableCell>{licenses.pmsh}</TableCell>
+                                                                <TableCell>{licenses.abbreviation}</TableCell>
+                                                                <TableCell>{licenses.numOfRooms}</TableCell>
+                                                                <TableCell>{licenses.workstationId}</TableCell>
+                                                            </TableRow>
+                                                            ))}
+                                                        </TableBody>
+                                                    </Table>
+                                                </div>
+                                            )}
                                         </ModalBody>
                                     </form>
                                 </>

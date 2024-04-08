@@ -1,25 +1,32 @@
 'use client'
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
-import { FaLaptopHouse, FaUser } from 'react-icons/fa';
-import { useSession } from 'next-auth/react';
-import { FaTruck } from "react-icons/fa";
-import { FaCalendarAlt } from "react-icons/fa";
+import {  FaUser } from 'react-icons/fa';
+// import { useSession } from 'next-auth/react';
 import { IoSettings } from "react-icons/io5";
 import { FaHotel } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 import axios from 'axios';
 
-const Sidebar = ({ showSidebar, setShowSidebar, children, name}) => {
-    /* const { data: session, status} = useSession()
-    const roleID = session.user.role;
-    if (status !== "loading"){
-        console.log(roleID)
-    } */
+const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
+
     const hotelSetup = process.env.NEXT_PUBLIC_HOTEL_SETUP === "true";
+
+    // const { data: session, status } = useSession()
+    // const [user, setUser] = useState([]);
+
+    // useEffect(() => {
+    //     const getData = async () => {
+    //         if (status !== "loading"){
+    //             const res = await axios.get(`/api/hotel/users/`+ session.user.name + `/users`);
+    //             setUser(res.data.response);
+    //         }
+    //     };
+    //     getData();
+    // }, []);
 
     const listItems = {
         //"Dashboard": [],
@@ -90,7 +97,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name}) => {
                     <div className="flex items-center space-x-2">
                         <Link href="/homepage" className='flex space-x-4 align-middle ml-3'>
                             <FaUser className="text-2xl text-primary-800" />
-                            <span className="text-sm text-primary-800 font-semibold">{name}</span>
+                            <span className="text-sm text-primary-800 font-semibold"></span>
                         </Link>
                     </div>
 
