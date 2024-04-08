@@ -9,8 +9,9 @@ import {  FaUser } from 'react-icons/fa';
 import { IoSettings } from "react-icons/io5";
 import { FaHotel } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
+import axios from 'axios';
 
-const Sidebar = ({ showSidebar, setShowSidebar, children }) => {
+const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
 
     const hotelSetup = process.env.NEXT_PUBLIC_HOTEL_SETUP === "true";
 
@@ -53,7 +54,12 @@ const Sidebar = ({ showSidebar, setShowSidebar, children }) => {
                 {
                     ref: "/homepage/properties", label: "Properties" , active: true
                 },
-
+                {
+                    ref: "/homepage/organizations",
+                    label: "Organizations",
+                    //active: roleID == 18//
+                    active: true
+                },
             ]
         },
 
