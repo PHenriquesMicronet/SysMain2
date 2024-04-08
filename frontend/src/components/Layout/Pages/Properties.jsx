@@ -28,7 +28,7 @@ import { BsArrowRight } from "react-icons/bs";
 import { BiSpreadsheet } from "react-icons/bi";
 
 import FormModals from "@/components/Modal/modalProperty";
-
+//comentario para dar push para o main como o nuno pediu
 
 export default function Contact() {
 
