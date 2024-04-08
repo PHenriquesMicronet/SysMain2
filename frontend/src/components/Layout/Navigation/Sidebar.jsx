@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
 import {  FaUser } from 'react-icons/fa';
-// import { useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { IoSettings } from "react-icons/io5";
 import { FaHotel } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
@@ -15,18 +15,12 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
 
     const hotelSetup = process.env.NEXT_PUBLIC_HOTEL_SETUP === "true";
 
-    // const { data: session, status } = useSession()
-    // const [user, setUser] = useState([]);
+    const { data: session, status } = useSession()
+    const [user, setUser] = useState([]);
 
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         if (status !== "loading"){
-    //             const res = await axios.get(`/api/hotel/users/`+ session.user.name + `/users`);
-    //             setUser(res.data.response);
-    //         }
-    //     };
-    //     getData();
-    // }, []);
+    const isAdmin = () => {
+        return session?.user?.role == 18;
+    };
 
     const listItems = {
         //"Dashboard": [],
@@ -54,12 +48,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                 {
                     ref: "/homepage/properties", label: "Properties" , active: true
                 },
-                {
-                    ref: "/homepage/organizations",
-                    label: "Organizations",
-                    //active: roleID == 18//
-                    active: true
-                },
+                    isAdmin() && {
+                        ref: "/homepage/organizations",
+                        label: "Organizations",
+                        active: true
+                    },
             ]
         },
 

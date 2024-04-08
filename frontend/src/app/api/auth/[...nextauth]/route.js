@@ -39,7 +39,8 @@ export const authOptions = {
                     return {
                         id: response.userID,
                         email: response.email,
-                        organization: response.organizationID
+                        organization: response.organizationID,
+                        roleID: response.roleID
                     }
                 }
 
