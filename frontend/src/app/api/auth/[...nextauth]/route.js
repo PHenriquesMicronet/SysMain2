@@ -40,7 +40,9 @@ export const authOptions = {
                         id: response.userID,
                         email: response.email,
                         organization: response.organizationID,
-                        roleID: response.roleID
+                        roleID: response.roleID,
+                        name: response.name,
+                        lastname: response.lastName
                     }
                 }
 
@@ -58,9 +60,10 @@ export const authOptions = {
         async session({ session, token }) {
 
             session.user.id = token.id
-            session.user.name = token.name
             session.user.organization = token.organization
             session.user.role = token.role
+            session.user.name = token.name
+            session.user.lastname = token.lastname
 
             return session;
         },

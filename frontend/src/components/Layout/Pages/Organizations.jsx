@@ -139,7 +139,13 @@ export default function Contact() {
                                     <TableCell>{organization.name}</TableCell>
                                     <TableCell>{organization.address1}</TableCell>
                                     <TableCell>{organization.country}</TableCell>
-                                    <TableCell>{organization.district}</TableCell>
+                                    <TableCell><Button color="transparent">{organization.properties}  <FormModals
+                                        modalEdit={`ID: ${organization.organizationID}`}
+                                        formTypeModal={13}
+                                        idOrganization={organization.organizationID}
+                                    ></FormModals>
+
+                                    </Button></TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>
