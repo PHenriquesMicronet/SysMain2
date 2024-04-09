@@ -18,9 +18,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
     const { data: session, status } = useSession()
     const [user, setUser] = useState([]);
 
-    const isAdmin = () => {
+    /*const isAdmin = () => {
         return session?.user?.role == 18;
-    };
+    };*/
 
     const listItems = {
         //"Dashboard": [],
@@ -48,11 +48,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                 {
                     ref: "/homepage/properties", label: "Properties" , active: true
                 },
-                    isAdmin() && {
+                   {
                         ref: "/homepage/organizations",
                         label: "Organizations",
                         active: true
-                    },
+                   },
             ]
         },
 
@@ -66,7 +66,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                 {
                     ref: "/homepage/users", label: "Manage Users", active: true
                 },
-                
+
             ]
         }
 

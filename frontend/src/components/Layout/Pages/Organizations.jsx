@@ -126,7 +126,7 @@ export default function Contact() {
                                 COUNTRY
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                DISTRICT
+                                PROPRIEDADES
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
@@ -139,26 +139,32 @@ export default function Contact() {
                                     <TableCell>{organization.name}</TableCell>
                                     <TableCell>{organization.address1}</TableCell>
                                     <TableCell>{organization.country}</TableCell>
-                                    <TableCell>{organization.district}</TableCell>
+                                    <TableCell><Button color="transparent">{organization.properties}  <FormModals
+                                        modalEdit={`ID: ${organization.organizationID}`}
+                                        formTypeModal={13}
+                                        idOrganization={organization.organizationID}
+                                    ></FormModals>
+
+                                    </Button></TableCell>
                                     <TableCell className="flex justify-center">
-                                    <Dropdown>
+                                        <Dropdown>
                                             <DropdownTrigger>
                                                 <Button
                                                     variant="light"
                                                     className="flex flex-row justify-center"
-                                                    
+
                                                 >
                                                     <BsThreeDotsVertical size={20} className="text-gray-400" />
                                                 </Button>
                                             </DropdownTrigger>
-                                            <DropdownMenu aria-label="Static Actions" isOpen={true}  closeOnSelect={false}>
+                                            <DropdownMenu aria-label="Static Actions" isOpen={true} closeOnSelect={false}>
                                                 <DropdownItem key="edit">
                                                     <FormModals
                                                         buttonName={"Editar"}
-                                                        editIcon={<FiEdit3 size={25}/>}
+                                                        editIcon={<FiEdit3 size={25} />}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Organizacao"}
-                                                        modalEditArrow={<BsArrowRight size={25}/>}
+                                                        modalEditArrow={<BsArrowRight size={25} />}
                                                         modalEdit={`ID: ${organization.organizationID}`}
                                                         formTypeModal={11}
                                                         idOrganization={organization.organizationID}
