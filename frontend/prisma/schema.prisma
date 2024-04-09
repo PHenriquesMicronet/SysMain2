@@ -46,7 +46,7 @@ model properties {
   designation             String                    @db.VarChar(50)
   organizationID          Int
   del                     Boolean                   @default(dbgenerated("(b'0')")) @db.Bit(1)
-  licenses                licenses[]
+  licenses_onprempms      licenses_onprempms[]
   organizations           organizations             @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "properties_organizations")
   properties_applications properties_applications[]
   properties_users        properties_users[]
@@ -171,7 +171,7 @@ model xmodules {
   del       Boolean @default(dbgenerated("(b'0')")) @db.Bit(1)
 }
 
-model licenses {
+model licenses_onprempms {
   pmsh          Int        @id @default(autoincrement())
   pmsg          Int        @default(-1)
   pmsLic        Int        @default(-1)

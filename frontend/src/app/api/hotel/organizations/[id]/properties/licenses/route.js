@@ -14,7 +14,7 @@ export async function GET(request, context) {
         },
     })
 
-    const response = await prisma.licenses.findMany({
+    const response = await prisma.licenses_onprempms.findMany({
         where: {
             propertyID: {
                 in: properties.map(property => property.propertyID)

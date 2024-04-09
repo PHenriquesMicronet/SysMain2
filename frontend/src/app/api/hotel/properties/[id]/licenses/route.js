@@ -8,7 +8,7 @@ export async function GET(request, context) {
 
     const { id } = context.params;
 
-    const response = await prisma.licenses.findMany({
+    const response = await prisma.licenses_onprempms.findMany({
         where: {
             propertyID: parseInt(id)
         },

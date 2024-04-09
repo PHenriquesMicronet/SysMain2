@@ -40,7 +40,7 @@ export const authOptions = {
                         id: response.userID,
                         email: response.email,
                         organization: response.organizationID,
-                        role: response.role
+                        roleID: response.roleID
                     }
                 }
 

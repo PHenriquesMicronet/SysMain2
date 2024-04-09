@@ -13,7 +13,7 @@ export async function POST(request) {
         // const data = response.data;
 
         for (const item of response.data) {
-            await prisma.licenses.create({
+            await prisma.licenses_onprempms.create({
                 data: {
                     pmsh: item.mpehotel,
                     pmsg: item.mpegroup,
