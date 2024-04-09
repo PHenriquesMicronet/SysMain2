@@ -73,9 +73,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
     }
     return (
         <>
-            <aside className={(showSidebar ? "" : "hidden ") + "h-screen border-r border-bg-primary  overflow-hidden w-72 flex shrink-0 fixed top-0 z-40 inset-0 lg:block"} aria-label="Sidebar">
-                <div className="h-full w-full no-scrollbar px-3 pb-4  bg-white text-bg-primary">
-                    <Link href="/homepage">
+            <aside className={(showSidebar ? "" : "hidden ") + "bg-white h-screen border-r border-bg-primary overflow-hidden w-72 flex shrink-0 fixed top-0 z-40 inset-0 lg:block z-100"} aria-label="Sidebar">
+                <div className="h-full w-full no-scrollbar px-3 pb-4 bg-white text-bg-primary">
+                    <Link href="/dashboard">
                         <div className="flex justify-center">
                             <div className="w-30 h-30 mt-8">
                                 <Image src="/images/logo.png" alt="Logotipo" width={150} height={150} />
@@ -85,22 +85,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
 
                     <hr className="border-t border-primary-800 my-4" />
 
-                    <br />
-
-                    <div className="flex items-center space-x-2">
-                        <Link href="/homepage" className='flex space-x-4 align-middle ml-3'>
-                            <FaUser className="text-2xl text-primary-800" />
-                            {status === 'authenticated' && session && (
-                                <span className="text-sm text-primary-800 font-semibold">{`${session.user.name} ${session.user.lastname}`}</span>
-                            )}
-                        </Link>
-                    </div>
-
-                    <br />
-
-                    <hr className="border-t border-primary-800 my-4" />
-
-                    <ul className="space-y-2">
+                    <ul className="space-y-2 h-full max-h-[calc(100vh-330px)] overflow-y-auto">
                         {
                             children
                         }
@@ -112,8 +97,24 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                             )
                         }
                     </ul>
+
+                    <hr className="border-t border-primary-800 my-4" />
+
+                    <br />
+
+                    <div className="flex items-center space-x-2">
+                        <Link href="/homepage" className='flex space-x-4 align-middle ml-3'>
+                            <FaUser className="text-2xl text-primary-800" />
+                            {status === 'authenticated' && session && (
+                                <span className="text-md text-primary-800 font-semibold">{`${session.user.name} ${session.user.lastname}`}
+                                </span>)}
+                        </Link>
+                    </div>
+
+                    <br />
                 </div>
             </aside>
+
             <div
                 className={(showSidebar ? "" : "hidden ") + "fixed inset-0 z-10 bg-gray-900/50 lg:hidden"}
                 onClick={() => setShowSidebar(false)}
@@ -121,7 +122,6 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
         </>
     );
 }
-
 
 
 const Dropdown = ({ title, labels, icon, active }) => {
