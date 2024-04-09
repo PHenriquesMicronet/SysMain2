@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
-import {  FaUser } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 import { IoSettings } from "react-icons/io5";
 import { FaHotel } from "react-icons/fa";
@@ -26,7 +26,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
         //"Dashboard": [],
 
         "Settings": {
-            icon: <IoSettings  size={20} />,
+            icon: <IoSettings size={20} />,
             active: true,
             items: [
                 {
@@ -38,25 +38,26 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
             ]
         },
 
-        "Organization":{
-            icon: <FaHotel  size={20} />,
+        "Organization": {
+            icon: <FaHotel size={20} />,
             active: true,
             items: [
                 {
-                    ref: "/homepage/organization", label: "Account" , active: true
+                    ref: "/homepage/organization", label: "Account", active: true
                 },
                 {
                     ref: "/homepage/properties", label: "Properties" , active: true
-                },{
+                },
+                    isAdmin() && {
                         ref: "/homepage/organizations",
                         label: "Organizations",
                         active: true
-                },
+                   },
             ]
         },
 
-        "Profiles":{
-            icon: <FaUserTie  size={20} />,
+        "Profiles": {
+            icon: <FaUserTie size={20} />,
             active: true,
             items: [
                 {
@@ -89,7 +90,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                     <div className="flex items-center space-x-2">
                         <Link href="/homepage" className='flex space-x-4 align-middle ml-3'>
                             <FaUser className="text-2xl text-primary-800" />
-                            <span className="text-sm text-primary-800 font-semibold"></span>
+                            {status === 'authenticated' && session && (
+                                <span className="text-sm text-primary-800 font-semibold">{`${session.user.name} ${session.user.lastname}`}</span>
+                            )}
                         </Link>
                     </div>
 
