@@ -37,7 +37,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     const [isLoading, setIsLoading] = useState(true);
     const [dataFetched, setDataFetched] = useState(false);
 
-    const { handleInputProperty, handleSubmitProperty, setProperty, property } = propertyInsert();
+    const { handleInputProperty, handleSubmitProperty } = propertyInsert();
     const { handleUpdateProperty, setValuesProperty, valuesProperty } = propertyEdit(idProperty);
 
     const toggleExpand = () => {
@@ -52,7 +52,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
             try {
                 const response = await axios.get(`/api/hotel/properties/` + idProperty + `/users`);
                 setPropertyUsers(response.data.response);
-                console.log(response)
                 setDataFetched(true);
             } catch (error) {
                 console.error("Erro ao encontrar os utilizadores associados à propriedade:", error.message);
@@ -944,7 +943,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                 ID
                                                             </TableColumn>
                                                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                ABBREVIATION
+                                                                ABV
                                                             </TableColumn>
                                                             <TableColumn className="bg-primary-600 text-white font-bold">
                                                                 BEDROOMS

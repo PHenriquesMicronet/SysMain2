@@ -33,7 +33,6 @@ export default function OrgEdit(idOrg){
                     ZipCode: userData.zipCode
                 })
             })
-            .then(res => console.log(res))
             .catch(err => console.log(err))
     }, [])
 

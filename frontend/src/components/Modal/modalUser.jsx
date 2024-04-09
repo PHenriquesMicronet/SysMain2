@@ -32,6 +32,9 @@ const modaluser = ({
         setIsExpanded(!isExpanded);
     };
 
+    const toggleSecondModal = () => {
+        setIsSecondModalOpen(!isSecondModalOpen);
+    };
 
     const { handleInputUser, handleSubmitUser } = userInsert();
     const { handleUpdateUser, setValuesUser, valuesUser } = userEdit(idUser);
@@ -48,7 +51,6 @@ const modaluser = ({
                             base: "max-h-screen",
                             wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
                             body: "h-full ",
-
                         }}
                         size="full"
                         hideCloseButton="true"

@@ -49,11 +49,12 @@ export default function propertyInsert(){
     }
     //final da inserção na tabela property
     return { 
-        handleInputProperty , handleSubmitProperty, setProperty, property
+        handleInputProperty , handleSubmitProperty
     };
 }
 
 export function propertyEdit(idProperty){
+    
     //edição na tabela USER
     const [valuesProperty, setValuesProperty] = useState({
         Name: '',
@@ -72,30 +73,25 @@ export function propertyEdit(idProperty){
     useEffect(() => {
         axios.get('/api/hotel/properties/' + idProperty)
             .then(res => {
+                const property = res.data.response[0];
                 setValuesProperty({ ...valuesProperty,
-                    Name: res.data.response.name,
-                    Email: res.data.response.email,
-                    FiscalNumber: res.data.response.fiscalNumber,
-                    Address1: res.data.response.address1,
-                    Country: res.data.response.country,
-                    District: res.data.response.district,
-                    ZipCode: res.data.response.zipCode,
-                    PhoneNumber: res.data.response.phoneNumber,
-                    Description: res.data.response.description,
-                    Abbreviation: res.data.response.abbreviation,
-                    Designation: res.data.response.designation
+                    idProperty : property.propertyID,
+                    Name: property.name,
+                    Email: property.email,
+                    FiscalNumber: property.fiscalNumber,
+                    Address1: property.address1,
+                    Country: property.country,
+                    District: property.district,
+                    ZipCode: property.zipCode,
+                    PhoneNumber: property.phoneNumber,
+                    Description: property.description,
+                    Abbreviation: property.abbreviation,
+                    Designation: property.designation
                 })
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log("aaaaa "+ idProperty))
     }, [])
 
-   /* useEffect(() => {
-        axios.get('/api/hotel/properties/' + idProperty) // Makes a GET request to the specified API endpoint
-            .then(res => {
-                console.log(res) // Logs the response data to the console
-            })
-            .catch(err => console.log(err)); // Logs any errors that occur during the request
-    }, []);*/
 
     function handleUpdateProperty(e) {
         e.preventDefault()
@@ -118,6 +114,6 @@ export function propertyEdit(idProperty){
     }
 
     return { 
-        handleUpdateProperty, setValuesProperty, valuesProperty 
+        handleUpdateProperty, setValuesProperty, valuesProperty
     };
 }

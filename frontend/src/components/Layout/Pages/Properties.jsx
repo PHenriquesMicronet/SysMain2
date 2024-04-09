@@ -72,7 +72,8 @@ export default function Contact() {
 
         if (confirmDelete) {
             try {
-                const response = await axios.delete(`/api/hotel/properties/` + propertyID);
+                const res = await axios.delete(`/api/hotel/properties/` + propertyID);
+                console.log(res.data);
                 alert("Propriedade removida com sucesso!");
             } catch (error) {
                 console.error("Erro ao remover Propriedade:", error.message);
@@ -80,9 +81,9 @@ export default function Contact() {
         }
     };
 
-    const fetchPropertyUsers = async (id) => {
+    const fetchPropertyUsers = async (propertyID) => {
         try {
-            const response = await axios.get(`/api/hotel/properties/` + id + `/users` )
+            const response = await axios.get(`/api/hotel/properties/` + propertyID + `/users` )
             console.log(response.data); 
         } catch (error) {
             console.error("Erro ao encontrar os utilizadores associados à propriedade:", error.message);
@@ -183,7 +184,7 @@ export default function Contact() {
                                                 </Button>
                                             </DropdownTrigger>
                                             <DropdownMenu aria-label="Static Actions" isOpen={true}  closeOnSelect={false}>
-                                                <DropdownItem key="edit">
+                                                <DropdownItem key="edit" onClick={() => handleGet(property.propertyID)}>
                                                     <FormModals
                                                         buttonName={"Editar"}
                                                         editIcon={<FiEdit3 size={25}/>}
@@ -207,7 +208,6 @@ export default function Contact() {
                                                 </DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>       
-                                        
                                         <FormModals
                                                         buttonName={<BiSpreadsheet  size={20} className="text-gray-400"/>}
                                                         buttonColor={"transparent"}
