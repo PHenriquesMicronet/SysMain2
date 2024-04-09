@@ -63,7 +63,6 @@ const modaluser = ({
                                     <form onSubmit={handleSubmitOrganization}>
                                         <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
                                             <div className='flex flex-row items-center mr-5'>
-                                                <Button color="transparent" onPress={toggleSecondModal}><FaRegUser size={25} /></Button>
                                                 <Modal
                                                     classNames={{
                                                         base: "max-h-screen",

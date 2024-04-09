@@ -126,7 +126,7 @@ export default function Contact() {
                                 COUNTRY
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                DISTRICT
+                                PROPRIEDADES
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
@@ -139,7 +139,7 @@ export default function Contact() {
                                     <TableCell>{organization.name}</TableCell>
                                     <TableCell>{organization.address1}</TableCell>
                                     <TableCell>{organization.country}</TableCell>
-                                    <TableCell>{organization.district}</TableCell>
+                                    <TableCell>{organization.properties}</TableCell>
                                     <TableCell className="flex justify-center">
                                     <Dropdown>
                                             <DropdownTrigger>
