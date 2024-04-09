@@ -47,12 +47,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                 },
                 {
                     ref: "/homepage/properties", label: "Properties" , active: true
-                },
-                    isAdmin() && {
+                },{
                         ref: "/homepage/organizations",
                         label: "Organizations",
                         active: true
-                   },
+                },
             ]
         },
 

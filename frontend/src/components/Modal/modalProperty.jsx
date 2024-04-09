@@ -35,7 +35,11 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     const [propertyApplicationsUsers, setPropertyApplicationsUsers] = useState([]);
     const variants = ["underlined"];
     const [isLoading, setIsLoading] = useState(true);
+    const [applicationFetched, setApplicationFetched] = useState(false);
+    const [fetchUsers, setFetchUsers] = useState(false);
     const [dataFetched, setDataFetched] = useState(false);
+    const [applicationUsersFetch, setApplicationUsersFetched] = useState(false);
+
 
     const { handleInputProperty, handleSubmitProperty } = propertyInsert();
     const { handleUpdateProperty, setValuesProperty, valuesProperty } = propertyEdit(idProperty);
@@ -45,14 +49,17 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     };
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+
     const toggleSecondModal = async () => {
         setIsSecondModalOpen(!isSecondModalOpen);
-        if (!dataFetched) {
+        if (!fetchUsers) {
             setIsLoading(true);
             try {
                 const response = await axios.get(`/api/hotel/properties/` + idProperty + `/users`);
+                console.log(response)
                 setPropertyUsers(response.data.response);
-                setDataFetched(true);
+                // console.log("ddaad " + response.data)
+                setFetchUsers(true);
             } catch (error) {
                 console.error("Erro ao encontrar os utilizadores associados à propriedade:", error.message);
             } finally {
@@ -63,12 +70,12 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
 
     const toggleThirdModal = async () => {
         setIsThirdModalOpen(!isThirdModalOpen);
-        if (!dataFetched) {
+        if (!applicationFetched) {
             setIsLoading(true);
             try {
                 const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications`);
                 setPropertyApplications(response.data.response);
-                setDataFetched(true);
+                setApplicationFetched(true);
             } catch (error) {
                 console.error("Erro ao encontrar as aplicações associadas à propriedade:", error.message);
             } finally {
@@ -79,12 +86,12 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
 
     const toggleFourthModal = async () => {
         setIsFourthModalOpen(!isFourthModalOpen);
-        if (!dataFetched) {
+        if (!applicationUsersFetch) {
             setIsLoading(true);
             try {
                 const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications/` + applicationID + `/users`);
                 setPropertyApplicationsUsers(response.data.response);
-                setDataFetched(true);
+                setApplicationUsersFetched(true);
             } catch (error) {
                 console.error("Erro ao encontrar as aplicações associadas à aplicação:", error.message);
             } finally {
@@ -218,7 +225,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     >
                                                         <Input type="text" name="Abbreviation" onChange={handleInputProperty} variant={variant} label="Abbreviation" />
                                                         <Input type="text" name="Designation" onChange={handleInputProperty} variant={variant} label="Designation" />
-                                                        <Input type="number" name="OrganizationID" onChange={handleInputProperty} variant={variant} label="Organization" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -382,7 +388,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                             <TableBody>
                                                                                 {propertyApplication.map((application, index) => (
                                                                                     <TableRow key={index}>
-                                                                                        <TableCell><Button variant="invisible" onPress={toggleFourthModal}>{application.description}</Button>
+                                                                                        <TableCell>
+                                                                                            <Button color="transparent" onPress={toggleFourthModal}>{application.description}</Button>
                                                                                             <Modal
                                                                                                 classNames={{
                                                                                                     base: "max-h-screen",
@@ -400,7 +407,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                     <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
                                                                                                         {modalHeader}
                                                                                                         <div className='flex flex-row items-center mr-5'>
-                                                                                                            <Button color="transparent" onClick={toggleThirdModal}><FaArrowLeft size={25} /></Button>
                                                                                                             <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                                                             <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                                                                                         </div>
@@ -424,9 +430,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                                         </TableColumn>
                                                                                                                     </TableHeader>
                                                                                                                     <TableBody>
-                                                                                                                        {propertyApplicationsUsers.map((user, index) => (
+                                                                                                                        {propertyApplicationsUsers.map((applicationUsers, index) => (
                                                                                                                             <TableRow key={index}>
-                                                                                                                                <TableCell>{user.name}</TableCell>
+                                                                                                                                <TableCell>{applicationUsers.name}</TableCell>
                                                                                                                             </TableRow>
                                                                                                                         ))}
                                                                                                                     </TableBody>
@@ -521,7 +527,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     >
                                                         <Input type="text" name="Abbreviation" value={valuesProperty.Abbreviation} onChange={handleInputProperty} variant={variant} label="Abbreviation" />
                                                         <Input type="text" name="Designation" value={valuesProperty.Designation} onChange={handleInputProperty} variant={variant} label="Designation" />
-                                                        <Input type="number" name="OrganizationID" onChange={handleInputProperty} variant={variant} label="Organization" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -688,7 +693,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                             <TableBody>
                                                                                 {propertyApplication.map((application, index) => (
                                                                                     <TableRow key={index}>
-                                                                                        <TableCell><Button variant="invisible" onPress={() => setIsFourthModalOpen(true)}>{application.description}</Button>
+                                                                                        <TableCell><Button color="transparent" onPress={toggleFourthModal}>{application.description}</Button>
                                                                                             <Modal
                                                                                                 classNames={{
                                                                                                     base: "max-h-screen",
@@ -698,7 +703,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 size="full"
                                                                                                 hideCloseButton="true"
                                                                                                 isOpen={isFourthModalOpen}
-                                                                                                onClose={() => setIsFourthModalOpen(false)}
+                                                                                                onClose={toggleFourthModal}
                                                                                                 isDismissable={false}
                                                                                                 isKeyboardDismissDisabled={true}
                                                                                             >
@@ -706,7 +711,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                     <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
                                                                                                         {modalHeader}
                                                                                                         <div className='flex flex-row items-center mr-5'>
-                                                                                                            <Button color="transparent" onClick={toggleFourthModal}><FaArrowLeft size={25} /></Button>
                                                                                                             <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                                                             <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                                                                                         </div>
@@ -745,7 +749,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                         </TableCell>
                                                                                         <TableCell><Switch defaultSelected size="sm" color="success" /></TableCell>
                                                                                         <TableCell>
-                                                                                            <Button variant="invisible" onPress={() => setIsFifthModalOpen(true)}><FaPlug /></Button>
+                                                                                            <Button variant="invisible" onPress={toggleFifthModal}><FaPlug /></Button>
                                                                                             <Modal
                                                                                                 classNames={{
                                                                                                     base: "max-h-screen",
@@ -755,7 +759,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 size="full"
                                                                                                 hideCloseButton="true"
                                                                                                 isOpen={isFifthModalOpen}
-                                                                                                onClose={() => setIsFifthModalOpen(false)}
+                                                                                                onClose={toggleFifthModal}
                                                                                                 isDismissable={false}
                                                                                                 isKeyboardDismissDisabled={true}
                                                                                             >
@@ -763,7 +767,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                     <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
                                                                                                         {modalHeader}
                                                                                                         <div className='flex flex-row items-center mr-5'>
-                                                                                                            <Button color="transparent" onClick={toggleFourthModal}><FaArrowLeft size={25} /></Button>
                                                                                                             <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                                                             <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                                                                                         </div>
@@ -888,7 +891,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     >
                                                         <Input type="text" name="Abbreviation" value={valuesProperty.Abbreviation} onChange={e => setValuesProperty({ ...valuesProperty, Abbreviation: e.target.value })} variant={variant} label="Abbreviation" />
                                                         <Input type="text" name="Designation" value={valuesProperty.Designation} onChange={e => setValuesProperty({ ...valuesProperty, Designation: e.target.value })} variant={variant} label="Designation" />
-                                                        <Input type="number" name="OrganizationID" variant={variant} label="Organization" />
                                                     </div>
                                                 ))}
                                             </div>

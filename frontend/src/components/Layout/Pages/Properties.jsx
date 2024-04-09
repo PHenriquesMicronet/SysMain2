@@ -28,7 +28,6 @@ import { BsArrowRight } from "react-icons/bs";
 import { BiSpreadsheet } from "react-icons/bi";
 
 import FormModals from "@/components/Modal/modalProperty";
-//comentario para dar push para o main como o nuno pediu
 
 export default function Contact() {
 
@@ -39,12 +38,29 @@ export default function Contact() {
     const [isOpen, setIsOpen] = useState(false);
     const { data: session, status } = useSession()
 
-    const filteredItems = property.filter(
-        (property) =>
-            property.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-            property.propertyID.toString().toLowerCase().includes(searchValue.toLowerCase())
-    );
-    const items = filteredItems.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+    // const filteredItems = property.filter(
+    //     (property) =>
+    //         property.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+    //         property.propertyID.toString().toLowerCase().includes(searchValue.toLowerCase())
+    // );
+    // const items = filteredItems.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+
+    const filteredItems = React.useMemo(() => {
+        return property.filter((property) =>
+            property.name.toLowerCase().includes(
+                searchValue.toLowerCase()
+            ) ||
+            property.propertyID.toString().toLowerCase().includes(
+                searchValue.toLowerCase()
+            )
+        );
+    }, [property, searchValue]);
+    const items = React.useMemo(() => {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        return filteredItems.slice(start, end);
+    }, [page, filteredItems, rowsPerPage]);
 
     useEffect(() => {
         const getData = async () => {
@@ -80,25 +96,6 @@ export default function Contact() {
             }
         }
     };
-
-    const fetchPropertyUsers = async (propertyID) => {
-        try {
-            const response = await axios.get(`/api/hotel/properties/` + propertyID + `/users` )
-            console.log(response.data); 
-        } catch (error) {
-            console.error("Erro ao encontrar os utilizadores associados à propriedade:", error.message);
-        }
-    };
-
-
-    const handleGet = async (propertyID) => {
-        try {
-            await fetchPropertyUsers(propertyID);
-        } catch (error) {
-            console.error("Erro ao Enviar a Propriedade:", error.message);
-        }
-    };
-
 
     return (
         <>
@@ -184,7 +181,7 @@ export default function Contact() {
                                                 </Button>
                                             </DropdownTrigger>
                                             <DropdownMenu aria-label="Static Actions" isOpen={true}  closeOnSelect={false}>
-                                                <DropdownItem key="edit" onClick={() => handleGet(property.propertyID)}>
+                                                <DropdownItem key="edit" /*onClick={() => handleGet(property.propertyID)}*/>
                                                     <FormModals
                                                         buttonName={"Editar"}
                                                         editIcon={<FiEdit3 size={25}/>}
@@ -197,7 +194,7 @@ export default function Contact() {
                                                     ></FormModals>
                                                 </DropdownItem>
                                                 <DropdownItem onClick={() => handleDelete(property.propertyID)}>Remover</DropdownItem>
-                                                <DropdownItem onClick={() => handleGet(property.propertyID)}>
+                                                <DropdownItem /*onClick={() => handleGet(property.propertyID)}*/>
                                                     <FormModals
                                                         buttonName={"Ver"}
                                                         buttonColor={"transparent"}
