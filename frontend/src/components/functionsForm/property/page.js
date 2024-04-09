@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react";
+import { useSession } from "next-auth/react"
 import axios from 'axios';
 
 export default function propertyInsert(){
@@ -18,13 +19,13 @@ export default function propertyInsert(){
         Abbreviation: '',
         Designation: '',
     })
-
+    const { data: session } = useSession()
     const handleInputProperty = (event) => {
         setProperty({ ...property, [event.target.name]: event.target.value })
     }
     function handleSubmitProperty(event) {
         event.preventDefault()
-        if (!property.Name || !property.Email || !property.PhoneNumber || !property.FiscalNumber || !property.Address1 || !property.Country || !property.District || !property.ZipCode || !property.Abbreviation || !property.Description || !property.Designation || !property.OrganizationID) {
+        if (!property.Name || !property.Email || !property.PhoneNumber || !property.FiscalNumber || !property.Address1 || !property.Country || !property.District || !property.ZipCode || !property.Abbreviation || !property.Description || !property.Designation) {
             alert("Preencha os campos corretamente");
             return;
         }
@@ -41,7 +42,7 @@ export default function propertyInsert(){
                 Description: property.Description,
                 Abbreviation: property.Abbreviation,
                 Designation: property.Designation,
-                OrganizationID: property.OrganizationID
+                OrganizationID: session.user.organization
             }
         })
             .then(response => console.log(response))
@@ -73,7 +74,7 @@ export function propertyEdit(idProperty){
     useEffect(() => {
         axios.get('/api/hotel/properties/' + idProperty)
             .then(res => {
-                const property = res.data.response[0];
+                const property = res.data.response
                 setValuesProperty({ ...valuesProperty,
                     idProperty : property.propertyID,
                     Name: property.name,
@@ -89,7 +90,7 @@ export function propertyEdit(idProperty){
                     Designation: property.designation
                 })
             })
-            .catch(err => console.log("aaaaa "+ idProperty))
+            .catch(err => console.log(err))
     }, [])
 
 
