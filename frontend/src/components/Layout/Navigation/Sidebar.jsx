@@ -48,11 +48,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                 {
                     ref: "/homepage/properties", label: "Properties" , active: true
                 },
-                    isAdmin() && {
+                {
                         ref: "/homepage/organizations",
                         label: "Organizations",
                         active: true
-                   },
+                },
             ]
         },
 
@@ -106,7 +106,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                         <Link href="/homepage" className='flex space-x-4 align-middle ml-3'>
                             <FaUser className="text-2xl text-primary-800" />
                             {status === 'authenticated' && session && (
-                                <span className="text-md text-primary-800 font-semibold">{`${session.user.name} ${session.user.lastname}`}
+                                <span className="text-md text-primary-800 font-semibold ">{`${session.user.name} ${session.user.lastname}`}
                                 </span>)}
                         </Link>
                     </div>
