@@ -160,7 +160,7 @@ export default function Contact() {
                                                         modalHeader={"Editar Organizacao"}
                                                         modalEditArrow={<BsArrowRight size={25}/>}
                                                         modalEdit={`ID: ${organization.organizationID}`}
-                                                        formTypeModal={12}
+                                                        formTypeModal={11}
                                                         idOrganization={organization.organizationID}
                                                     ></FormModals>
                                                 </DropdownItem>
