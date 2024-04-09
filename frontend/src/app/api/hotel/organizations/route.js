@@ -4,7 +4,36 @@ import prisma from "@/lib/prisma"
 
 export async function GET(request) {
 
-    const response = await prisma.organizations.findMany()
+    const organizations = await prisma.organizations.findMany()
+
+    const response = await Promise.all(organizations.map(async (organization) => {
+        const organizationData = {
+            organizationID: organization.organizationID,
+            name: organization.name,
+            fiscalNumber: organization.fiscalNumber,
+            email: organization.email,
+            phoneNumber: organization.phoneNumber,
+            address1: organization.address1,
+            address2: organization.address2,
+            country: organization.country,
+            district: organization.district,
+            zipCode: organization.zipCode,
+            del: organization.del,
+            properties: 0
+        }
+
+        const properties = await prisma.properties.count({
+            where: {
+                organizationID: organization.organizationID
+            }
+        })
+
+        if (properties) {
+            organizationData.properties = properties;
+        }
+
+        return organizationData;
+    }));
 
     prisma.$disconnect()
 
