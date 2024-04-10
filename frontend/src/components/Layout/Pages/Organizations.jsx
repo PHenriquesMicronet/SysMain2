@@ -64,14 +64,6 @@ export default function Contact() {
     };
 
 
-    const handleGet = async (organizationID) => {
-        try {
-            await fetchOrganizationUsers(organizationID);
-        } catch (error) {
-            console.error("Erro ao Enviar a Organização:", error.message);
-        }
-    };
-
     return (
         <>
             <main>
@@ -139,13 +131,14 @@ export default function Contact() {
                                     <TableCell>{organization.name}</TableCell>
                                     <TableCell>{organization.address1}</TableCell>
                                     <TableCell>{organization.country}</TableCell>
-                                    <TableCell><Button color="transparent">{organization.properties}  <FormModals
+                                    <TableCell><FormModals
+                                        buttonName={organization.properties }
+                                        buttonColor={"transparent"}
                                         modalEdit={`ID: ${organization.organizationID}`}
                                         formTypeModal={13}
                                         idOrganization={organization.organizationID}
                                     ></FormModals>
-
-                                    </Button></TableCell>
+                                    </TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>
@@ -171,7 +164,7 @@ export default function Contact() {
                                                     ></FormModals>
                                                 </DropdownItem>
                                                 <DropdownItem onClick={() => handleDelete(organization.organizationID)}>Remover</DropdownItem>
-                                                <DropdownItem onClick={() => handleGet(organization.organizationID)}>
+                                                <DropdownItem>
                                                     <FormModals
                                                         buttonName={"Ver"}
                                                         buttonColor={"transparent"}
