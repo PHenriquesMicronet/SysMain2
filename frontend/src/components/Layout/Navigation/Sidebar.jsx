@@ -46,9 +46,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
         }
     ];
 
-    /*const isAdmin = () => {
+    const isAdmin = () => {
         return session?.user?.role == 18;
-    };*/
+    };
 
     const listItems = {
         //"Dashboard": [],
@@ -76,12 +76,13 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                 {
                     ref: "/homepage/properties", label: "Properties", active: true
                 },
-                {
+
+                isAdmin() && {
                     ref: "/homepage/organizations",
                     label: "Organizations",
                     active: true
                 },
-            ]
+            ].filter(Boolean)
         },
 
         "Profiles": {
@@ -133,12 +134,12 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                     <div className="flex items-center gap-x-2">
 
 
-                                    <FaUser className="text-2xl text-primary-800" />
+                                    <FaUser className="text-2xl text-primary-800 ml-3" />
                                     {status === 'authenticated' && session && (
-                                        <span className="text-md text-primary-800 font-semibold ">{`${session.user.name} ${session.user.lastname}`}
+                                        <span className="text-md text-primary-800 font-semibold ml-1 mt-0.5">{`${session.user.name} ${session.user.lastname}`}
                                         </span>
                                     )}
-                                    <Button size="sm" className="bg-red-500" onClick={() => signOut()}><LuLogOut className='text-white' size={17} /></Button>
+                                    <Button size="sm" className="bg-red-500 ml-4" onClick={() => signOut()}><LuLogOut className='text-white' size={17} /></Button>
                     </div>
 
                     <br />
