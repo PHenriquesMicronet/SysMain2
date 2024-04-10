@@ -5,11 +5,20 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
 import { FaUser } from 'react-icons/fa';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { IoSettings } from "react-icons/io5";
 import { FaHotel } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 import axios from 'axios';
+import {
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownSection,
+    DropdownItem,
+    Button,
+} from "@nextui-org/react";
+import { LuLogOut } from "react-icons/lu";
 
 const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
 
@@ -17,6 +26,25 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
 
     const { data: session, status } = useSession()
     const [user, setUser] = useState([]);
+
+    const items = [
+        {
+            key: "new",
+            label: "New file",
+        },
+        {
+            key: "copy",
+            label: "Copy link",
+        },
+        {
+            key: "edit",
+            label: "Edit file",
+        },
+        {
+            key: "delete",
+            label: "Delete file",
+        }
+    ];
 
     /*const isAdmin = () => {
         return session?.user?.role == 18;
@@ -46,12 +74,12 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                     ref: "/homepage/organization", label: "Account", active: true
                 },
                 {
-                    ref: "/homepage/properties", label: "Properties" , active: true
+                    ref: "/homepage/properties", label: "Properties", active: true
                 },
                 {
-                        ref: "/homepage/organizations",
-                        label: "Organizations",
-                        active: true
+                    ref: "/homepage/organizations",
+                    label: "Organizations",
+                    active: true
                 },
             ]
         },
@@ -75,7 +103,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
         <>
             <aside className={(showSidebar ? "" : "hidden ") + "bg-white h-screen border-r border-bg-primary overflow-hidden w-72 flex shrink-0 fixed top-0 z-40 inset-0 lg:block z-100"} aria-label="Sidebar">
                 <div className="h-full w-full no-scrollbar px-3 pb-4 bg-white text-bg-primary">
-                    <Link href="/dashboard">
+                    <Link href="/homepage">
                         <div className="flex justify-center">
                             <div className="w-30 h-30 mt-8">
                                 <Image src="/images/logo.png" alt="Logotipo" width={150} height={150} />
@@ -92,7 +120,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                         {
                             Object.entries(listItems).map(([k, { icon, items, active }], i) =>
                                 <li key={i}>
-                                    <Dropdown title={k} labels={items} icon={icon} active={active} />
+                                    <ProfileDropdown title={k} labels={items} icon={icon} active={active} />
                                 </li>
                             )
                         }
@@ -102,13 +130,15 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
 
                     <br />
 
-                    <div className="flex items-center space-x-2">
-                        <Link href="/homepage" className='flex space-x-4 align-middle ml-3'>
-                            <FaUser className="text-2xl text-primary-800" />
-                            {status === 'authenticated' && session && (
-                                <span className="text-md text-primary-800 font-semibold ">{`${session.user.name} ${session.user.lastname}`}
-                                </span>)}
-                        </Link>
+                    <div className="flex items-center gap-x-2">
+
+
+                                    <FaUser className="text-2xl text-primary-800" />
+                                    {status === 'authenticated' && session && (
+                                        <span className="text-md text-primary-800 font-semibold ">{`${session.user.name} ${session.user.lastname}`}
+                                        </span>
+                                    )}
+                                    <Button size="sm" className="bg-red-500" onClick={() => signOut()}><LuLogOut className='text-white' size={17} /></Button>
                     </div>
 
                     <br />
@@ -124,7 +154,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
 }
 
 
-const Dropdown = ({ title, labels, icon, active }) => {
+const ProfileDropdown = ({ title, labels, icon, active }) => {
     const pathname = usePathname()
     const router = useRouter();
 
