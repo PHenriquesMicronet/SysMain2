@@ -15,39 +15,43 @@ import { LiaExpandSolid } from "react-icons/lia";
 import { MdClose } from "react-icons/md";
 import { FaUser, FaArrowLeft, FaPlug } from "react-icons/fa";
 import { IoApps } from "react-icons/io5";
-import { BsPencil } from 'react-icons/bs'
+import { BiSpreadsheet } from "react-icons/bi";
+
+import FormModals from "@/components/Modal/modals/modalApplications";
+import FormModalsLicence from "@/components/Modal/modals/modalLicences"
+import FormModalsFeature from "@/components/Modal/modals/modalFeatures"
 
 import propertyInsert, { propertyEdit } from "../functionsForm/property/page";
 
 
 const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idProperty, editIcon, modalEditArrow, modalEdit }) => {
+
+    const variants = ["underlined"];
+
+    /* Variaveis de uso*/
     const [isExpanded, setIsExpanded] = useState(false);
     const [isInvisible, setIsInvisible] = React.useState(false);
-
-    const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
-    const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
-    const [isFourthModalOpen, setIsFourthModalOpen] = useState(false);
-    const [isFifthModalOpen, setIsFifthModalOpen] = useState(false);
-
-    const [propertyUsers, setPropertyUsers] = useState([]);
-    const [propertyLicense, setPropertyLicense] = useState([]);
-    const [propertyApplication, setPropertyApplications] = useState([]);
-    const [propertyApplicationsUsers, setPropertyApplicationsUsers] = useState([]);
-    const variants = ["underlined"];
     const [isLoading, setIsLoading] = useState(true);
-    const [applicationFetched, setApplicationFetched] = useState(false);
-    const [fetchUsers, setFetchUsers] = useState(false);
-    const [dataFetched, setDataFetched] = useState(false);
-    const [applicationUsersFetch, setApplicationUsersFetched] = useState(false);
-
-
     const { handleInputProperty, handleSubmitProperty } = propertyInsert();
     const { handleUpdateProperty, setValuesProperty, valuesProperty } = propertyEdit(idProperty);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+    /* Modals Open*/
+    const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+    const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
+
+    /*Array para listar */
+    const [propertyUsers, setPropertyUsers] = useState([]);
+    const [propertyApplication, setPropertyApplications] = useState([]);
+
+    /*Data Info*/
+    const [applicationFetched, setApplicationFetched] = useState(false);
+    const [fetchUsers, setFetchUsers] = useState(false);
+
+    /*Paths para os Modals*/
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 
     const toggleSecondModal = async () => {
@@ -58,7 +62,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                 const response = await axios.get(`/api/hotel/properties/` + idProperty + `/users`);
                 console.log(response)
                 setPropertyUsers(response.data.response);
-                // console.log("ddaad " + response.data)
                 setFetchUsers(true);
             } catch (error) {
                 console.error("Erro ao encontrar os utilizadores associados à propriedade:", error.message);
@@ -84,46 +87,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         }
     };
 
-    const toggleFourthModal = async () => {
-        setIsFourthModalOpen(!isFourthModalOpen);
-        if (!applicationUsersFetch) {
-            setIsLoading(true);
-            try {
-                const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications/` + applicationID + `/users`);
-                setPropertyApplicationsUsers(response.data.response);
-                setApplicationUsersFetched(true);
-            } catch (error) {
-                console.error("Erro ao encontrar as aplicações associadas à aplicação:", error.message);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-    };
-
-    const toggleFifthModal = async () => {
-        setIsFifthModalOpen(!isFifthModalOpen);
-        if (!dataFetched) {
-            setIsLoading(true);
-        }
-    };
-
-    useEffect(() => {
-        const getData = async () => {
-            if (!dataFetched){
-                setIsLoading(true);
-                try {
-                    const res = await axios.get(`/api/hotel/properties/` + idProperty + `/licenses/`);
-                    setPropertyLicense(res.data.response);
-                    setDataFetched(true);
-                } catch (error) {
-                    console.error("Erro ao encontrar as licenças associadas à propriedade:", error.message);
-            }finally {
-                setIsLoading(false);
-            }
-        };
-        }
-        getData();
-    }, []);
 
 
     return (
@@ -382,6 +345,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                     AVAILABLE
                                                                                 </TableColumn>
                                                                                 <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    LICENCES
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
                                                                                     FEATURES
                                                                                 </TableColumn>
                                                                             </TableHeader>
@@ -389,62 +355,32 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                 {propertyApplication.map((application, index) => (
                                                                                     <TableRow key={index}>
                                                                                         <TableCell>
-                                                                                            <Button color="transparent" onPress={toggleFourthModal}>{application.description}</Button>
-                                                                                            <Modal
-                                                                                                classNames={{
-                                                                                                    base: "max-h-screen",
-                                                                                                    wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
-                                                                                                    body: "h-full",
-                                                                                                }}
-                                                                                                size="full"
-                                                                                                hideCloseButton="true"
-                                                                                                isOpen={isFourthModalOpen}
-                                                                                                onClose={toggleFourthModal}
-                                                                                                isDismissable={false}
-                                                                                                isKeyboardDismissDisabled={true}
-                                                                                            >
-                                                                                                <ModalContent>
-                                                                                                    <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                                                                                        {modalHeader}
-                                                                                                        <div className='flex flex-row items-center mr-5'>
-                                                                                                            <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
-                                                                                                            <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
-                                                                                                        </div>
-                                                                                                    </ModalHeader>
-                                                                                                    <ModalBody>
-                                                                                                        {isLoading ? (<p>A Carregar...</p>
-                                                                                                        ) : (
-                                                                                                            <div className="mx-5 h-[65vh] min-h-full">
-                                                                                                                <Table
-                                                                                                                    isHeaderSticky={"true"}
-                                                                                                                    layout={"fixed"}
-                                                                                                                    removeWrapper
-                                                                                                                    classNames={{
-                                                                                                                        wrapper: "min-h-[222px]",
-                                                                                                                    }}
-                                                                                                                    className="h-full overflow-auto"
-                                                                                                                >
-                                                                                                                    <TableHeader>
-                                                                                                                        <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                                                            Name
-                                                                                                                        </TableColumn>
-                                                                                                                    </TableHeader>
-                                                                                                                    <TableBody>
-                                                                                                                        {propertyApplicationsUsers.map((applicationUsers, index) => (
-                                                                                                                            <TableRow key={index}>
-                                                                                                                                <TableCell>{applicationUsers.name}</TableCell>
-                                                                                                                            </TableRow>
-                                                                                                                        ))}
-                                                                                                                    </TableBody>
-                                                                                                                </Table>
-                                                                                                            </div>
-                                                                                                        )}
-                                                                                                    </ModalBody>
-                                                                                                </ModalContent>
-                                                                                            </Modal>
+                                                                                            <FormModals
+                                                                                                buttonName={application.description}
+                                                                                                buttonColor={"transparent"}
+                                                                                                formTypeModal={1}
+                                                                                                idApplication={application.id}
+                                                                                            ></FormModals>
                                                                                         </TableCell>
                                                                                         <TableCell><Switch defaultSelected size="sm" color="success" /></TableCell>
-                                                                                        <TableCell><FaPlug></FaPlug></TableCell>
+                                                                                        <TableCell>
+                                                                                            <FormModalsLicence
+                                                                                                buttonName={<BiSpreadsheet size={25} />}
+                                                                                                buttonColor={"transparent"}
+                                                                                                formTypeModal={2}
+                                                                                                idApplication={application.id}
+                                                                                                idProperty={application.propertyID}
+                                                                                            ></FormModalsLicence>
+                                                                                        </TableCell>
+                                                                                        <TableCell>
+                                                                                            <FormModalsFeature
+                                                                                                buttonName={<FaPlug size={20} />}
+                                                                                                buttonColor={"transparent"}
+                                                                                                formTypeModal={3}
+                                                                                                idApplication={application.id}
+                                                                                                idProperty={application.propertyID}
+                                                                                            ></FormModalsFeature>
+                                                                                        </TableCell>
                                                                                     </TableRow>
                                                                                 ))}
                                                                             </TableBody>
@@ -687,127 +623,41 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                     AVAILABLE
                                                                                 </TableColumn>
                                                                                 <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    LICENCE
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
                                                                                     FEATURES
                                                                                 </TableColumn>
                                                                             </TableHeader>
                                                                             <TableBody>
                                                                                 {propertyApplication.map((application, index) => (
                                                                                     <TableRow key={index}>
-                                                                                        <TableCell><Button color="transparent" onPress={toggleFourthModal}>{application.description}</Button>
-                                                                                            <Modal
-                                                                                                classNames={{
-                                                                                                    base: "max-h-screen",
-                                                                                                    wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
-                                                                                                    body: "h-full",
-                                                                                                }}
-                                                                                                size="full"
-                                                                                                hideCloseButton="true"
-                                                                                                isOpen={isFourthModalOpen}
-                                                                                                onClose={toggleFourthModal}
-                                                                                                isDismissable={false}
-                                                                                                isKeyboardDismissDisabled={true}
-                                                                                            >
-                                                                                                <ModalContent>
-                                                                                                    <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                                                                                        {modalHeader}
-                                                                                                        <div className='flex flex-row items-center mr-5'>
-                                                                                                            <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
-                                                                                                            <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
-                                                                                                        </div>
-                                                                                                    </ModalHeader>
-                                                                                                    <ModalBody>
-                                                                                                        {isLoading ? (<p>A Carregar...</p>
-                                                                                                        ) : (
-                                                                                                            <div className="mx-5 h-[65vh] min-h-full">
-                                                                                                                <Table
-                                                                                                                    isHeaderSticky={"true"}
-                                                                                                                    layout={"fixed"}
-                                                                                                                    removeWrapper
-                                                                                                                    classNames={{
-                                                                                                                        wrapper: "min-h-[222px]",
-                                                                                                                    }}
-                                                                                                                    className="h-full overflow-auto"
-                                                                                                                >
-                                                                                                                    <TableHeader>
-                                                                                                                        <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                                                            Name
-                                                                                                                        </TableColumn>
-                                                                                                                    </TableHeader>
-                                                                                                                    <TableBody>
-                                                                                                                        {propertyApplicationsUsers.map((user, index) => (
-                                                                                                                            <TableRow key={index}>
-                                                                                                                                <TableCell>{user.name}</TableCell>
-                                                                                                                            </TableRow>
-                                                                                                                        ))}
-                                                                                                                    </TableBody>
-                                                                                                                </Table>
-                                                                                                            </div>
-                                                                                                        )}
-                                                                                                    </ModalBody>
-                                                                                                </ModalContent>
-                                                                                            </Modal>
+                                                                                        <TableCell>
+                                                                                            <FormModals
+                                                                                                buttonName={application.description}
+                                                                                                buttonColor={"transparent"}
+                                                                                                formTypeModal={1}
+                                                                                                idApplication={application.id}
+                                                                                            ></FormModals>
                                                                                         </TableCell>
                                                                                         <TableCell><Switch defaultSelected size="sm" color="success" /></TableCell>
                                                                                         <TableCell>
-                                                                                            <Button variant="invisible" onPress={toggleFifthModal}><FaPlug /></Button>
-                                                                                            <Modal
-                                                                                                classNames={{
-                                                                                                    base: "max-h-screen",
-                                                                                                    wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
-                                                                                                    body: "h-full",
-                                                                                                }}
-                                                                                                size="full"
-                                                                                                hideCloseButton="true"
-                                                                                                isOpen={isFifthModalOpen}
-                                                                                                onClose={toggleFifthModal}
-                                                                                                isDismissable={false}
-                                                                                                isKeyboardDismissDisabled={true}
-                                                                                            >
-                                                                                                <ModalContent>
-                                                                                                    <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                                                                                        {modalHeader}
-                                                                                                        <div className='flex flex-row items-center mr-5'>
-                                                                                                            <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
-                                                                                                            <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
-                                                                                                        </div>
-                                                                                                    </ModalHeader>
-                                                                                                    <ModalBody>
-                                                                                                        {isLoading ? (<p>A Carregar...</p>
-                                                                                                        ) : (
-                                                                                                            <div className="mx-5 h-[65vh] min-h-full">
-                                                                                                                <Table
-                                                                                                                    isHeaderSticky={"true"}
-                                                                                                                    layout={"fixed"}
-                                                                                                                    removeWrapper
-                                                                                                                    classNames={{
-                                                                                                                        wrapper: "min-h-[222px]",
-                                                                                                                    }}
-                                                                                                                    className="h-full overflow-auto"
-                                                                                                                >
-                                                                                                                    <TableHeader>
-                                                                                                                        <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                                                            IP
-                                                                                                                        </TableColumn>
-                                                                                                                        <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                                                            PORTA
-                                                                                                                        </TableColumn>
-                                                                                                                        <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                                                                            PREFIXO
-                                                                                                                        </TableColumn>
-                                                                                                                    </TableHeader>
-                                                                                                                    <TableBody>
-                                                                                                                        <TableRow>
-                                                                                                                            <TableCell>TESTE</TableCell>
-                                                                                                                            <TableCell>TESTE</TableCell>
-                                                                                                                            <TableCell>TESTE</TableCell>
-                                                                                                                        </TableRow>
-                                                                                                                    </TableBody>
-                                                                                                                </Table>
-                                                                                                            </div>
-                                                                                                        )}
-                                                                                                    </ModalBody>
-                                                                                                </ModalContent>
-                                                                                            </Modal>
+                                                                                            <FormModalsLicence
+                                                                                                buttonName={<BiSpreadsheet size={25} />}
+                                                                                                buttonColor={"transparent"}
+                                                                                                formTypeModal={2}
+                                                                                                idApplication={application.id}
+                                                                                                idProperty={application.propertyID}
+                                                                                            ></FormModalsLicence>
+                                                                                        </TableCell>
+                                                                                        <TableCell>
+                                                                                            <FormModalsFeature
+                                                                                                buttonName={<FaPlug size={20} />}
+                                                                                                buttonColor={"transparent"}
+                                                                                                formTypeModal={3}
+                                                                                                idApplication={application.id}
+                                                                                                idProperty={application.propertyID}
+                                                                                            ></FormModalsFeature>
                                                                                         </TableCell>
                                                                                     </TableRow>
                                                                                 ))}
@@ -894,79 +744,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     </div>
                                                 ))}
                                             </div>
-                                        </ModalBody>
-                                    </form>
-                                </>
-                            )}
-                        </ModalContent>
-                    </Modal>
-                </>
-            )}
-
-            {formTypeModal === 13 && ( //Properties Licence
-                <>
-                    <Button onPress={onOpen} color={buttonColor} className="w-fit">
-                        {buttonName} {buttonIcon}
-                    </Button>
-                    <Modal
-                        classNames={{
-                            base: "max-h-screen",
-                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
-                            body: "h-full ",
-                        }}
-                        size="full"
-                        hideCloseButton="true"
-                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
-                        <ModalContent>
-                            {(onClose) => (
-                                <>
-                                    <form onSubmit={handleSubmitProperty}>
-                                        <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
-                                            <div className='flex flex-row items-center mr-5'>
-                                                <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
-                                                <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
-                                            </div>
-                                        </ModalHeader>
-                                        <ModalBody>
-                                            {isLoading ? (<p>A Carregar...</p>
-                                            ) : (
-                                                <div className="mx-5 h-[65vh] min-h-full">
-                                                    <Table
-                                                        isHeaderSticky={"true"}
-                                                        layout={"fixed"}
-                                                        removeWrapper
-                                                        classNames={{
-                                                            wrapper: "min-h-[222px]",
-                                                        }}
-                                                        className="h-full overflow-auto"
-                                                    >
-                                                        <TableHeader>
-                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                ID
-                                                            </TableColumn>
-                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                ABV
-                                                            </TableColumn>
-                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                BEDROOMS
-                                                            </TableColumn>
-                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                WORKSTATIONS
-                                                            </TableColumn>
-                                                        </TableHeader>
-                                                        <TableBody>
-                                                        {propertyLicense.map((licenses, index) => (
-                                                            <TableRow key={index}>
-                                                                <TableCell>{licenses.pmsh}</TableCell>
-                                                                <TableCell>{licenses.abbreviation}</TableCell>
-                                                                <TableCell>{licenses.numOfRooms}</TableCell>
-                                                                <TableCell>{licenses.workstationId}</TableCell>
-                                                            </TableRow>
-                                                            ))}
-                                                        </TableBody>
-                                                    </Table>
-                                                </div>
-                                            )}
                                         </ModalBody>
                                     </form>
                                 </>

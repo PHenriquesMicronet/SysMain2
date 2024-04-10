@@ -25,7 +25,7 @@ import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
 import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
-import { BiSpreadsheet } from "react-icons/bi";
+
 
 import FormModals from "@/components/Modal/modalProperty";
 
@@ -181,7 +181,7 @@ export default function Contact() {
                                                 </Button>
                                             </DropdownTrigger>
                                             <DropdownMenu aria-label="Static Actions" isOpen={true}  closeOnSelect={false}>
-                                                <DropdownItem key="edit" /*onClick={() => handleGet(property.propertyID)}*/>
+                                                <DropdownItem key="edit">
                                                     <FormModals
                                                         buttonName={"Editar"}
                                                         editIcon={<FiEdit3 size={25}/>}
@@ -194,7 +194,7 @@ export default function Contact() {
                                                     ></FormModals>
                                                 </DropdownItem>
                                                 <DropdownItem onClick={() => handleDelete(property.propertyID)}>Remover</DropdownItem>
-                                                <DropdownItem /*onClick={() => handleGet(property.propertyID)}*/>
+                                                <DropdownItem >
                                                     <FormModals
                                                         buttonName={"Ver"}
                                                         buttonColor={"transparent"}
@@ -205,7 +205,7 @@ export default function Contact() {
                                                 </DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>       
-                                        <FormModals
+                                        {/* <FormModals
                                                         buttonName={<BiSpreadsheet  size={20} className="text-gray-400"/>}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Licença"}
@@ -213,7 +213,7 @@ export default function Contact() {
                                                         className="flex flex-row justify-center"    
                                                         formTypeModal={13}
                                                         idProperty={property.propertyID}
-                                                    ></FormModals>
+                                                    ></FormModals> */}
                                     </TableCell>
                                 </TableRow>
                             ))}
