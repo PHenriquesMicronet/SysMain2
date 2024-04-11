@@ -35,8 +35,6 @@ export default function Contact() {
     const [user, setUser] = useState([]);
     const { data: session, status } = useSession()
 
-
-
     const filteredItems = React.useMemo(() => {
         return user.filter((user) =>
             user.name.toLowerCase().includes(
@@ -67,6 +65,15 @@ export default function Contact() {
 
         return filteredItems.slice(start, end);
     }, [page, filteredItems, rowsPerPage]);
+
+    const handleChangePage = (page) => {
+        setPage(page);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(1); // Reset page to 1 when changing rows per page
+    };
 
     const handleSearchChange = (value) => {
         setSearchValue(value);
@@ -195,17 +202,15 @@ export default function Contact() {
                             color="primary"
                             variant="flat"
                             page={page}
-                            //total={pages}
-                            //onChange={(page) => setPage(page)}
+                            total={Math.ceil(filteredItems.length / rowsPerPage)}
+                            onChange={handleChangePage} 
                             className="mx-5"
                         />
                         <div>
-                            <span className="text-sm text-black">
-                                Items por página:
-                            </span>
+                            <span className="text-sm text-black">Items por página:</span>
                             <select
                                 value={rowsPerPage}
-                                onChange={(e) => setRowsPerPage(parseInt(e.target.value))}
+                                onChange={handleChangeRowsPerPage} 
                                 className="ml-2 py-1 px-2 border rounded bg-transparent text-sm text-default-600 mx-5"
                             >
                                 <option value={15}>15</option>

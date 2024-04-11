@@ -27,13 +27,40 @@ export default function Contact() {
     const [organizations, setOrganizations] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
 
-    const filteredItems = organizations.filter(
-        (organization) =>
-            organization.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-            organization.organizationID.toString().toLowerCase().includes(searchValue.toLowerCase())
-    );
-    const items = filteredItems.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+    // const filteredItems = organizations.filter(
+    //     (organization) =>
+    //         organization.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+    //         organization.organizationID.toString().toLowerCase().includes(searchValue.toLowerCase())
+    // );
+    // const items = filteredItems.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
+    const filteredItems = React.useMemo(() => {
+        return organizations.filter((organizations) =>
+        organizations.name.toLowerCase().includes(
+                searchValue.toLowerCase()
+            ) ||
+            organizations.organizationID.toString().toLowerCase().includes(
+                searchValue.toLowerCase()
+            )
+        );
+    }, [organizations, searchValue]);
+        const items = React.useMemo(() => {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        return filteredItems.slice(start, end);
+    }, [page, filteredItems, rowsPerPage]);
+
+    const handleChangePage = (page) => {
+        setPage(page);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(1); // Reset page to 1 when changing rows per page
+    };
+
+/*---------------------------------------------------------------------------------------- */
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -189,15 +216,15 @@ export default function Contact() {
                             color="primary"
                             variant="flat"
                             page={page}
-                            //total={pages}
-                            //onChange={(page) => setPage(page)}
+                            total={Math.ceil(filteredItems.length / rowsPerPage)}
+                            onChange={handleChangePage} 
                             className="mx-5"
                         />
                         <div>
                             <span className="text-sm text-black">Items por página:</span>
                             <select
                                 value={rowsPerPage}
-                                //onChange={handleChangeRowsPerPage}
+                                onChange={handleChangeRowsPerPage} 
                                 className="ml-2 py-1 px-2 border rounded bg-transparent text-sm text-default-600 mx-5"
                             >
                                 <option value={15}>15</option>
@@ -207,7 +234,10 @@ export default function Contact() {
                         </div>
                         <div className="ml-5 mr-10 text-black">
                             {items.length > 0
-                                ? `${(page - 1) * rowsPerPage + 1}-${Math.min(page * rowsPerPage, filteredItems.length)} de ${filteredItems.length}`
+                                ? `${(page - 1) * rowsPerPage + 1}-${Math.min(
+                                    page * rowsPerPage,
+                                    filteredItems.length
+                                )} de ${filteredItems.length}`
                                 : "0 resultados"}
                         </div>
                     </div>

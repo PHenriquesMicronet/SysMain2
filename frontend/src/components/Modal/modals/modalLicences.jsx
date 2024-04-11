@@ -36,7 +36,7 @@ const modallicence = ({buttonName,
         if (!licencesFetched) {
             setIsLoading(true);
             try {
-                    const res = await axios.get(`/api/hotel/properties/` + 1 + `/licenses/`);
+                    const res = await axios.get(`/api/hotel/properties/` + idProperty + `/licenses/`);
                     setPropertyLicense(res.data.response);
                     setLicencesFetched(true);
                 } catch (error) {

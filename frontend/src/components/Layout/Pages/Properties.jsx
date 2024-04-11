@@ -55,27 +55,20 @@ export default function Contact() {
             )
         );
     }, [property, searchValue]);
-    const items = React.useMemo(() => {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-
-        return filteredItems.slice(start, end);
-    }, [page, filteredItems, rowsPerPage]);
-
+/*---------------------------------------------------------------------------------------- */
     useEffect(() => {
         const getData = async () => {
-            if (status !== "loading"){
+            if (status !== "loading") {
                 try {
-                    const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/properties`);
+                    const res = await axios.get(`/api/hotel/organizations/` + session.user.organization + `/properties`);
                     setProperty(res.data.response);
                 } catch (error) {
                     console.error("Erro ao obter as propriedades:", error.message);
-            }
-        };
+                }
+            };
         }
         getData();
     }, []);
-
 
     const handleSearchChange = (value) => {
         setSearchValue(value);
@@ -83,9 +76,7 @@ export default function Contact() {
     };
 
     const handleDelete = async (propertyID) => {
-
         const confirmDelete = window.confirm("Tem certeza de que deseja excluir esta propriedade?");
-
         if (confirmDelete) {
             try {
                 const res = await axios.delete(`/api/hotel/properties/` + propertyID);
@@ -95,6 +86,22 @@ export default function Contact() {
                 console.error("Erro ao remover Propriedade:", error.message);
             }
         }
+    };
+    /*---------------------------------------------------------------------------------------- */
+    const items = React.useMemo(() => {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        return filteredItems.slice(start, end);
+    }, [page, filteredItems, rowsPerPage]);
+
+    const handleChangePage = (page) => {
+        setPage(page);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(1); // Reset page to 1 when changing rows per page
     };
 
     return (
@@ -175,19 +182,19 @@ export default function Contact() {
                                                 <Button
                                                     variant="light"
                                                     className="flex flex-row justify-center"
-                                                    
+
                                                 >
                                                     <BsThreeDotsVertical size={20} className="text-gray-400" />
                                                 </Button>
                                             </DropdownTrigger>
-                                            <DropdownMenu aria-label="Static Actions" isOpen={true}  closeOnSelect={false}>
+                                            <DropdownMenu aria-label="Static Actions" isOpen={true} closeOnSelect={false}>
                                                 <DropdownItem key="edit">
                                                     <FormModals
                                                         buttonName={"Editar"}
-                                                        editIcon={<FiEdit3 size={25}/>}
+                                                        editIcon={<FiEdit3 size={25} />}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Propriedade"}
-                                                        modalEditArrow={<BsArrowRight size={25}/>}
+                                                        modalEditArrow={<BsArrowRight size={25} />}
                                                         modalEdit={`ID: ${property.propertyID}`}
                                                         formTypeModal={12}
                                                         idProperty={property.propertyID}
@@ -204,7 +211,7 @@ export default function Contact() {
                                                     ></FormModals>
                                                 </DropdownItem>
                                             </DropdownMenu>
-                                        </Dropdown>       
+                                        </Dropdown>
                                         {/* <FormModals
                                                         buttonName={<BiSpreadsheet  size={20} className="text-gray-400"/>}
                                                         buttonColor={"transparent"}
@@ -228,17 +235,15 @@ export default function Contact() {
                             color="primary"
                             variant="flat"
                             page={page}
-                            //total={pages}
-                            //onChange={(page) => setPage(page)}
+                            total={Math.ceil(filteredItems.length / rowsPerPage)}
+                            onChange={handleChangePage} 
                             className="mx-5"
                         />
                         <div>
-                            <span className="text-sm text-black">
-                                Items por página:
-                            </span>
+                            <span className="text-sm text-black">Items por página:</span>
                             <select
                                 value={rowsPerPage}
-                                //onChange={handleChangeRowsPerPage}
+                                onChange={handleChangeRowsPerPage} 
                                 className="ml-2 py-1 px-2 border rounded bg-transparent text-sm text-default-600 mx-5"
                             >
                                 <option value={15}>15</option>

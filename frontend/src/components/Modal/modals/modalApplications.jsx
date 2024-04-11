@@ -15,6 +15,7 @@ const modalapplications = ({buttonName,
     formTypeModal,
     buttonColor,
     idApplication,
+    idProperty
     }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -35,7 +36,7 @@ const modalapplications = ({buttonName,
         if (!applicationUsersFetch) {
             setIsLoading(true);
             try {
-                const res = await axios.get(`/api/hotel/properties/` + 1 + `/applications/` + idApplication + `/users`);
+                const res = await axios.get(`/api/hotel/properties/` + idProperty + `/applications/` + idApplication + `/users`);
                 setPropertyApplicationsUsers(res.data.response);
                 setApplicationUsersFetched(true);
                 console.log(res.data.response)

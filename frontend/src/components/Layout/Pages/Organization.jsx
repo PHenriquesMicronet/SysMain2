@@ -40,6 +40,7 @@ const Contact = () => {
     const handleInput = (event) => {
         setUser({ ...organizations, [event.target.name]: event.target.value })
     }
+    
     const filteredItems = React.useMemo(() => {
         return organizations.filter((organizations) =>
             organizations.name.toLowerCase().includes(

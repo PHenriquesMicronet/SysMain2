@@ -27,34 +27,33 @@ const modalfeatures = ({
     modalHeader,
     formTypeModal,
     buttonColor,
-    idApplication,
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isLoading, setIsLoading] = useState(true);
-    const [isFirstModalOpen, setIsFirstModalOpen] = useState(false);
-    const [applicationUsersFetch, setApplicationUsersFetched] = useState(false);
-    const [propertyApplicationsUsers, setPropertyApplicationsUsers] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [featuresFetch, setFeaturesFetched] = useState(false);
+    const [features, setFeatures] = useState([]);
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
 
-    const toggleFirstModal = async () => {
-        setIsFirstModalOpen(!isFirstModalOpen);
-        // if (!applicationUsersFetch) {
-        //     setIsLoading(true);
-        //     try {
-        //         const res = await axios.get(`/api/hotel/properties/` + 1 + `/applications/` + idApplication + `/users`);
-        //         setPropertyApplicationsUsers(res.data.response);
-        //         setApplicationUsersFetched(true);
-        //         console.log(res.data.response)
-        //     } catch (error) {
-        //         console.error("Erro ao encontrar os utilizadores associadas à aplicação:", error.message);
-        //     } finally {
-        //         setIsLoading(false);
-        //     }
-        // }
+    const toggleModal = async () => {
+        setIsModalOpen(!isModalOpen);
+        if (!featuresFetch) {
+            setIsLoading(true);
+            // try {
+            //     // const res = await axios.get(`/api/hotel/properties/` + 1 + `/applications/` + idApplication + `/users`);
+            //     // setFeatures(res.data.response);
+            //     // setFeaturesFetched(true);
+            //     // console.log(res.data.response)
+            // } catch (error) {
+            //     console.error("Erro ao encontrar os utilizadores associadas à aplicação:", error.message);
+            // } finally {
+            //     setIsLoading(false);
+            // }
+        }
     };
 
     return (
@@ -62,7 +61,7 @@ const modalfeatures = ({
             {formTypeModal === 3 && (
                 <>
                     <Button
-                        onPress={toggleFirstModal}
+                        onPress={toggleModal}
                         color={buttonColor}
                         className="w-fit"
                     >
@@ -78,8 +77,8 @@ const modalfeatures = ({
                         }}
                         size="full"
                         hideCloseButton="true"
-                        isOpen={isFirstModalOpen}
-                        onOpenChange={toggleFirstModal}
+                        isOpen={isModalOpen}
+                        onOpenChange={toggleModal}
                         isDismissable={false}
                         isKeyboardDismissDisabled={true}
                     >
@@ -112,24 +111,26 @@ const modalfeatures = ({
                                                     className="h-full"
                                                 >
                                                     <TableHeader>
-                                                        <TableColumn className="bg-primary-600 text-white font-bold">
-                                                            IP
-                                                        </TableColumn>
-                                                        <TableColumn className="bg-primary-600 text-white font-bold">
-                                                            PORTA
-                                                        </TableColumn>
-                                                        <TableColumn className="bg-primary-600 text-white font-bold">
-                                                            PREFIX
-                                                        </TableColumn>
-                                                        <TableColumn className="bg-primary-600 text-white flex justify-center items-center" />
-                                                    </TableHeader>
-                                                    <TableBody>
-                                                        <TableRow>
-                                                            <TableCell>TESTE</TableCell>
-                                                            <TableCell>TESTE</TableCell>
-                                                            <TableCell className="flex justify-center" />
-                                                        </TableRow>
-                                                    </TableBody>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                IP
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                PORTA
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                PREFIX
+                                                            </TableColumn>
+                                                        </TableHeader>
+                                                        <TableBody>
+                                                            {/* {features.map((feature, index) => (
+                                                                <TableRow key={index}>
+                                                                    <TableCell>teste</TableCell>
+                                                                    <TableCell>teste</TableCell>
+                                                                    <TableCell>teste</TableCell>
+                                                                    <TableCell>teste</TableCell>
+                                                                </TableRow>
+                                                            ))} */}
+                                                        </TableBody>
                                                 </Table>
                                             </div>
                                         )}

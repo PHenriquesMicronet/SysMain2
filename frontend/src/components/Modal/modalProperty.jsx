@@ -16,6 +16,7 @@ import { MdClose } from "react-icons/md";
 import { FaUser, FaArrowLeft, FaPlug } from "react-icons/fa";
 import { IoApps } from "react-icons/io5";
 import { BiSpreadsheet } from "react-icons/bi";
+import { FaLock } from "react-icons/fa";
 
 import FormModals from "@/components/Modal/modals/modalApplications";
 import FormModalsLicence from "@/components/Modal/modals/modalLicences"
@@ -350,37 +351,50 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                 <TableColumn className="bg-primary-600 text-white font-bold">
                                                                                     FEATURES
                                                                                 </TableColumn>
+                                                                                
                                                                             </TableHeader>
                                                                             <TableBody>
                                                                                 {propertyApplication.map((application, index) => (
                                                                                     <TableRow key={index}>
-                                                                                        <TableCell>
+                                                                                        <TableCell  >
                                                                                             <FormModals
                                                                                                 buttonName={application.description}
                                                                                                 buttonColor={"transparent"}
                                                                                                 formTypeModal={1}
                                                                                                 idApplication={application.id}
+                                                                                                idProperty={idProperty}
                                                                                             ></FormModals>
                                                                                         </TableCell>
-                                                                                        <TableCell><Switch defaultSelected size="sm" color="success" /></TableCell>
                                                                                         <TableCell>
-                                                                                            <FormModalsLicence
-                                                                                                buttonName={<BiSpreadsheet size={25} />}
-                                                                                                buttonColor={"transparent"}
-                                                                                                formTypeModal={2}
-                                                                                                idApplication={application.id}
-                                                                                                idProperty={application.propertyID}
-                                                                                            ></FormModalsLicence>
+                                                                                            <Switch defaultSelected size="sm" color="success" />
                                                                                         </TableCell>
-                                                                                        <TableCell>
-                                                                                            <FormModalsFeature
-                                                                                                buttonName={<FaPlug size={20} />}
-                                                                                                buttonColor={"transparent"}
-                                                                                                formTypeModal={3}
-                                                                                                idApplication={application.id}
-                                                                                                idProperty={application.propertyID}
-                                                                                            ></FormModalsFeature>
+                                                                                        <TableCell >
+                                                                                            {application.description === "OnPremPMS" ? (
+                                                                                                <FormModalsLicence
+                                                                                                    buttonName={<BiSpreadsheet size={25} />}
+                                                                                                    buttonColor={"transparent"}
+                                                                                                    formTypeModal={2}
+                                                                                                    idApplication={application.id}
+                                                                                                    idProperty={idProperty}
+                                                                                                ></FormModalsLicence>
+                                                                                            ) : (
+                                                                                                <FaLock size={20} />
+                                                                                            )}
                                                                                         </TableCell>
+                                                                                        <TableCell >
+                                                                                            {application.description === "OnPremPMS" ? (
+                                                                                                <FormModalsFeature
+                                                                                                    buttonName={<FaPlug size={20} />}
+                                                                                                    buttonColor={"transparent"}
+                                                                                                    formTypeModal={3}
+                                                                                                    idApplication={application.id}
+                                                                                                    idProperty={idProperty}
+                                                                                                ></FormModalsFeature>
+                                                                                            ) : (
+                                                                                                <FaLock size={20} />
+                                                                                            )}
+                                                                                        </TableCell>
+                                                                                        
                                                                                     </TableRow>
                                                                                 ))}
                                                                             </TableBody>
@@ -605,7 +619,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                             <ModalBody>
                                                                 {isLoading ? (<p>A Carregar...</p>
                                                                 ) : (
-                                                                    <div className="mx-5 h-[65vh] min-h-full">
+                                                                    <div className="mx-5 h-[65vh] min-h-full ">
                                                                         <Table
                                                                             isHeaderSticky={"true"}
                                                                             layout={"fixed"}
@@ -628,6 +642,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                 <TableColumn className="bg-primary-600 text-white font-bold">
                                                                                     FEATURES
                                                                                 </TableColumn>
+                                                                            
                                                                             </TableHeader>
                                                                             <TableBody>
                                                                                 {propertyApplication.map((application, index) => (
@@ -638,27 +653,37 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 buttonColor={"transparent"}
                                                                                                 formTypeModal={1}
                                                                                                 idApplication={application.id}
+                                                                                                idProperty={idProperty}
                                                                                             ></FormModals>
                                                                                         </TableCell>
                                                                                         <TableCell><Switch defaultSelected size="sm" color="success" /></TableCell>
-                                                                                        <TableCell>
-                                                                                            <FormModalsLicence
-                                                                                                buttonName={<BiSpreadsheet size={25} />}
-                                                                                                buttonColor={"transparent"}
-                                                                                                formTypeModal={2}
-                                                                                                idApplication={application.id}
-                                                                                                idProperty={application.propertyID}
-                                                                                            ></FormModalsLicence>
+                                                                                        <TableCell >
+                                                                                            {application.description === "OnPremPMS" ? (
+                                                                                                <FormModalsLicence
+                                                                                                    buttonName={<BiSpreadsheet size={25} />}
+                                                                                                    buttonColor={"transparent"}
+                                                                                                    formTypeModal={2}
+                                                                                                    idApplication={application.id}
+                                                                                                    idProperty={idProperty}
+                                                                                                ></FormModalsLicence>
+                                                                                            ) : (
+                                                                                                <FaLock size={20} />
+                                                                                            )}
                                                                                         </TableCell>
-                                                                                        <TableCell>
-                                                                                            <FormModalsFeature
-                                                                                                buttonName={<FaPlug size={20} />}
-                                                                                                buttonColor={"transparent"}
-                                                                                                formTypeModal={3}
-                                                                                                idApplication={application.id}
-                                                                                                idProperty={application.propertyID}
-                                                                                            ></FormModalsFeature>
+                                                                                        <TableCell >
+                                                                                            {application.description === "OnPremPMS" ? (
+                                                                                                <FormModalsFeature
+                                                                                                    buttonName={<FaPlug size={20} />}
+                                                                                                    buttonColor={"transparent"}
+                                                                                                    formTypeModal={3}
+                                                                                                    idApplication={application.id}
+                                                                                                    idProperty={idProperty}
+                                                                                                ></FormModalsFeature>
+                                                                                            ) : (
+                                                                                                <FaLock size={20} />
+                                                                                            )}
                                                                                         </TableCell>
+                                                                                        
                                                                                     </TableRow>
                                                                                 ))}
                                                                             </TableBody>
