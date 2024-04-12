@@ -23,6 +23,31 @@ export async function GET(request, context) {
     return new NextResponse(JSON.stringify({ response, status: 200 }));
 }
 
+export async function PATCH(request, context) {
+
+    try {
+        const { id } = context.params;
+
+        const response = await prisma.properties_applications.update({
+            where: {
+                propertyApplicationID: parseInt(id),
+            },
+            data: {
+                ip: data.ip,
+                port: data.port,
+                prefix: parseInt(data.prefix),
+            }
+        })
+        return new NextResponse(JSON.stringify({ status: 200 }));
+
+    } catch (error) {
+        return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
+    } finally {
+        await prisma.$disconnect();
+    }
+
+}
+
 export async function DELETE(request, context) {
 
     try {
