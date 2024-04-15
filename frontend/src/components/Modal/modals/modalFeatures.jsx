@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import {
     Modal,
@@ -17,9 +17,12 @@ import {
 
 import axios from "axios";
 
+
 //icons
 import { MdClose } from "react-icons/md";
 import { LiaExpandSolid } from "react-icons/lia";
+import { GoGear } from "react-icons/go";
+import { FiEdit3, FiCheck } from "react-icons/fi";
 
 const modalfeatures = ({
     buttonName,
@@ -27,6 +30,8 @@ const modalfeatures = ({
     modalHeader,
     formTypeModal,
     buttonColor,
+    idProperty,
+    idApplication
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -34,6 +39,7 @@ const modalfeatures = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [featuresFetch, setFeaturesFetched] = useState(false);
     const [features, setFeatures] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
@@ -43,17 +49,29 @@ const modalfeatures = ({
         setIsModalOpen(!isModalOpen);
         if (!featuresFetch) {
             setIsLoading(true);
-            // try {
-            //     // const res = await axios.get(`/api/hotel/properties/` + 1 + `/applications/` + idApplication + `/users`);
-            //     // setFeatures(res.data.response);
-            //     // setFeaturesFetched(true);
-            //     // console.log(res.data.response)
-            // } catch (error) {
-            //     console.error("Erro ao encontrar os utilizadores associadas à aplicação:", error.message);
-            // } finally {
-            //     setIsLoading(false);
-            // }
+            try {
+                const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications/` + idApplication)
+                console.log(response)
+
+                const res = await axios.get(`/api/hotel/properties-applications/` + response.data.response.propertyApplicationID);
+                setFeatures(res.data.response);
+                setFeaturesFetched(true);
+                console.log(res.data.response)
+            } catch (error) {
+                console.error("Erro ao encontrar a propriedades da aplicação:", error.message);
+            } finally {
+                setIsLoading(false);
+            }
         }
+    };
+
+    const toggleEdit = () => {
+        setIsEditing(!isEditing);
+    };
+
+    const saveChanges = () => {
+        // Implementar a lógica para salvar as alterações no backend, se necessário
+        setIsEditing(false);
     };
 
     return (
@@ -111,26 +129,87 @@ const modalfeatures = ({
                                                     className="h-full"
                                                 >
                                                     <TableHeader>
-                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                IP
-                                                            </TableColumn>
-                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                PORTA
-                                                            </TableColumn>
-                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                PREFIX
-                                                            </TableColumn>
-                                                        </TableHeader>
-                                                        <TableBody>
-                                                            {/* {features.map((feature, index) => (
-                                                                <TableRow key={index}>
-                                                                    <TableCell>teste</TableCell>
-                                                                    <TableCell>teste</TableCell>
-                                                                    <TableCell>teste</TableCell>
-                                                                    <TableCell>teste</TableCell>
-                                                                </TableRow>
-                                                            ))} */}
-                                                        </TableBody>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">
+                                                            IP
+                                                        </TableColumn>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">
+                                                            PORTA
+                                                        </TableColumn>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">
+                                                            PREFIX
+                                                        </TableColumn>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">
+                                                            AÇÕES
+                                                        </TableColumn>
+                                                    </TableHeader>
+                                                    <TableBody>
+                                                        {features.map((feature, index) => (
+                                                            <TableRow key={index}>
+                                                                <TableCell>
+                                                                    {isEditing ? (
+                                                                        <input
+                                                                            type="text"
+                                                                            value={feature.ip}
+                                                                            onChange={(e) => {
+                                                                                const newFeatures = [...features];
+                                                                                newFeatures[index].ip = e.target.value;
+                                                                                setFeatures(newFeatures);
+                                                                            }}
+                                                                        />
+                                                                    ) : (
+                                                                        feature.ip
+                                                                    )}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {isEditing ? (
+                                                                        <input
+                                                                            type="text"
+                                                                            value={feature.port}
+                                                                            onChange={(e) => {
+                                                                                const newFeatures = [...features];
+                                                                                newFeatures[index].port = e.target.value;
+                                                                                setFeatures(newFeatures);
+                                                                            }}
+                                                                        />
+                                                                    ) : (
+                                                                        feature.port
+                                                                    )}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {isEditing ? (
+                                                                        <input
+                                                                            type="text"
+                                                                            value={feature.prefix}
+                                                                            onChange={(e) => {
+                                                                                const newFeatures = [...features];
+                                                                                newFeatures[index].prefix = e.target.value;
+                                                                                setFeatures(newFeatures);
+                                                                            }}
+                                                                        />
+                                                                    ) : (
+                                                                        feature.prefix
+                                                                    )}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {isEditing ? (
+                                                                        <Button
+                                                                            color="transparent"
+                                                                            onClick={saveChanges}
+                                                                        >
+                                                                            <FiCheck size={20} />
+                                                                        </Button>
+                                                                    ) : (
+                                                                        <Button
+                                                                            color="transparent"
+                                                                            onClick={toggleEdit}
+                                                                        >
+                                                                            <FiEdit3 size={20} />
+                                                                        </Button>
+                                                                    )}
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
                                                 </Table>
                                             </div>
                                         )}

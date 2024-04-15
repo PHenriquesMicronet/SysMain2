@@ -18,7 +18,12 @@ import {
 import { GoGear } from "react-icons/go";
 import { BsThreeDotsVertical, BsArrowRight } from "react-icons/bs";
 import { FiSearch, FiPlus, FiEdit3 } from "react-icons/fi";
+import { IoMdDownload } from "react-icons/io"; 
 import FormModals from "@/components/Modal/modalOrganizations";
+
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { CSVLink } from "react-csv";
 
 export default function Contact() {
     const [page, setPage] = useState(1);
@@ -60,6 +65,11 @@ export default function Contact() {
         setPage(1); // Reset page to 1 when changing rows per page
     };
 
+    const exportToPDF = () => {
+        const pdf = new jsPDF();
+        pdf.autoTable({ html: "#TableToPDF" })
+        pdf.save("Organizations.pdf")
+    }
 /*---------------------------------------------------------------------------------------- */
     useEffect(() => {
         const fetchData = async () => {
@@ -123,6 +133,7 @@ export default function Contact() {
                 </div>
                 <div className="mx-5 h-[65vh] min-h-full">
                     <Table
+                        id="TableToPDF"
                         isHeaderSticky={"true"}
                         layout={"fixed"}
                         removeWrapper
@@ -209,6 +220,23 @@ export default function Contact() {
                     </Table>
                 </div>
                 <div className="bg-tableFooter border border-tableFooterBorder flex justify-end items-center lg:pl-72 w-full min-h-10vh fixed bottom-0 right-0 z-20 text-sm text-default-400 py-3">
+                <div className="space-x-4">
+                    <Button onClick={exportToPDF}>PDF <IoMdDownload /></Button>
+                    <Button>                    <CSVLink
+                        data={items.map((item) => ({
+                            organizationID: item.organizationID,
+                            Name: item.name,
+                            Address1: item.address1, 
+                            Country: item.country ,
+                        }))}
+                        filename={"Organizações"}
+                        separator=";"
+                        enclosingCharacter=""
+                    >
+                        CSV 
+                    </CSVLink><IoMdDownload />
+                    </Button>
+                    </div>
                     <div className="flex flex-row items-center">
                         <Pagination
                             isCompact

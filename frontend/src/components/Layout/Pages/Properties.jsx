@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 import {
     Input,
     Button,
-    useDisclosure,
 
     //imports de tabelas
     Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination,
@@ -25,9 +24,13 @@ import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
 import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
-
+import { IoMdDownload } from "react-icons/io";  
 
 import FormModals from "@/components/Modal/modalProperty";
+
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { CSVLink } from "react-csv";
 
 export default function Contact() {
 
@@ -55,7 +58,13 @@ export default function Contact() {
             )
         );
     }, [property, searchValue]);
-/*---------------------------------------------------------------------------------------- */
+
+    const exportToPDF = () => {
+        const pdf = new jsPDF();
+        pdf.autoTable({ html: "#TableToPDF" })
+        pdf.save("Propriedades.pdf")
+    }
+    /*---------------------------------------------------------------------------------------- */
     useEffect(() => {
         const getData = async () => {
             if (status !== "loading") {
@@ -136,6 +145,7 @@ export default function Contact() {
                 </div>
                 <div className="mx-5 h-[65vh] min-h-full">
                     <Table
+                        id="TableToPDF"
                         isHeaderSticky={"true"}
                         layout={"fixed"}
                         removeWrapper
@@ -228,7 +238,27 @@ export default function Contact() {
                     </Table>
                 </div>
                 <div className="bg-tableFooter border border-tableFooterBorder flex justify-end items-center lg:pl-72 w-full min-h-10vh fixed bottom-0 right-0 z-20 text-sm text-default-400 py-3">
-                    <div className="flex flex-row items-center">
+                    <div className="space-x-4">
+                    <Button onClick={exportToPDF}>PDF <IoMdDownload /></Button>
+                    <Button>                    <CSVLink
+                        data={items.map((item) => ({
+                            propertyID: item.propertyID,
+                            Name: item.name,
+                            Address1: item.address1, 
+                            Description: item.description ,
+                            Abbreviation: item.abbreviation , 
+                            Designation: item.designation
+                        }))}
+                        filename={"Propriedades"}
+                        separator=";"
+                        enclosingCharacter=""
+                    >
+                        CSV 
+                    </CSVLink><IoMdDownload />
+                    </Button>
+                    </div>
+
+                    <div className="flex flex-row items-center ">
                         <Pagination
                             isCompact
                             showControls
@@ -236,14 +266,14 @@ export default function Contact() {
                             variant="flat"
                             page={page}
                             total={Math.ceil(filteredItems.length / rowsPerPage)}
-                            onChange={handleChangePage} 
+                            onChange={handleChangePage}
                             className="mx-5"
                         />
                         <div>
                             <span className="text-sm text-black">Items por página:</span>
                             <select
                                 value={rowsPerPage}
-                                onChange={handleChangeRowsPerPage} 
+                                onChange={handleChangeRowsPerPage}
                                 className="ml-2 py-1 px-2 border rounded bg-transparent text-sm text-default-600 mx-5"
                             >
                                 <option value={15}>15</option>
@@ -261,7 +291,7 @@ export default function Contact() {
                         </div>
                     </div>
                 </div>
-            </main>
+            </main >
         </>
     );
 };

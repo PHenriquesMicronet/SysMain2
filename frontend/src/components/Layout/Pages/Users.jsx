@@ -25,8 +25,14 @@ import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
 import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
+import { IoMdDownload } from "react-icons/io"; 
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { CSVLink } from "react-csv";
+
 
 import Modaluser from "@/components/Modal/modalUser";
+import properties from "@/app/homepage/properties/page";
 
 export default function Contact() {
     const [page, setPage] = React.useState(1);
@@ -46,6 +52,11 @@ export default function Contact() {
         );
     }, [user, searchValue]);
 
+    const exportToPDF = () => {
+        const pdf = new jsPDF();
+        pdf.autoTable({ html: "#TableToPDF" })
+        pdf.save("Utilizadores.pdf")
+    }
 
     useEffect(() => {
         const getData = async () => {
@@ -125,6 +136,7 @@ export default function Contact() {
                 </div>
                 <div className="mx-5 h-[65vh] min-h-full">
                     <Table
+                        id="TableToPDF"
                         isHeaderSticky={"true"}
                         layout={"fixed"}
                         removeWrapper
@@ -195,6 +207,23 @@ export default function Contact() {
                     </Table>
                 </div>
                 <div className="bg-tableFooter border border-tableFooterBorder flex justify-end items-center lg:pl-72 w-full min-h-10vh fixed bottom-0 right-0 z-20 text-sm text-default-400 py-3">
+                <div className="space-x-4">
+                    <Button onClick={exportToPDF}>PDF <IoMdDownload /></Button>
+                    <Button>                    <CSVLink
+                        data={items.map((item) => ({
+                            Name: item.name,
+                            Email: item.email,
+                            Role: item.role, 
+                            Properties: item.properties,
+                        }))}
+                        filename={"Utilizadores"}
+                        separator=";"
+                        enclosingCharacter=""
+                    >
+                        CSV 
+                    </CSVLink><IoMdDownload />
+                    </Button>
+                    </div>
                     <div className="flex flex-row items-center">
                         <Pagination
                             isCompact
