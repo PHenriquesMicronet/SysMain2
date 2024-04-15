@@ -10,10 +10,12 @@ export async function GET(request, context) {
 
     const response = await prisma.properties_applications.findUnique({
         where: {
-            propertyID: parseInt(id),
-            applicationID: parseInt(applicationID)
-        },
-    })
+            propertyID_applicationID: {
+                propertyID: parseInt(id),
+                applicationID: parseInt(applicationID)
+            }
+        }
+    });
 
     if (!response) {
         return new NextResponse(JSON.stringify({ status: 404 }));
