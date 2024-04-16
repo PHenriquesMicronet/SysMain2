@@ -70,7 +70,14 @@ const modalfeatures = ({
     };
 
     const saveChanges = () => {
-        // Implementar a lógica para salvar as alterações no backend, se necessário
+        // axios.patch(`/api/hotel/properties-applications/` + response.data.response.propertyApplicationID, {
+        //     data: {
+        //         ip: valuesFeature.Ip,
+        //         port: valuesFeature.Port,
+        //         prefix: valuesFeature.Prefix,
+        //     }
+        // })
+        // .catch(err => console.log(err))
         setIsEditing(false);
     };
 

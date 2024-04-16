@@ -18,10 +18,12 @@ import { MdClose } from "react-icons/md";
 import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
 import { BiSpreadsheet } from "react-icons/bi";
+import {FaPlug } from "react-icons/fa";
 
 
 import Modalorg from "@/components/Modal/modalOrganization"
 import FormModals from "@/components/Modal/modalOrganization"
+import FormFeatures from "@/components/Modal/modals/modalFeatures"
 
 const Contact = () => {
 
@@ -98,6 +100,15 @@ const Contact = () => {
                             formTypeModal={13}
                             idOrg={organizations.organizationID}
                         ></FormModals>
+                        <FormFeatures
+                            buttonName={<FaPlug size={20} color={"white"}/>}
+                            buttonColor={""}
+                            modalHeader={"Ligação ao SysPMS"}
+                            variant="light"
+                            className="flex flex-row justify-center"
+                            formTypeModal={3}
+                            idOrg={organizations.organizationID}
+                        ></FormFeatures>
                     </div>
                     <div className="w-full flex flex-col gap-4 my-4">
                         {variants.map((variant) => (
