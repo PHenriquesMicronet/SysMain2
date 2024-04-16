@@ -52,7 +52,6 @@ const modalfeatures = ({
             try {
                 const response = await axios.get(`/api/hotel/properties/` + idProperty + `/applications/` + idApplication)
                 console.log(response)
-
                 const res = await axios.get(`/api/hotel/properties-applications/` + response.data.response.propertyApplicationID);
                 setFeatures(res.data.response);
                 setFeaturesFetched(true);
