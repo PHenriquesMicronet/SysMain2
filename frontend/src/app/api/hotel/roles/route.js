@@ -6,11 +6,26 @@ import prisma from "@/lib/prisma"
 
 export async function GET(request) {
 
-    const response = await prisma.roles.findMany()
+    try {
+        const organizationID = request.nextUrl.searchParams.get('organization') || "";
 
-    prisma.$disconnect()
+        if (organizationID == "") {
+            const response = await prisma.roles.findMany()
+            return new NextResponse(JSON.stringify({ response, status: 200 }));
+        }
 
-    return new NextResponse(JSON.stringify({ response, status: 200 }));
+        const response = await prisma.roles.findMany({
+            where: {
+                organizationID: parseInt(organizationID)
+            }
+        })
+
+        return new NextResponse(JSON.stringify({ response, status: 200 }));
+    } catch (error) {
+        return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
+    } finally {
+        await prisma.$disconnect();
+    }
 }
 
 export async function PUT(request) {

@@ -28,6 +28,7 @@ model organizations {
   zipCode        String       @db.VarChar(45)
   del            Boolean      @default(dbgenerated("(b'0')")) @db.Bit(1)
   properties     properties[]
+  roles          roles[]
   users          users[]
 }
 
@@ -71,10 +72,14 @@ model properties_applications {
 }
 
 model roles {
-  roleID      Int     @id @default(autoincrement())
-  name        String  @default("") @db.VarChar(50)
-  description String  @db.VarChar(250)
-  users       users[]
+  roleID         Int            @id @default(autoincrement())
+  name           String         @default("") @db.VarChar(50)
+  description    String         @db.VarChar(250)
+  organizationID Int?
+  organizations  organizations? @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "organizations_roles")
+  users          users[]
+
+  @@index([organizationID], map: "organizations_roles")
 }
 
 model users {
