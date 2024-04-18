@@ -1,10 +1,10 @@
 "use client"
-import  Allproperties from "@/components/Layout/Pages/AllProperties"
+import Allproperties from "@/components/Layout/Pages/allProperties"
 
 const allproperties = () => {
     return (
         <>
-            <Allproperties/>
+            <Allproperties />
         </>
     )
 }
