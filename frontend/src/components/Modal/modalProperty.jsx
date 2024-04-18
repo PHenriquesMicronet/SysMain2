@@ -48,6 +48,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     /*Data Info*/
     const [applicationFetched, setApplicationFetched] = useState(false);
     const [fetchUsers, setFetchUsers] = useState(false);
+    const [userCount, setUserCount] = useState(null);
 
     /*Paths para os Modals*/
     const toggleExpand = () => {
@@ -89,6 +90,21 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     };
 
 
+    useEffect(() => {
+        // Função para buscar o número de usuários quando o componente for montado
+        async function fetchUserCount() {
+            try {
+                const response = await axios.get('/api/hotel/properties/' + idProperty + '/users/count');
+                setUserCount(response.data.response);
+            } catch (error) {
+                console.error("Error fetching user count:", error);
+            }
+        }
+        fetchUserCount();
+    }, []); // Executar somente uma vez no montagem do componente
+
+
+    
 
     return (
         <>
@@ -229,7 +245,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                         <ModalBody className="flex flex-col mx-5 my-5 space-y-4">
                                             <div className="flex justify-end gap-2">
                                                 <div className="bg-gray-100 p-1 rounded border border-gray-300 mr-2">
-                                                    <Badge color="success" content={5} isInvisible={isInvisible} shape="circle">
+                                                <Badge color="success" content={userCount} isInvisible={!userCount} shape="circle">
                                                         <Button color="transparent" onPress={toggleSecondModal}>
                                                             <FaUser size={20} className="text-gray-500" />
                                                         </Button>

@@ -50,6 +50,10 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
         return session?.user?.role == 18;
     };
 
+    const notAdmin = () => {
+        return session?.user?.role == 19;
+    };
+
     const listItems = {
         //"Dashboard": [],
 
@@ -70,10 +74,10 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
             icon: <FaHotel size={20} />,
             active: true,
             items: [
-                {
+                notAdmin() &&{
                     ref: "/homepage/organization", label: "Account", active: true
                 },
-                {
+                notAdmin() &&{
                     ref: "/homepage/properties", label: "Properties", active: true
                 },
 
