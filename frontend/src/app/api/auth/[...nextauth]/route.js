@@ -42,7 +42,8 @@ export const authOptions = {
                         organization: response.organizationID,
                         role: response.roleID,
                         name: response.name,
-                        lastname: response.lastName
+                        lastname: response.lastName,
+                        admin: response.admin
                     }
                 }
 
@@ -64,6 +65,7 @@ export const authOptions = {
             session.user.role = token.role
             session.user.name = token.name
             session.user.lastname = token.lastname
+            session.user.admin = token.admin
 
             return session;
         },
