@@ -10,7 +10,37 @@ export async function GET(request) {
         const organizationID = request.nextUrl.searchParams.get('organization') || "";
 
         if (organizationID == "") {
-            const response = await prisma.properties.findMany()
+            const properties = await prisma.properties.findMany({
+                include: {
+                    organizations: {
+                        select: {
+                            name: true
+                        }
+                    }
+                }
+            });
+
+            const response = properties.map(property => {
+                const propertyData = {
+                    propertyID: property.propertyID,
+                    name: property.name,
+                    fiscalNumber: property.fiscalNumber,
+                    email: property.email,
+                    phoneNumber: property.phoneNumber,
+                    address1: property.address1,
+                    country: property.country,
+                    district: property.district,
+                    zipCode: property.zipCode,
+                    description: property.description,
+                    designation: property.designation,
+                    abbreviation: property.abbreviation,
+                    del: property.del,
+                    organization: property.organizations ? property.organizations.name : ""
+                };
+
+                return propertyData;
+            });
+
             return new NextResponse(JSON.stringify({ response, status: 200 }));
         }
 
