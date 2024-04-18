@@ -1,5 +1,5 @@
 "use client"
-import  Organizations from "@/components/Layout/Pages/Organizations"
+import  Organizations from "@/components/Layout/Pages/AllOrganizations"
 
 const organizations = () => {
     return (

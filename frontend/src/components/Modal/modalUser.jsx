@@ -278,7 +278,7 @@ const modaluser = ({
                                                         className="flex w-1/2flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
                                                         <Input type="password" name="Password" value={valuesUser.Password} onChange={e => setValuesUser({ ...valuesUser, Password: e.target.value })} variant={variant} label="Password" />
-                                                        <Input type="number" name="OrganizationID" variant={variant} label="Organiztion ID" />
+                                                        
                                                         <Input type="number" name="RoleID" value={valuesUser.RoleID} onChange={e => setValuesUser({ ...valuesUser, RoleID: e.target.value })} variant={variant} label="Role ID" />
                                                     </div>
                                                 ))}

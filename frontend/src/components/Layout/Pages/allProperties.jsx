@@ -176,6 +176,9 @@ export default function allproperties() {
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 DESIGNATION
                             </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                ORGANIZATION
+                            </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
                             </TableColumn>
@@ -189,13 +192,13 @@ export default function allproperties() {
                                     <TableCell>{property.description}</TableCell>
                                     <TableCell>{property.abbreviation}</TableCell>
                                     <TableCell>{property.designation}</TableCell>
+                                    <TableCell>{property.organization}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>
                                                 <Button
                                                     variant="light"
                                                     className="flex flex-row justify-center"
-
                                                 >
                                                     <BsThreeDotsVertical size={20} className="text-gray-400" />
                                                 </Button>

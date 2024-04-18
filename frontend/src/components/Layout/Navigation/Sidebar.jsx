@@ -88,7 +88,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                 },
                 isAdmin() && {
                     ref: "/homepage/allproperties",
-                    label: "All Properties",
+                    label: "Properties",
                     active: true
                 }
             ].filter(Boolean)

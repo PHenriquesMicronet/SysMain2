@@ -1,15 +1,33 @@
 "use client"
 import React, { useState } from "react";
-import { Modal, ScrollShadow, ModalContent, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Switch } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, 
+        Button, useDisclosure, Input, 
+        Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, 
+        Switch,
+        //imports de dropdown menu
+        DropdownTrigger, Dropdown, DropdownMenu, DropdownItem,
+    } from "@nextui-org/react";
 import { AiOutlineGlobal } from "react-icons/ai";
 import axios from 'axios';
 
 //icons
+import { FaRegUser } from "react-icons/fa";
+import { FiSearch } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
+import { IoMdDownload } from "react-icons/io"; 
+
 import { TfiSave } from "react-icons/tfi";
 import { LiaExpandSolid } from "react-icons/lia";
-import { MdClose } from "react-icons/md";
-import { FaRegUser } from "react-icons/fa";
+import { MdClose } from "react-icons/md"; 
 import organizationInsert, { organizationEdit } from "../functionsForm/organizations/page";
+import { GoGear } from "react-icons/go";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FiEdit3 } from "react-icons/fi";
+import { BsArrowRight } from "react-icons/bs";
+
+
+
+import FormModals from "@/components/Modal/modalProperty";
 
 
 const modaluser = ({
@@ -52,6 +70,18 @@ const modaluser = ({
         }
     };
 
+    const handleDelete = async (propertyID) => {
+        const confirmDelete = window.confirm("Tem certeza de que deseja excluir esta propriedade?");
+        if (confirmDelete) {
+            try {
+                const res = await axios.delete(`/api/hotel/properties/` + propertyID);
+                console.log(res.data);
+                alert("Propriedade removida com sucesso!");
+            } catch (error) {
+                console.error("Erro ao remover Propriedade:", error.message);
+            }
+        }
+    };
 
     const { handleInputOrganization, handleSubmitOrganization } = organizationInsert();
     const { handleUpdateOrganization, setValuesOrganization, valuesOrganization } = organizationEdit(idOrganization);
@@ -317,17 +347,53 @@ const modaluser = ({
                                                         <TableColumn className="bg-primary-600 text-white font-bold">COUNTRY</TableColumn>
                                                         <TableColumn className="bg-primary-600 text-white font-bold">EMAIL</TableColumn>
                                                         <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
+                                                            <GoGear size={20} />
                                                         </TableColumn>
                                                     </TableHeader>
                                                     <TableBody>
-                                                        {organizationProperties.map((organization, index) => (
+                                                        {organizationProperties.map((organizationProperties, index) => (
                                                             <TableRow key={index}>
-                                                                <TableCell>{organization.propertyID}</TableCell>
-                                                                <TableCell>{organization.name}</TableCell>
-                                                                <TableCell>{organization.address1}</TableCell>
-                                                                <TableCell>{organization.country}</TableCell>
-                                                                <TableCell>{organization.email}</TableCell>
-                                                                <TableCell className="flex justify-center" />
+                                                                <TableCell>{organizationProperties.propertyID}</TableCell>
+                                                                <TableCell>{organizationProperties.name}</TableCell>
+                                                                <TableCell>{organizationProperties.address1}</TableCell>
+                                                                <TableCell>{organizationProperties.country}</TableCell>
+                                                                <TableCell>{organizationProperties.email}</TableCell>
+                                                                <TableCell className="flex justify-center">
+                                                                    <Dropdown>
+                                                                        <DropdownTrigger>
+                                                                            <Button
+                                                                                variant="light"
+                                                                                className="flex flex-row justify-center"
+                                                                            >
+                                                                                <BsThreeDotsVertical size={20} className="text-gray-400" />
+                                                                            </Button>
+                                                                        </DropdownTrigger>
+                                                                        <DropdownMenu aria-label="Static Actions" isOpen={true} closeOnSelect={false}>
+                                                                            <DropdownItem key="edit">
+                                                                                <FormModals
+                                                                                    buttonName={"Editar"}
+                                                                                    editIcon={<FiEdit3 size={25} />}
+                                                                                    buttonColor={"transparent"}
+                                                                                    modalHeader={"Editar Propriedade"}
+                                                                                    modalEditArrow={<BsArrowRight size={25} />}
+                                                                                    modalEdit={`ID: ${organizationProperties.propertyID}`}
+                                                                                    formTypeModal={12}
+                                                                                    idProperty={organizationProperties.propertyID}
+                                                                                ></FormModals>
+                                                                            </DropdownItem>
+                                                                            <DropdownItem onClick={() => handleDelete(organizationProperties.propertyID)}>Remover</DropdownItem>
+                                                                            <DropdownItem >
+                                                                                <FormModals
+                                                                                    buttonName={"Ver"}
+                                                                                    buttonColor={"transparent"}
+                                                                                    modalHeader={"Ver Detalhes da Propriedade"}
+                                                                                    formTypeModal={11}
+                                                                                    idProperty={organizationProperties.propertyID}
+                                                                                ></FormModals>
+                                                                            </DropdownItem>
+                                                                        </DropdownMenu>
+                                                                    </Dropdown>
+                                                                </TableCell>
                                                             </TableRow>
                                                         ))}
                                                     </TableBody>
