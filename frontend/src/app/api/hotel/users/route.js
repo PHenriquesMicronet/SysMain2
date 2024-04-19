@@ -6,7 +6,64 @@ import prisma from "@/lib/prisma"
 
 export async function GET(request) {
 
-    const response = await prisma.users.findMany()
+    const users = await prisma.users.findMany({
+        include: {
+            organizations: {
+                select: {
+                    name: true
+                }
+            },
+            users_properties_applications: true
+        }
+    });
+
+    const response = await Promise.all(users.map(async (user) => {
+        const userData = {
+            userID: user.userID,
+            name: user.name,
+            lastName: user.name,
+            fiscalNumber: user.fiscalNumber,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            address1: user.address1,
+            address2: user.address2,
+            country: user.country,
+            district: user.district,
+            zipCode: user.zipCode,
+            organization: user.organizations.name,
+            properties: []
+        };
+
+        const propertyApplicationIDs = user.users_properties_applications.map(userPropertyApplication => userPropertyApplication.propertyApplicationID);
+
+        const properties_applications = await prisma.properties_applications.findMany({
+            where: {
+                propertyApplicationID: {
+                    in: propertyApplicationIDs
+                }
+            }
+        });
+
+        const propertyIDs = properties_applications.map(propertyApplication => propertyApplication.propertyID);
+
+        const properties = await prisma.properties.findMany({
+            where: {
+                propertyID: {
+                    in: propertyIDs
+                }
+            },
+            select: {
+                name: true
+            }
+        });
+
+        if (properties.length > 0) {
+            userData.properties = properties.map(property => property.name);
+        }
+
+        return userData;
+    }));
+
 
     prisma.$disconnect()
 
