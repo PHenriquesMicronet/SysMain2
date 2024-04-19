@@ -1,12 +1,13 @@
 "use client"
 import React, { useState } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, 
-        Button, useDisclosure, Input, 
-        Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, 
-        Switch,
-        //imports de dropdown menu
-        DropdownTrigger, Dropdown, DropdownMenu, DropdownItem,
-    } from "@nextui-org/react";
+import {
+    Modal, ModalContent, ModalHeader, ModalBody,
+    Button, useDisclosure, Input,
+    Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,
+    Switch,
+    //imports de dropdown menu
+    DropdownTrigger, Dropdown, DropdownMenu, DropdownItem,
+} from "@nextui-org/react";
 import { AiOutlineGlobal } from "react-icons/ai";
 import axios from 'axios';
 
@@ -14,20 +15,23 @@ import axios from 'axios';
 import { FaRegUser } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
-import { IoMdDownload } from "react-icons/io"; 
+import { IoMdDownload } from "react-icons/io";
 
 import { TfiSave } from "react-icons/tfi";
 import { LiaExpandSolid } from "react-icons/lia";
-import { MdClose } from "react-icons/md"; 
+import { MdClose } from "react-icons/md";
 import organizationInsert, { organizationEdit } from "../functionsForm/organizations/page";
 import { GoGear } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
+import { IoApps } from "react-icons/io5";
+
 
 
 
 import FormModals from "@/components/Modal/modalProperty";
+import FormOrganizationApplication from "@/components/Modal/modals/modalOrganizationApplication";
 
 
 const modaluser = ({
@@ -233,6 +237,24 @@ const modaluser = ({
                                             </div>
                                         </ModalHeader>
                                         <ModalBody className="flex flex-col mx-5 my-5 space-y-8">
+                                            <div className=" bg-gray-100 p-1 rounded border">
+                                                <Switch
+                                                    size="sm"
+                                                    // startContent={"On"}
+                                                    // endContent={"Off"}
+                                                    isSelected={isSelected}
+                                                    onValueChange={setIsSelected}>
+                                                    Desativar Organização
+                                                </Switch>
+                                                <FormOrganizationApplication
+                                                    buttonIcon={<IoApps size={20} className="text-gray-500" />}
+                                                    buttonColor={"gray-500"}
+                                                    modalHeader={"Aplicações da Organização"}
+                                                    modalIcons={"bg-red"}
+                                                    formTypeModal={1}
+                                                    idOrganization={idOrganization}
+                                                />
+                                            </div>
                                             <div className="w-full flex flex-col gap-4">
                                                 {variants.map((variant) => (
                                                     <div
@@ -286,9 +308,6 @@ const modaluser = ({
                                                         <Input type="text" name="ZipCode" value={valuesOrganization.ZipCode} onChange={e => setValuesOrganization({ ...valuesOrganization, ZipCode: e.target.value })} variant={variant} label="zipCode" />
                                                     </div>
                                                 ))}
-                                                <Switch isSelected={isSelected} onValueChange={setIsSelected}>
-                                                    Desativar Organização
-                                                </Switch>
                                             </div>
                                         </ModalBody>
                                     </form>
@@ -388,6 +407,7 @@ const modaluser = ({
                                                                                     buttonColor={"transparent"}
                                                                                     modalHeader={"Ver Detalhes da Propriedade"}
                                                                                     formTypeModal={11}
+                                                                                    // modalEdit={`ID: ${organizationProperties.propertyID}`}
                                                                                     idProperty={organizationProperties.propertyID}
                                                                                 ></FormModals>
                                                                             </DropdownItem>

@@ -208,6 +208,7 @@ export default function Contact() {
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Ver Detalhes da Organizacao"}
                                                         formTypeModal={11}
+                                                        modalEdit={`ID: ${organization.organizationID}`}
                                                         idOrganization={organization.organizationID}
                                                     ></FormModals>
                                                 </DropdownItem>
