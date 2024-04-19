@@ -240,11 +240,10 @@ const modaluser = ({
                                             <div className=" bg-gray-100 p-1 rounded border">
                                                 <Switch
                                                     size="sm"
-                                                    // startContent={"On"}
-                                                    // endContent={"Off"}
                                                     isSelected={isSelected}
-                                                    onValueChange={setIsSelected}>
-                                                    Desativar Organização
+                                                    onValueChange={setIsSelected}
+                                                >
+                                                    {isSelected ? "Organização Ativada" : "Organização Desativada"}
                                                 </Switch>
                                                 <FormOrganizationApplication
                                                     buttonIcon={<IoApps size={20} className="text-gray-500" />}

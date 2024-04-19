@@ -37,6 +37,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     const { handleInputProperty, handleSubmitProperty } = propertyInsert();
     const { handleUpdateProperty, setValuesProperty, valuesProperty } = propertyEdit(idProperty);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [isSelected, setIsSelected] = useState(true);
 
     /* Modals Open*/
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
@@ -626,6 +627,13 @@ const toggleThirdModal = async () => {
                                         </ModalHeader>
                                         <ModalBody className="flex flex-col mx-5 my-5 space-y-4">
                                             <div className="flex justify-end gap-2">
+                                            <Switch className="mr-auto"
+                                                    size="sm"
+                                                    isSelected={isSelected}
+                                                    onValueChange={setIsSelected}
+                                                >
+                                                    {isSelected ? "Propriedade Ativada" : "Propriedade Desativada"}
+                                                </Switch>
                                                 <div className="bg-gray-100 p-1 rounded border border-gray-300 mr-2">
                                                     <Badge color="success" content={userCount} isInvisible={isInvisible} shape="circle">
                                                         <Button color="transparent" onPress={toggleSecondModal}>
