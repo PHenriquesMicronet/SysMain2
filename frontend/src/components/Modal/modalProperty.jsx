@@ -52,8 +52,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     const [userCount, setUserCount] = useState(null);
 
     const { data: session, status } = useSession()
+
     const isAdmin = () => {
-        return session?.user?.role == 18;
+        return session?.user?.admin;
     };
 
     /*Paths para os Modals*/
@@ -94,6 +95,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     //         }
     //     }
     // };
+    
     const [allApplications, setAllApplications] = useState([]);
 
     useEffect(() => {
@@ -625,7 +627,7 @@ const toggleThirdModal = async () => {
                                         <ModalBody className="flex flex-col mx-5 my-5 space-y-4">
                                             <div className="flex justify-end gap-2">
                                                 <div className="bg-gray-100 p-1 rounded border border-gray-300 mr-2">
-                                                    <Badge color="success" content={5} isInvisible={isInvisible} shape="circle">
+                                                    <Badge color="success" content={userCount} isInvisible={isInvisible} shape="circle">
                                                         <Button color="transparent" onPress={toggleSecondModal}>
                                                             <FaUser size={20} className="text-gray-500" />
                                                         </Button>
