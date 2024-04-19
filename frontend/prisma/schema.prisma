@@ -227,6 +227,6 @@ model organizations_applications {
   applications              applications  @relation(fields: [applicationID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "organizationsApplications_applications")
   organizations             organizations @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "organizationsApplications_organizations")
 
+  @@unique([organizationID, applicationID], map: "organizationID_applicationID")
   @@index([applicationID], map: "organizationsApplications_applications")
-  @@index([organizationID], map: "organizationsApplications_organizations")
 }
