@@ -87,6 +87,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                     label: "Properties",
                     active: true
                 }
+                
             ].filter(Boolean)
         },
 
@@ -97,11 +98,14 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                 {
                     ref: "/homepage/profile", label: "Profiles", active: true
                 },
-                {
+                !isAdmin() && {
                     ref: "/homepage/users", label: "Manage Users", active: true
                 },
+                isAdmin() && {
+                    ref: "/homepage/allusers", label: "Users", active: true
+                },
 
-            ]
+            ].filter(Boolean)
         }
 
     }
