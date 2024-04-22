@@ -105,7 +105,7 @@ export default function Contact() {
         <>
             <main>
                 <div className="flex flex-col mt-5 py-3">
-                    <p className="text-xs px-6">Organizações</p>
+                    <p className="text-xs px-6">Todas as Organizações</p>
                     <div className="flex flex-row justify-between items-center mx-5">
                         <div className="flex flex-row">
                             <div className="flex flex-wrap md:flex-nowrap gap-4">

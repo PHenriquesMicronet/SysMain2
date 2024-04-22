@@ -26,7 +26,7 @@ import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
 import { IoMdDownload } from "react-icons/io";
 import { BiSpreadsheet } from "react-icons/bi";
-import { FaPlug } from "react-icons/fa";
+
 
 import FormModals from "@/components/Modal/modalProperty";
 

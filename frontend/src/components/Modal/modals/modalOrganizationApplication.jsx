@@ -1,51 +1,41 @@
-"use client"
-import React, { useState } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure , Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
-
-//icons
-
-import { MdClose } from "react-icons/md";
+import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { MdClose, MdEdit, MdSave } from "react-icons/md";
 import { LiaExpandSolid } from "react-icons/lia";
+import { FaPlug } from "react-icons/fa";
 
+import FormConnectionString from "@/components/Modal/modals/modalConnectionString"
 
-const modalOrganizationApplication = ({buttonName,
-    buttonIcon,
-    modalHeader,
-    formTypeModal,
-    buttonColor,
-    idOrganization
-    }) => {
+const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idOrganization }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isLoading, setIsLoading] = useState(true);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [OrganizationApplications, setOrganizationApplications] = useState([]);
     const [OrganizationApplicationsFetched, setOrganizationApplicationsFetched] = useState(false);
 
 
-
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
-    
+
     const toggleModal = async () => {
         setIsModalOpen(!isModalOpen);
         if (!OrganizationApplicationsFetched) {
             setIsLoading(true);
             try {
-                    const res = await axios.get(`/api/hotel/organizations/` + idOrganization + `/applications/`);
-                    setOrganizationApplications(res.data.response);
-                    console.log(res.data.response)
-                    setOrganizationApplicationsFetched(true);
-                } catch (error) {
-                    console.error("Erro ao encontrar as aplicação da organização:", error.message);
+                const res = await axios.get(`/api/hotel/organizations/` + idOrganization + `/applications/`);
+                setOrganizationApplications(res.data.response);
+                setOrganizationApplicationsFetched(true);
+            } catch (error) {
+                console.error("Erro ao encontrar as aplicação da organização:", error.message);
             } finally {
                 setIsLoading(false);
             }
-    }
-    }
+        }
+    };
 
     return (
         <>
@@ -92,21 +82,29 @@ const modalOrganizationApplication = ({buttonName,
                                                     className="h-full"
                                                 >
                                                     <TableHeader>
-                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                APPLICATION
-                                                            </TableColumn>
-                                                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                CONNECTION STRING
-                                                            </TableColumn>
-                                                        </TableHeader>
-                                                        <TableBody>
-                                                            {OrganizationApplications.map((organization, index) => (
-                                                                <TableRow key={index}>
-                                                                    <TableCell>{organization.applications.description}</TableCell>
-                                                                    <TableCell>Teste</TableCell>
-                                                                </TableRow>
-                                                            ))}
-                                                        </TableBody>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">
+                                                            APPLICATION
+                                                        </TableColumn>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">
+                                                            CONNECTION STRING
+                                                        </TableColumn>
+                                                    </TableHeader>
+                                                    <TableBody>
+                                                        {OrganizationApplications.map((organization, index) => (
+                                                            <TableRow key={index}>
+                                                                <TableCell>{organization.applications.description}</TableCell>
+                                                                <TableCell>
+                                                                    <FormConnectionString
+                                                                        buttonName={<FaPlug size={20} />}
+                                                                        buttonColor={"transparent"}
+                                                                        formTypeModal={1}
+                                                                        idOrganization={idOrganization}
+                                                                        idApplication={organization.applicationID}
+                                                                    ></FormConnectionString>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
                                                 </Table>
                                             </div>
                                         )}
@@ -120,4 +118,5 @@ const modalOrganizationApplication = ({buttonName,
         </>
     );
 };
-export default modalOrganizationApplication;
+
+export default ModalOrganizationApplication;
