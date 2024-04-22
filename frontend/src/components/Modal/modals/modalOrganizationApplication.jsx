@@ -4,6 +4,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure, Tab
 import { MdClose, MdEdit, MdSave } from "react-icons/md";
 import { LiaExpandSolid } from "react-icons/lia";
 import { FaPlug } from "react-icons/fa";
+import { useSession, signOut } from 'next-auth/react';
 
 import FormConnectionString from "@/components/Modal/modals/modalConnectionString"
 
@@ -15,6 +16,11 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [OrganizationApplications, setOrganizationApplications] = useState([]);
     const [OrganizationApplicationsFetched, setOrganizationApplicationsFetched] = useState(false);
+    const { data: session, status } = useSession()
+
+    const isAdmin = () => {
+        return session?.user?.admin;
+    };
 
 
     const toggleExpand = () => {
@@ -94,13 +100,17 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
                                                             <TableRow key={index}>
                                                                 <TableCell>{organization.applications.description}</TableCell>
                                                                 <TableCell>
-                                                                    <FormConnectionString
-                                                                        buttonName={<FaPlug size={20} />}
-                                                                        buttonColor={"transparent"}
-                                                                        formTypeModal={1}
-                                                                        idOrganization={idOrganization}
-                                                                        idApplication={organization.applicationID}
-                                                                    ></FormConnectionString>
+                                                                    {isAdmin() ? (
+                                                                        <FormConnectionString
+                                                                            buttonName={<FaPlug size={20} />}
+                                                                            buttonColor={"transparent"}
+                                                                            formTypeModal={1}
+                                                                            idOrganization={idOrganization}
+                                                                            idApplication={organization.applicationID}
+                                                                        />
+                                                                    ) : (
+                                                                        "***"
+                                                                    )}
                                                                 </TableCell>
                                                             </TableRow>
                                                         ))}
