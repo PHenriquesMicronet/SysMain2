@@ -5,7 +5,7 @@ import {
     Input,
     Checkbox,
     Divider,
-    Autocomplete, AutocompleteItem, Avatar, Button
+    Autocomplete, AutocompleteItem, Avatar, Button, Switch
 } from "@nextui-org/react"
 import axios from "axios";
 import { useSession } from "next-auth/react"
@@ -18,11 +18,14 @@ import { MdClose } from "react-icons/md";
 import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
 import { BiSpreadsheet } from "react-icons/bi";
+import { IoApps } from "react-icons/io5";
+import { FaPlug } from "react-icons/fa";
 
 
 
 import Modalorg from "@/components/Modal/modalOrganization"
 import FormModals from "@/components/Modal/modalOrganization"
+import FormOrganizationApplication from "@/components/Modal/modals/modalOrganizationApplication";
 
 
 const Contact = () => {
@@ -34,7 +37,7 @@ const Contact = () => {
     const [searchValue, setSearchValue] = React.useState("");
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const { data: session, status } = useSession()
-
+    const [isSelected, setIsSelected] = useState(true);
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
@@ -42,7 +45,7 @@ const Contact = () => {
     const handleInput = (event) => {
         setUser({ ...organizations, [event.target.name]: event.target.value })
     }
-    
+
     const filteredItems = React.useMemo(() => {
         return organizations.filter((organizations) =>
             organizations.name.toLowerCase().includes(
@@ -55,17 +58,17 @@ const Contact = () => {
     }, [organizations, searchValue]);
 
 
-    useEffect(() => { 
+    useEffect(() => {
         const getData = async () => {
-            if (status !== "loading"){
-                try{
-            const res = await axios.get(`/api/hotel/organizations/`+  session.user.organization);
-            setOrganizations(res.data.response);
-            }catch (error) {
-                console.error("Erro ao obter as propriedades:", error.message);
+            if (status !== "loading") {
+                try {
+                    const res = await axios.get(`/api/hotel/organizations/` + session.user.organization);
+                    setOrganizations(res.data.response);
+                } catch (error) {
+                    console.error("Erro ao obter as propriedades:", error.message);
+                }
             }
-        }
-    };getData();
+        }; getData();
     }, []);
 
     const items = React.useMemo(() => {
@@ -91,15 +94,15 @@ const Contact = () => {
                             modalEditArrow={<BsArrowRight size={25} />}
                             modalEdit={`ID: ${organizations.organizationID}`}
                         ></Modalorg>
-                        <FormModals
-                            buttonName={<BiSpreadsheet size={20} color={"white"}/>}
-                            buttonColor={""}
-                            modalHeader={"Todas as Licenças das Propriedades"}
-                            variant="light"
-                            className="flex flex-row justify-center"
-                            formTypeModal={13}
-                            idOrg={organizations.organizationID}
-                        ></FormModals>
+
+                        <FormOrganizationApplication
+                            buttonIcon={<FaPlug size={20} className="text-white" />}
+                            buttonColor={"gray-500"}
+                            modalHeader={"Aplicações da Organização"}
+                            modalIcons={"bg-red"}
+                            formTypeModal={1}
+                            idOrganization={organizations.organizationID} // Make sure this is the correct ID
+                        />
                     </div>
                     <div className="w-full flex flex-col gap-4 my-4">
                         {variants.map((variant) => (
@@ -126,7 +129,7 @@ const Contact = () => {
                     </div>
 
                     <Divider className="my-8 horizontal" />
-                    
+
                     <div className="w-full flex flex-col gap-4">
                         {variants.map((variant) => (
                             <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
