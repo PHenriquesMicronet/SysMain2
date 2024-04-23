@@ -15,7 +15,7 @@ export async function GET(request, context) {
         include: {
             applications: {
                 select: {
-                    name: true
+                    description: true
                 }
             }
         }
