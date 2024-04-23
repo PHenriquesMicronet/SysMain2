@@ -771,7 +771,7 @@ const toggleThirdModal = async () => {
                                                                                                 ></FormModals>
                                                                                             </TableCell>
                                                                                             <TableCell>
-                                                                                                <Switch defaultSelected size="sm" color="success" />
+                                                                                                <Switch isSelected={false} size="sm" color="success" />
                                                                                             </TableCell>
                                                                                             <TableCell style={{ textAlign: 'left' }}>
                                                                                                 {application.description === "OnPremPMS" ? (

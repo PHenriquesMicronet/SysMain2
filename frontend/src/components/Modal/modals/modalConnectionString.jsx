@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure, Input } from "@nextui-org/react";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdEdit, MdSave } from "react-icons/md";
 import { LiaExpandSolid } from "react-icons/lia";
 
 const ModalConnectionString = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idOrganization, idApplication }) => {
@@ -10,8 +10,9 @@ const ModalConnectionString = ({ buttonName, buttonIcon, modalHeader, formTypeMo
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [connection, setConnection] = useState([]);
-    const [ConnectionStringFetched, setConnectionStringFetched] = useState(false);
+    const [connection, setConnection] = useState("");
+    const [editable, setEditable] = useState(false); // Adicionado estado para controle de edição
+    const [initialConnection, setInitialConnection] = useState(""); // Para armazenar a Connection String original
     const variants = ["underlined"];
 
     const toggleExpand = () => {
@@ -20,17 +21,34 @@ const ModalConnectionString = ({ buttonName, buttonIcon, modalHeader, formTypeMo
 
     const toggleConnectionModal = async () => {
         setIsModalOpen(!isModalOpen);
-        if (!ConnectionStringFetched) {
+        if (!connection && !initialConnection) {
             setIsLoading(true);
             try {
                 const res = await axios.get(`/api/hotel/organizations/` + idOrganization + `/applications/` + idApplication);
-                setConnection(res.data.response[0].connectionString);
-                setConnectionStringFetched(true);
+                const connectionString = res.data.response[0].connectionString;
+                setConnection(connectionString);
+                setInitialConnection(connectionString);
             } catch (error) {
                 console.error("Erro ao encontrar as aplicação da organização:", error.message);
             } finally {
                 setIsLoading(false);
             }
+        }
+    };
+
+    const handleEdit = () => {
+        setEditable(true);
+    };
+
+    const handleSave = async () => {
+        setEditable(false);
+        try {
+            await axios.patch(`/api/hotel/organizations/${idOrganization}/applications/${idApplication}`, {
+                data: { connectionString: connection }
+            });
+            setInitialConnection(connection);
+        } catch (error) {
+            console.error("Erro ao salvar a Connection String:", error.message);
         }
     };
 
@@ -60,7 +78,11 @@ const ModalConnectionString = ({ buttonName, buttonIcon, modalHeader, formTypeMo
                                     <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
                                         {modalHeader}
                                         <div className='flex flex-row items-center mr-5'>
-                                            <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                            {editable ? ( 
+                                                <Button color="transparent" onClick={handleSave}><MdSave size={30} /></Button>
+                                            ) : ( 
+                                                <Button color="transparent" onClick={handleEdit}><MdEdit size={30} /></Button>
+                                            )}
                                             <Button color="transparent" onPress={onClose}><MdClose size={30} /></Button>
                                         </div>
                                     </ModalHeader>
@@ -74,7 +96,14 @@ const ModalConnectionString = ({ buttonName, buttonIcon, modalHeader, formTypeMo
                                                         key={variant}
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
-                                                        <Input type="text" variant={variant} value={connection} label="Connection String" />
+                                                        <Input
+                                                            type="text"
+                                                            variant={variant}
+                                                            value={connection}
+                                                            label="Connection String"
+                                                            onChange={(e) => setConnection(e.target.value)}
+                                                            readOnly={!editable}
+                                                        />
                                                     </div>
                                                 ))}
                                             </div>
