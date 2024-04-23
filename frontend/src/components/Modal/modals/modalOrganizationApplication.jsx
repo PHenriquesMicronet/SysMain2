@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader,Badge, ModalBody, Button, useDisclosure, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import { MdClose, MdEdit, MdSave } from "react-icons/md";
 import { LiaExpandSolid } from "react-icons/lia";
 import { FaPlug } from "react-icons/fa";
@@ -16,6 +16,9 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [OrganizationApplications, setOrganizationApplications] = useState([]);
     const [OrganizationApplicationsFetched, setOrganizationApplicationsFetched] = useState(false);
+
+    const [propertiesCount, setpropertiesCount] = useState(null);
+
     const { data: session, status } = useSession()
 
     const isAdmin = () => {
@@ -42,6 +45,19 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
             }
         }
     };
+
+    useEffect(() => {
+        // Função para buscar o número de usuários quando o componente for montado
+        async function fetchpropertiesCount() {
+            try {
+                const response = await axios.get('/api/hotel/properties/' + idProperty + '/users/count');
+                setpropertiesCount(response.data.response);
+            } catch (error) {
+                console.error("Error fetching properties Count:", error);
+            }
+        }
+        fetchpropertiesCount();
+    }, []); // Executar somente uma vez no montagem do componente
 
     return (
         <>
@@ -92,7 +108,10 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
                                                             APPLICATION
                                                         </TableColumn>
                                                         <TableColumn className="bg-primary-600 text-white font-bold">
-                                                            CONNECTION STRING
+                                                            DETAILS
+                                                        </TableColumn>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">
+                                                            PROPERTIES
                                                         </TableColumn>
                                                     </TableHeader>
                                                     <TableBody>
@@ -111,6 +130,9 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
                                                                     ) : (
                                                                         "***"
                                                                     )}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                <Badge color="success" content={userCount} isInvisible={isInvisible} shape="circle" />
                                                                 </TableCell>
                                                             </TableRow>
                                                         ))}

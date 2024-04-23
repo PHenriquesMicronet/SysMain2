@@ -152,7 +152,7 @@ const modalorg = ({
             )
             }
 
-{formTypeModal === 13 && ( //organization
+{formTypeModal === 13 && ( //organization licences
                 <>
                     <Button onPress={onOpen} color={buttonColor} className="w-fit">
                         {buttonName} {buttonIcon}
