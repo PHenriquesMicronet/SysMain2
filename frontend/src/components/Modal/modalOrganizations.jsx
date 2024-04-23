@@ -237,7 +237,7 @@ const modaluser = ({
                                             </div>
                                         </ModalHeader>
                                         <ModalBody className="flex flex-col mx-5 my-5 space-y-8">
-                                            <div className=" bg-gray-100 p-1 rounded border">
+                                            <div className=" bg-gray-100 p-1 rounded border d-flex justify-content-end">
                                                 <Switch
                                                     size="sm"
                                                     isSelected={isSelected}

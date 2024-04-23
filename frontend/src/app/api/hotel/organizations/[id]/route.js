@@ -23,6 +23,18 @@ export async function PATCH(request, context) {
         const { id } = context.params;
         const { data } = await request.json();
 
+        const activeProperties = await prisma.properties.findMany({
+            where: {
+                organizationID: parseInt(id),
+                del: data.active
+            }
+        })
+
+        if (activeProperties != "[]") {
+            return new NextResponse(JSON.stringify({ error: "You can't archive this organization. There are active properties!" }));
+        }
+
+
         const response = await prisma.organizations.update({
             where: {
                 organizationID: parseInt(id),
@@ -36,7 +48,8 @@ export async function PATCH(request, context) {
                 phoneNumber: data.PhoneNumber,
                 country: data.Country,
                 district: data.District,
-                zipCode: data.ZipCode
+                zipCode: data.ZipCode,
+                del: Boolean(0)
             }
         })
         return new NextResponse(JSON.stringify({ status: 200 }));
