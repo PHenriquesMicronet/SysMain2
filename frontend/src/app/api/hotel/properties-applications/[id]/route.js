@@ -34,8 +34,8 @@ export async function PATCH(request, context) {
             },
             data: {
                 ip: data.ip,
-                port: data.port,
-                prefix: parseInt(data.prefix),
+                port: parseInt(data.port),
+                prefix: data.prefix,
             }
         })
         return new NextResponse(JSON.stringify({ status: 200 }));
