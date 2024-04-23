@@ -8,18 +8,15 @@ export async function GET(request, context) {
 
     const { id } = context.params;
 
-    const response = await prisma.organizations_applications.findMany({
+    const response = await prisma.properties_applications.count({
         where: {
-            organizationID: parseInt(id)
-        },
-        include: {
-            applications: {
-                select: {
-                    name: true
-                }
-            }
+            applicationID: parseInt(id)
         }
     })
+
+    if (!response) {
+        return new NextResponse(JSON.stringify({ response: 0, status: 404 }));
+    }
 
     prisma.$disconnect()
 

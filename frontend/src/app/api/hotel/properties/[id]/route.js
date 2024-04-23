@@ -44,7 +44,8 @@ export async function PATCH(request, context) {
                 phoneNumber: data.PhoneNumber,
                 description: data.Description,
                 abbreviation: data.Abbreviation,
-                designation: data.Designation
+                designation: data.Designation,
+                del: data.active
             }
         })
         return new NextResponse(JSON.stringify({ status: 200 }));
