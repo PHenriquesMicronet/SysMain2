@@ -53,11 +53,44 @@ export async function DELETE(request, context) {
     try {
         const { id } = context.params;
 
-        const response = await prisma.properties_applications.delete({
+        const propertyApplication = await prisma.properties_applications.delete({
             where: {
                 propertyApplicationID: parseInt(id),
             }
         })
+
+        const propertyOrganization = await prisma.properties.findUnique({
+            where: {
+                propertyID: propertyApplication.propertyID
+            }
+        })
+
+        const organizationProperties = await prisma.properties.findMany({
+            where: {
+                organizationID: propertyOrganization.organizationID
+            }
+        })
+
+        const propertiesApplications = await prisma.properties_applications.findMany({
+            where: {
+                applicationID: propertyApplication.applicationID,
+                propertyID: {
+                    in: organizationProperties.map(organizationProperty => organizationProperty.propertyID)
+                }
+            }
+        })
+
+        if (propertiesApplications == "") {
+            const organizationApplication = await prisma.organizations_applications.delete({
+                where: {
+                    organizationID_applicationID: {
+                        organizationID: propertyOrganization.organizationID,
+                        applicationID: propertyApplication.applicationID
+                    }
+                }
+            })
+        }
+
         return new NextResponse(JSON.stringify({ status: 200 }));
 
     } catch (error) {

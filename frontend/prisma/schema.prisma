@@ -61,9 +61,9 @@ model properties_applications {
   propertyApplicationID           Int                               @id @default(autoincrement())
   propertyID                      Int
   applicationID                   Int
-  ip                              String                            @db.VarChar(50)
+  ip                              String                            @default("") @db.VarChar(50)
   port                            Int                               @default(0)
-  prefix                          String                            @db.VarChar(50)
+  prefix                          String                            @default("") @db.VarChar(50)
   applications                    applications                      @relation(fields: [applicationID], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "properties_applications_applications")
   properties                      properties                        @relation(fields: [propertyID], references: [propertyID], onDelete: NoAction, onUpdate: NoAction, map: "properties_applications_properties")
   properties_applications_plugins properties_applications_plugins[]

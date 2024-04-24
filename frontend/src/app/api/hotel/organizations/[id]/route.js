@@ -30,6 +30,9 @@ export async function PATCH(request, context) {
             }
         })
 
+
+        //FIX???? != ""
+
         if (activeProperties != "[]") {
             return new NextResponse(JSON.stringify({ error: "You can't archive this organization. There are active properties!" }));
         }
