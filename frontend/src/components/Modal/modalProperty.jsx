@@ -96,7 +96,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     //         }
     //     }
     // };
-    
+
     const [allApplications, setAllApplications] = useState([]);
 
     useEffect(() => {
@@ -116,29 +116,28 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     }, []);
 
 
-const toggleThirdModal = async () => {
-    setIsThirdModalOpen(!isThirdModalOpen);
-    if (!applicationFetched) {
-        setIsLoading(true);
-        try {
-            let response;
-            if (isAdmin()) { // Se o usuário for um administrador
-                response = await axios.get(`/api/hotel/applications`);
-            } else { // Se o usuário não for um administrador
-                response = await axios.get(`/api/hotel/properties/${idProperty}/applications`);
+    const toggleThirdModal = async () => {
+        setIsThirdModalOpen(!isThirdModalOpen);
+        if (!applicationFetched) {
+            setIsLoading(true);
+            try {
+                let response;
+                if (isAdmin()) { // Se for um administrador
+                    response = await axios.get(`/api/hotel/applications`);
+                } else { // Se não for um administrador
+                    response = await axios.get(`/api/hotel/properties/${idProperty}/applications`);
+                }
+                setPropertyApplications(response.data.response);
+                setApplicationFetched(true);
+            } catch (error) {
+                console.error("Erro ao encontrar as aplicações:", error.message);
+            } finally {
+                setIsLoading(false);
             }
-            setPropertyApplications(response.data.response);
-            setApplicationFetched(true);
-        } catch (error) {
-            console.error("Erro ao encontrar as aplicações:", error.message);
-        } finally {
-            setIsLoading(false);
         }
-    }
-};
+    };
 
     useEffect(() => {
-        // Função para buscar o número de usuários quando o componente for montado
         async function fetchUserCount() {
             try {
                 const response = await axios.get('/api/hotel/properties/' + idProperty + '/users/count');
@@ -148,10 +147,30 @@ const toggleThirdModal = async () => {
             }
         }
         fetchUserCount();
-    }, []); // Executar somente uma vez no montagem do componente
+    }, []); 
 
 
-
+    const handleSwitchChange = async (applicationID, checked) => {
+        setIsLoading(true);
+        try {
+            await axios.put(`/api/hotel/properties-applications/`, {
+                data: {
+                    propertyID: idProperty,
+                    applicationID: applicationID,
+                    enabled: checked
+                }
+            });
+            setPropertyApplications(prevApplications =>
+                prevApplications.map(app =>
+                    app.id === applicationID ? { ...app, enabled: checked } : app
+                )
+            );
+        } catch (error) {
+            console.error("Erro ao atualizar a aplicação:", error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <>
@@ -429,7 +448,13 @@ const toggleThirdModal = async () => {
                                                                                                 ></FormModals>
                                                                                             </TableCell>
                                                                                             <TableCell>
-                                                                                                <Switch defaultSelected size="sm" color="success" />
+                                                                                                <Switch
+                                                                                                    checked={application.enabled}
+                                                                                                    onChange={(event) => handleSwitchChange(application.id, event.target.checked)}
+                                                                                                    disabled={!isAdmin}
+                                                                                                    size="sm"
+                                                                                                    color="success"
+                                                                                                />
                                                                                             </TableCell>
                                                                                             <TableCell style={{ textAlign: 'left' }}>
                                                                                                 {application.description === "OnPremPMS" ? (
@@ -441,7 +466,7 @@ const toggleThirdModal = async () => {
                                                                                                         idProperty={idProperty}
                                                                                                     ></FormModalsLicence>
                                                                                                 ) : (
-                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20}/></Button>
+                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20} /></Button>
                                                                                                 )}
                                                                                             </TableCell>
                                                                                             <TableCell style={{ textAlign: 'left' }}>
@@ -474,7 +499,7 @@ const toggleThirdModal = async () => {
                                                                                             <TableCell>
                                                                                                 <Switch defaultSelected size="sm" color="success" />
                                                                                             </TableCell>
-                                                                                            <TableCell style={{ textAlign: 'left' }}> 
+                                                                                            <TableCell style={{ textAlign: 'left' }}>
                                                                                                 {application.description === "OnPremPMS" ? (
                                                                                                     <FormModalsLicence
                                                                                                         buttonName={<BiSpreadsheet size={25} />}
@@ -484,7 +509,7 @@ const toggleThirdModal = async () => {
                                                                                                         idProperty={idProperty}
                                                                                                     ></FormModalsLicence>
                                                                                                 ) : (
-                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20} 
+                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20}
                                                                                                     /></Button>
                                                                                                 )}
                                                                                             </TableCell>
@@ -627,7 +652,7 @@ const toggleThirdModal = async () => {
                                         </ModalHeader>
                                         <ModalBody className="flex flex-col mx-5 my-5 space-y-4">
                                             <div className="flex justify-end gap-2">
-                                            <Switch className="mr-auto"
+                                                <Switch className="mr-auto"
                                                     size="sm"
                                                     isSelected={isSelected}
                                                     onValueChange={setIsSelected}
@@ -771,7 +796,13 @@ const toggleThirdModal = async () => {
                                                                                                 ></FormModals>
                                                                                             </TableCell>
                                                                                             <TableCell>
-                                                                                                <Switch isSelected={false} size="sm" color="success" />
+                                                                                            <Switch
+                                                                                                    checked={application.enabled}
+                                                                                                    onChange={(event) => handleSwitchChange(application.id, event.target.checked)}
+                                                                                                    disabled={!isAdmin}
+                                                                                                    size="sm"
+                                                                                                    color="success"
+                                                                                                />
                                                                                             </TableCell>
                                                                                             <TableCell style={{ textAlign: 'left' }}>
                                                                                                 {application.description === "OnPremPMS" ? (
@@ -783,7 +814,7 @@ const toggleThirdModal = async () => {
                                                                                                         idProperty={idProperty}
                                                                                                     ></FormModalsLicence>
                                                                                                 ) : (
-                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20}/></Button>
+                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20} /></Button>
                                                                                                 )}
                                                                                             </TableCell>
                                                                                             <TableCell style={{ textAlign: 'left' }}>
@@ -816,7 +847,7 @@ const toggleThirdModal = async () => {
                                                                                             <TableCell>
                                                                                                 <Switch defaultSelected size="sm" color="success" />
                                                                                             </TableCell>
-                                                                                            <TableCell style={{ textAlign: 'left' }}> 
+                                                                                            <TableCell style={{ textAlign: 'left' }}>
                                                                                                 {application.description === "OnPremPMS" ? (
                                                                                                     <FormModalsLicence
                                                                                                         buttonName={<BiSpreadsheet size={25} />}
@@ -826,7 +857,7 @@ const toggleThirdModal = async () => {
                                                                                                         idProperty={idProperty}
                                                                                                     ></FormModalsLicence>
                                                                                                 ) : (
-                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20} 
+                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20}
                                                                                                     /></Button>
                                                                                                 )}
                                                                                             </TableCell>

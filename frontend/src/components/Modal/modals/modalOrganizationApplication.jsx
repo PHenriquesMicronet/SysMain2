@@ -11,6 +11,7 @@ import FormConnectionString from "@/components/Modal/modals/modalConnectionStrin
 const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idOrganization }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isInvisible, setIsInvisible] = React.useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,18 +47,18 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
         }
     };
 
+    
     useEffect(() => {
-        // Função para buscar o número de usuários quando o componente for montado
         async function fetchpropertiesCount() {
             try {
-                const response = await axios.get('/api/hotel/properties/' + idProperty + '/users/count');
+                const response = await axios.get('/api/hotel/applications/' + 1 + '/count');
                 setpropertiesCount(response.data.response);
             } catch (error) {
                 console.error("Error fetching properties Count:", error);
             }
         }
         fetchpropertiesCount();
-    }, []); // Executar somente uma vez no montagem do componente
+    }, []); 
 
     return (
         <>
@@ -132,7 +133,7 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
                                                                     )}
                                                                 </TableCell>
                                                                 <TableCell>
-                                                                <Badge color="success" content={userCount} isInvisible={isInvisible} shape="circle" />
+                                                                <Badge content={propertiesCount} isInvisible={isInvisible} />
                                                                 </TableCell>
                                                             </TableRow>
                                                         ))}
