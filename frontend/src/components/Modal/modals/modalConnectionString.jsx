@@ -3,8 +3,10 @@ import axios from 'axios';
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure, Input } from "@nextui-org/react";
 import { MdClose, MdEdit, MdSave } from "react-icons/md";
 import { LiaExpandSolid } from "react-icons/lia";
+import { BsArrowRight } from "react-icons/bs";
+import { TfiSave } from "react-icons/tfi";
 
-const ModalConnectionString = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idOrganization, idApplication }) => {
+const ModalConnectionString = ({ buttonName, buttonIcon, modalHeader,modalEdit, modalEditArrow, formTypeModal, buttonColor, idOrganization, idApplication }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -76,10 +78,12 @@ const ModalConnectionString = ({ buttonName, buttonIcon, modalHeader, formTypeMo
                             {(onClose) => (
                                 <>
                                     <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                        {modalHeader}
+                                    <div className="flex flex-row justify-start gap-4">
+                                            {modalHeader} {modalEditArrow} {modalEdit}
+                                    </div>
                                         <div className='flex flex-row items-center mr-5'>
                                             {editable ? ( 
-                                                <Button color="transparent" onClick={handleSave}><MdSave size={30} /></Button>
+                                                <Button color="transparent" onClick={handleSave}><TfiSave size={25} /></Button>
                                             ) : ( 
                                                 <Button color="transparent" onClick={handleEdit}><MdEdit size={30} /></Button>
                                             )}

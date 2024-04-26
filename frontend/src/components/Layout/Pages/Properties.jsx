@@ -216,6 +216,8 @@ export default function Contact() {
                                                         buttonName={"Ver"}
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Ver Detalhes da Propriedade"}
+                                                        modalEditArrow={<BsArrowRight size={25} />}
+                                                        modalEdit={`ID: ${property.propertyID}`}
                                                         formTypeModal={11}
                                                         idProperty={property.propertyID}
                                                     ></FormModals>

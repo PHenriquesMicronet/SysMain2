@@ -35,6 +35,7 @@ const modaluser = ({
     const toggleSecondModal = () => {
         setIsSecondModalOpen(!isSecondModalOpen);
     };
+    console.log("aaa", idUser)
 
     const { handleInputUser, handleSubmitUser } = userInsert();
     const { handleUpdateUser, setValuesUser, valuesUser } = userEdit(idUser);

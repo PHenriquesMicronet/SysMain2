@@ -34,7 +34,7 @@ import { CSVLink } from "react-csv";
 import Modaluser from "@/components/Modal/modalUser";
 import properties from "@/app/homepage/properties/page";
 
-export default function Contact() {
+export default function users() {
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const [searchValue, setSearchValue] = React.useState("");
@@ -191,13 +191,23 @@ export default function Contact() {
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Utilizador"}
                                                         modalEditArrow={<BsArrowRight size={25} />}
-                                                        modalEdit={`ID: ${user.id}`}
+                                                        modalEdit={`ID: ${user.userID}`}
                                                         formTypeModal={11}
-                                                        idUser={user.id}
+                                                        idUser={user.userID}
                                                     ></Modaluser>
                                                 </DropdownItem>
                                                 <DropdownItem><button onClick={() => handleDelete(user.id)}>Remover</button></DropdownItem>
-                                                <DropdownItem key="delete">Ver</DropdownItem>
+                                                <DropdownItem>
+                                                <Modaluser
+                                                        buttonName={"Ver"}
+                                                        buttonColor={"transparent"}
+                                                        modalHeader={"Ver Utilizador"}
+                                                        modalEditArrow={<BsArrowRight size={25} />}
+                                                        modalEdit={`ID: ${user.userID}`}
+                                                        formTypeModal={11}
+                                                        idUser={user.userID}
+                                                    ></Modaluser>
+                                                </DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </TableCell>

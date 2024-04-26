@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { Modal, ModalContent, ModalHeader,Badge, ModalBody, Button, useDisclosure, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, Badge, ModalBody, Button, useDisclosure, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import { MdClose, MdEdit, MdSave } from "react-icons/md";
 import { LiaExpandSolid } from "react-icons/lia";
 import { FaPlug } from "react-icons/fa";
 import { useSession, signOut } from 'next-auth/react';
+import { BsArrowRight } from "react-icons/bs";
 
 import FormConnectionString from "@/components/Modal/modals/modalConnectionString"
 
-const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idOrganization }) => {
+const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, modalEditArrow, modalEdit, formTypeModal, buttonColor, idOrganization }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [isInvisible, setIsInvisible] = React.useState(false);
@@ -47,7 +48,7 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
         }
     };
 
-    
+
     useEffect(() => {
         async function fetchpropertiesCount() {
             try {
@@ -58,7 +59,7 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
             }
         }
         fetchpropertiesCount();
-    }, []); 
+    }, []);
 
     return (
         <>
@@ -84,7 +85,9 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
                             {(onClose) => (
                                 <>
                                     <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                        {modalHeader}
+                                        <div className="flex flex-row justify-start gap-4">
+                                            {modalHeader} {modalEditArrow} {modalEdit}
+                                        </div>
                                         <div className='flex flex-row items-center mr-5'>
                                             <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                             <Button color="transparent" onPress={onClose}><MdClose size={30} /></Button>
@@ -125,6 +128,8 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
                                                                             buttonName={<FaPlug size={20} />}
                                                                             buttonColor={"transparent"}
                                                                             formTypeModal={1}
+                                                                            modalHeader={"Details"}
+                                                                            // modalEdit={`ID: ${organizationProperties.propertyID}`}
                                                                             idOrganization={idOrganization}
                                                                             idApplication={organization.applicationID}
                                                                         />
@@ -133,7 +138,7 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, for
                                                                     )}
                                                                 </TableCell>
                                                                 <TableCell>
-                                                                <Badge content={propertiesCount} isInvisible={isInvisible} />
+                                                                    <Badge content={propertiesCount} isInvisible={isInvisible} />
                                                                 </TableCell>
                                                             </TableRow>
                                                         ))}

@@ -15,7 +15,8 @@ const modalapplications = ({buttonName,
     formTypeModal,
     buttonColor,
     idApplication,
-    idProperty
+    idProperty,
+modalEdit
     }) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -72,7 +73,9 @@ const modalapplications = ({buttonName,
                             {(onClose) => (
                                 <>
                                     <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                        {modalHeader}
+                                        <div className="flex flex-row justify-start gap-4">
+                                        {modalHeader}{modalEdit}
+                                        </div>
                                         <div className='flex flex-row items-center mr-5'>
                                             <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                             <Button color="transparent" onPress={onClose}><MdClose size={30} /></Button>

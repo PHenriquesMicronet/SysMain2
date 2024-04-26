@@ -35,7 +35,7 @@ import Modaluser from "@/components/Modal/modalUser";
 import properties from "@/app/homepage/properties/page";
 import organization from "@/app/homepage/organization/page";
 
-export default function Contact() {
+export default function allUsers() {
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const [searchValue, setSearchValue] = React.useState("");
@@ -132,6 +132,7 @@ export default function Contact() {
                             modalHeader={"Inserir Utilizador"}
                             modalIcons={"bg-red"}
                             formTypeModal={10}
+                            
                         ></Modaluser>
                     </div>
                 </div>
@@ -147,9 +148,9 @@ export default function Contact() {
                         className="h-full overflow-auto"
                     >
                         <TableHeader>
-                        {/*<TableColumn className="bg-primary-600 text-white font-bold">
+                        {/* <TableColumn className="bg-primary-600 text-white font-bold">
                                 ID
-                    </TableColumn>`*/}
+                        </TableColumn> */}
                             <TableColumn className="bg-primary-600 text-white font-bold">
                                 NAME
                             </TableColumn>
@@ -169,7 +170,7 @@ export default function Contact() {
                         <TableBody>
                             {items.map((user, index) => (
                                 <TableRow key={index}>
-                                    {/*<TableCell>{user.id}</TableCell>*/}
+                                    {/* <TableCell>{user.userID}</TableCell> */}
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.organization}</TableCell>
@@ -192,13 +193,24 @@ export default function Contact() {
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Editar Utilizador"}
                                                         modalEditArrow={<BsArrowRight size={25} />}
-                                                        modalEdit={`ID: ${user.id}`}
+                                                        modalEdit={`ID: ${user.userID}`}
                                                         formTypeModal={11}
-                                                        idUser={user.id}
+                                                        idUser={user.userID}
                                                     ></Modaluser>
                                                 </DropdownItem>
                                                 <DropdownItem><button onClick={() => handleDelete(user.id)}>Remover</button></DropdownItem>
-                                                <DropdownItem key="delete">Ver</DropdownItem>
+                                                <DropdownItem key="view">
+                                                <Modaluser
+                                                        buttonName={"Ver"}
+                                                        editIcon={<FiEdit3 size={25} />}
+                                                        modalEditArrow={<BsArrowRight size={25} />}
+                                                        buttonColor={"transparent"}
+                                                        modalHeader={"Ver Utilizador"}
+                                                        modalEdit={`ID: ${user.userID}`}
+                                                        formTypeModal={11}
+                                                        idUser={user.userID}
+                                                    ></Modaluser>
+                                                </DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </TableCell>
