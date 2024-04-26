@@ -90,6 +90,20 @@ const modaluser = ({
     const { handleInputOrganization, handleSubmitOrganization } = organizationInsert();
     const { handleUpdateOrganization, setValuesOrganization, valuesOrganization } = organizationEdit(idOrganization);
 
+    const toggleOrganization = async (organizationID, active) => {
+        try {
+            await axios.patch(`/api/hotel/organizations/` + organizationID, {
+                active: active,
+            });
+            // Atualizar a lista de organizações após alterar o estado
+            const res = await axios.get("/api/hotel/organizations");
+            setOrganizations(res.data.response);
+        } catch (error) {
+            console.error("Erro ao desativar a Organização é preciso primeiramente desativar as organizações:", error.message);
+        }
+    };
+
+
     return (
         <>
             {formTypeModal === 10 && ( //create organizations
@@ -241,7 +255,7 @@ const modaluser = ({
                                                 <Switch
                                                     size="sm"
                                                     isSelected={isSelected}
-                                                    onValueChange={setIsSelected}
+                                                    onValueChange={toggleOrganization}
                                                 >
                                                     {isSelected ? "Organização Ativada" : "Organização Desativada"}
                                                 </Switch>

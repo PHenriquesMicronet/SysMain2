@@ -19,7 +19,8 @@ export async function GET(request) {
             district: organization.district,
             zipCode: organization.zipCode,
             del: organization.del,
-            properties: 0
+            properties: 0,
+            users: 0
         }
 
         const properties = await prisma.properties.count({
@@ -28,8 +29,18 @@ export async function GET(request) {
             }
         })
 
+        const users = await prisma.users.count({
+            where: {
+                organizationID: organization.organizationID
+            }
+        })
+
         if (properties) {
             organizationData.properties = properties;
+        }
+
+        if (users) {
+            organizationData.users = users;
         }
 
         return organizationData;

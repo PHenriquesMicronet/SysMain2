@@ -95,6 +95,16 @@ const Contact = () => {
                             modalEdit={`ID: ${organizations.organizationID}`}
                         ></Modalorg>
 
+<FormModals
+                            buttonName={<BiSpreadsheet size={20} color={"white"}/>}
+                            buttonColor={""}
+                            modalHeader={"Todas as Licenças das Propriedades"}
+                            variant="light"
+                            className="flex flex-row justify-center"
+                            formTypeModal={13}
+                            idOrg={organizations.organizationID}
+                        ></FormModals>
+
                         <FormOrganizationApplication
                             buttonIcon={<FaPlug size={20} className="text-white" />}
                             buttonColor={"gray-500"}
