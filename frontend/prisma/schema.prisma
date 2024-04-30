@@ -27,7 +27,7 @@ model organizations {
   country                    String                       @db.VarChar(100)
   district                   String                       @db.VarChar(100)
   zipCode                    String                       @db.VarChar(45)
-  del                        Boolean                      @default(dbgenerated("(b'0')")) @db.Bit(1)
+  del                        Boolean                      @default(dbgenerated("b'0'")) @db.Bit(1)
   organizations_applications organizations_applications[]
   properties                 properties[]
   roles                      roles[]
@@ -48,7 +48,7 @@ model properties {
   abbreviation            String                    @db.VarChar(10)
   designation             String                    @db.VarChar(50)
   organizationID          Int
-  del                     Boolean                   @default(dbgenerated("(b'0')")) @db.Bit(1)
+  del                     Boolean                   @default(dbgenerated("b'0'")) @db.Bit(1)
   licenses_onprempms      licenses_onprempms[]
   organizations           organizations             @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "properties_organizations")
   properties_applications properties_applications[]
@@ -99,7 +99,7 @@ model users {
   password                      String                          @db.VarChar(250)
   organizationID                Int
   roleID                        Int
-  admin                         Boolean                         @default(dbgenerated("(b'0')")) @db.Bit(1)
+  admin                         Boolean                         @default(dbgenerated("b'0'")) @db.Bit(1)
   properties_users              properties_users[]
   organizations                 organizations                   @relation(fields: [organizationID], references: [organizationID], onDelete: NoAction, onUpdate: NoAction, map: "users_organizations")
   roles                         roles                           @relation(fields: [roleID], references: [roleID], onDelete: NoAction, onUpdate: NoAction, map: "users_roles")
@@ -176,7 +176,7 @@ model xmodules {
   license   String  @default("") @db.VarChar(50)
   startDate String  @default("") @db.VarChar(50)
   expDate   String  @default("") @db.VarChar(50)
-  del       Boolean @default(dbgenerated("(b'0')")) @db.Bit(1)
+  del       Boolean @default(dbgenerated("b'0'")) @db.Bit(1)
 }
 
 model licenses_onprempms {

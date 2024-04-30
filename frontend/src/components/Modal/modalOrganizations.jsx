@@ -44,14 +44,18 @@ const modaluser = ({
     editIcon,
     modalEditArrow,
     modalEdit,
+    idUser,
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const variants = ["underlined"];
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+    const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
     const [organizationProperties, setOrganizationProperties] = useState([]);
+    const [organizationUsers, setOrganizationUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [dataFetched, setDataFetched] = useState(false);
+    const [dataUserFetched, setUserDataFetched] = useState(false)
     const [isSelected, setIsSelected] = useState(true);
 
     const toggleExpand = () => {
@@ -68,6 +72,22 @@ const modaluser = ({
                 setDataFetched(true);
             } catch (error) {
                 console.error("Erro ao encontrar os propriedades associados à Organização:", error.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    };
+
+    const toggleThirdModal = async () => {
+        setIsThirdModalOpen(!isThirdModalOpen);
+        if (!dataUserFetched) {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(`/api/hotel/organizations/` + idOrganization + `/users`);
+                setOrganizationUsers(response.data.response);
+                setUserDataFetched(true);
+            } catch (error) {
+                console.error("Erro ao encontrar os users associados à Organização:", error.message);
             } finally {
                 setIsLoading(false);
             }
@@ -422,6 +442,113 @@ const modaluser = ({
                                                                                     formTypeModal={11}
                                                                                     // modalEdit={`ID: ${organizationProperties.propertyID}`}
                                                                                     idProperty={organizationProperties.propertyID}
+                                                                                ></FormModals>
+                                                                            </DropdownItem>
+                                                                        </DropdownMenu>
+                                                                    </Dropdown>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </div>
+                                        )}
+                                    </ModalBody>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
+                </>
+            )}
+            {formTypeModal === 14 && (
+                <>
+                    <Button onPress={toggleThirdModal} color={buttonColor} className="w-fit">
+                        {buttonName} {buttonIcon}
+                    </Button>
+                    <Modal
+                        classNames={{
+                            base: "max-h-screen",
+                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                            body: "h-full ",
+                        }}
+                        size="full"
+                        hideCloseButton="true"
+                        isOpen={isThirdModalOpen}
+                        onOpenChange={toggleThirdModal}
+                        isDismissable={false}
+                        isKeyboardDismissDisabled={true}
+                    >
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                        {modalHeader}
+                                        <div className='flex flex-row items-center mr-5'>
+                                            <Button color="transparent" onPress={onClose}><MdClose size={30} /></Button>
+                                        </div>
+                                    </ModalHeader>
+                                    <ModalBody className="flex flex-col mx-5 my-5 space-y-8">
+                                        {isLoading ? (
+                                            <div>Loading...</div>
+                                        ) : (
+                                            <div className="mx-5 h-[65vh] min-h-full overflow-auto">
+                                                <Table
+                                                    isHeaderSticky={true}
+                                                    layout="fixed"
+                                                    removeWrapper
+                                                    classNames={{
+                                                        wrapper: "min-h-[222px]",
+                                                    }}
+                                                    className="h-full"
+                                                >
+                                                    <TableHeader>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">ID</TableColumn>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">NAME</TableColumn>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">EMAIL</TableColumn>
+                                                        <TableColumn className="bg-primary-600 text-white font-bold">PROPERTY</TableColumn>
+                                                        <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
+                                                            <GoGear size={20} />
+                                                        </TableColumn>
+                                                    </TableHeader>
+                                                    <TableBody>
+                                                        {organizationUsers.map((organizationUsers, index) => (
+                                                            <TableRow key={index}>
+                                                                <TableCell>{organizationUsers.userID}</TableCell>
+                                                                <TableCell>{organizationUsers.name}</TableCell>
+                                                                <TableCell>{organizationUsers.email}</TableCell>
+                                                                <TableCell>{organizationUsers.properties}</TableCell>
+                                                                <TableCell className="flex justify-center">
+                                                                    <Dropdown>
+                                                                        <DropdownTrigger>
+                                                                            <Button
+                                                                                variant="light"
+                                                                                className="flex flex-row justify-center"
+                                                                            >
+                                                                                <BsThreeDotsVertical size={20} className="text-gray-400" />
+                                                                            </Button>
+                                                                        </DropdownTrigger>
+                                                                        <DropdownMenu aria-label="Static Actions" isOpen={true} closeOnSelect={false}>
+                                                                            <DropdownItem key="edit">
+                                                                                <FormModals
+                                                                                    buttonName={"Editar"}
+                                                                                    editIcon={<FiEdit3 size={25} />}
+                                                                                    buttonColor={"transparent"}
+                                                                                    modalHeader={"Editar Propriedade"}
+                                                                                    modalEditArrow={<BsArrowRight size={25} />}
+                                                                                    modalEdit={`ID: ${organizationUsers.id}`}
+                                                                                    formTypeModal={12}
+                                                                                    idUser={organizationUsers.id}
+                                                                                ></FormModals>
+                                                                            </DropdownItem>
+                                                                            <DropdownItem onClick={() => handleDelete(organizationUsers.id)}>Remover</DropdownItem>
+                                                                            <DropdownItem >
+                                                                                <FormModals
+                                                                                    buttonName={"Ver"}
+                                                                                    buttonColor={"transparent"}
+                                                                                    modalHeader={"Ver Detalhes da Propriedade"}
+                                                                                    formTypeModal={11}
+                                                                                    // modalEdit={`ID: ${organizationProperties.propertyID}`}
+                                                                                    idUser = {organizationUsers.id}
                                                                                 ></FormModals>
                                                                             </DropdownItem>
                                                                         </DropdownMenu>

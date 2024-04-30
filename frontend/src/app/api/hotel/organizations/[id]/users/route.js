@@ -55,9 +55,11 @@ export async function GET(request, context) {
         return userData;
     }));
 
+    
 
 
     prisma.$disconnect()
 
     return new NextResponse(JSON.stringify({ response, status: 200 }));
 }
+
