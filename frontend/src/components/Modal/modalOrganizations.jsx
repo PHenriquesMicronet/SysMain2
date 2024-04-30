@@ -514,7 +514,7 @@ const modaluser = ({
                                                     <TableBody>
                                                         {organizationUsers.map((organizationUsers, index) => (
                                                             <TableRow key={index}>
-                                                                <TableCell>{organizationUsers.userID}</TableCell>
+                                                                <TableCell>{organizationUsers.id}</TableCell>
                                                                 <TableCell>{organizationUsers.name}</TableCell>
                                                                 <TableCell>{organizationUsers.email}</TableCell>
                                                                 <TableCell>{organizationUsers.properties}</TableCell>

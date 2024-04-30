@@ -185,7 +185,7 @@ export default function Contact() {
                                         buttonColor={"transparent"}
                                         modalEdit={`ID: ${organization.userID}`}
                                         formTypeModal={14}
-                                        idUser={organization.userID}
+                                        idOrganization={organization.organizationID}
                                     ></FormModals>
                                     </TableCell>
                                     <TableCell className="flex justify-center">
