@@ -440,7 +440,8 @@ const modaluser = ({
                                                                                     buttonColor={"transparent"}
                                                                                     modalHeader={"Ver Detalhes da Propriedade"}
                                                                                     formTypeModal={11}
-                                                                                    // modalEdit={`ID: ${organizationProperties.propertyID}`}
+                                                                                    modalEditArrow={<BsArrowRight size={25} />}
+                                                                                    modalEdit={`ID: ${organizationProperties.propertyID}`}
                                                                                     idProperty={organizationProperties.propertyID}
                                                                                 ></FormModals>
                                                                             </DropdownItem>

@@ -219,6 +219,7 @@ export default function Contact() {
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Ver Detalhes da Organizacao"}
                                                         formTypeModal={11}
+                                                        modalEditArrow={<BsArrowRight size={25} />}
                                                         modalEdit={`ID: ${organization.organizationID}`}
                                                         idOrganization={organization.organizationID}
                                                     ></FormModals>

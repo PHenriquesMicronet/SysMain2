@@ -147,7 +147,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
             }
         }
         fetchUserCount();
-    }, []); 
+    }, []);
 
 
     const handleSwitchChange = async (applicationID, checked) => {
@@ -302,7 +302,10 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                             {(onClose) => (
                                 <>
                                     <form onSubmit={handleSubmitProperty}>
-                                        <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">{modalHeader}
+                                        <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                        <div className="flex flex-row justify-start gap-4">
+                                            {modalHeader} {modalEditArrow} {modalEdit}
+                                            </div>
                                             <div className='flex flex-row items-center mr-5'>
                                                 <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                 <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
@@ -331,7 +334,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     >
                                                         <ModalContent>
                                                             <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                                                {modalHeader}
+                                                                <div className="flex flex-row justify-start gap-4">
+                                                                {modalHeader} {modalEditArrow} {modalEdit} <p>Utilizadores</p>
+                                                                </div>
                                                                 <div className='flex flex-row items-center mr-5'>
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                     <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
@@ -400,7 +405,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     >
                                                         <ModalContent>
                                                             <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                                                {modalHeader}
+                                                            <div className="flex flex-row justify-start gap-4">
+                                                                {modalHeader} {modalEditArrow} {modalEdit} <p>Aplicações</p>
+                                                                </div>
                                                                 <div className='flex flex-row items-center mr-5'>
                                                                     <Button color="transparent" onClick={toggleSecondModal}><FaArrowLeft size={25} /></Button>
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
@@ -442,7 +449,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 <FormModals
                                                                                                     buttonName={application.description}
                                                                                                     buttonColor={"transparent"}
+                                                                                                    modalHeader={"Utilizadores da Aplicação -"}
                                                                                                     formTypeModal={1}
+                                                                                                    modalEdit={` ID: ${idProperty}`}
                                                                                                     idApplication={application.id}
                                                                                                     idProperty={idProperty}
                                                                                                 ></FormModals>
@@ -462,6 +471,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                         buttonName={<BiSpreadsheet size={25} />}
                                                                                                         buttonColor={"transparent"}
                                                                                                         formTypeModal={2}
+                                                                                                        modalHeader={"Licenças da Propriedade -"}
+                                                                                                        modalEdit={` ID: ${idProperty}`}
                                                                                                         idApplication={application.id}
                                                                                                         idProperty={idProperty}
                                                                                                     ></FormModalsLicence>
@@ -475,6 +486,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                         buttonName={<FaPlug size={20} />}
                                                                                                         buttonColor={"transparent"}
                                                                                                         formTypeModal={3}
+                                                                                                        modalHeader={"Features da Propriedade -"}
+                                                                                                        modalEdit={` ID: ${idProperty}`}
                                                                                                         idApplication={application.id}
                                                                                                         idProperty={idProperty}
                                                                                                     ></FormModalsFeature>
@@ -680,7 +693,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     >
                                                         <ModalContent>
                                                             <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                                                {modalHeader}
+                                                                <div className="flex flex-row justify-start gap-4">
+                                                                    {editIcon} {modalHeader} {modalEditArrow} {modalEdit} <p>Utilizadores</p>
+                                                                </div>
                                                                 <div className='flex flex-row items-center mr-5'>
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                     <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
@@ -749,7 +764,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     >
                                                         <ModalContent>
                                                             <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                                                {modalHeader}
+                                                                <div className="flex flex-row justify-start gap-4">
+                                                                    {editIcon} {modalHeader} {modalEditArrow} {modalEdit} <p>Aplicações</p>
+                                                                </div>
                                                                 <div className='flex flex-row items-center mr-5'>
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                     <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
@@ -790,13 +807,15 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 <FormModals
                                                                                                     buttonName={application.description}
                                                                                                     buttonColor={"transparent"}
+                                                                                                    modalHeader={"Utilizadores da Aplicação -"}
                                                                                                     formTypeModal={1}
+                                                                                                    modalEdit={` ID: ${idProperty}`}
                                                                                                     idApplication={application.id}
                                                                                                     idProperty={idProperty}
                                                                                                 ></FormModals>
                                                                                             </TableCell>
                                                                                             <TableCell>
-                                                                                            <Switch
+                                                                                                <Switch
                                                                                                     checked={application.enabled}
                                                                                                     onChange={(event) => handleSwitchChange(application.id, event.target.checked)}
                                                                                                     disabled={!isAdmin}
@@ -810,6 +829,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                         buttonName={<BiSpreadsheet size={25} />}
                                                                                                         buttonColor={"transparent"}
                                                                                                         formTypeModal={2}
+                                                                                                        modalHeader={"Licenças da Propriedade -"}
+                                                                                                        modalEdit={` ID: ${idProperty}`}
                                                                                                         idApplication={application.id}
                                                                                                         idProperty={idProperty}
                                                                                                     ></FormModalsLicence>
@@ -823,6 +844,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                         buttonName={<FaPlug size={20} />}
                                                                                                         buttonColor={"transparent"}
                                                                                                         formTypeModal={3}
+                                                                                                        modalHeader={"Features da Propriedade -"}
+                                                                                                        modalEdit={` ID: ${idProperty}`}
                                                                                                         idApplication={application.id}
                                                                                                         idProperty={idProperty}
                                                                                                     ></FormModalsFeature>
