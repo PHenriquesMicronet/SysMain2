@@ -17,7 +17,7 @@ const ModalOrganizationApplication = ({ buttonName, buttonIcon, modalHeader, mod
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [OrganizationApplications, setOrganizationApplications] = useState([]);
-    const [OrganizationApplicationsFetched, setOrganizationApplicationsFetched] = useState(false);
+    const [OrganizationApplicationsFetched, setOrganizationApplicationsFetched] = useState([]);
 
     const [propertiesCount, setpropertiesCount] = useState([]);
 
