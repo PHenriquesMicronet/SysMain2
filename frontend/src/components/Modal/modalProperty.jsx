@@ -18,6 +18,7 @@ import { FaUser, FaArrowLeft, FaPlug } from "react-icons/fa";
 import { IoApps } from "react-icons/io5";
 import { BiSpreadsheet } from "react-icons/bi";
 import { FaLock } from "react-icons/fa";
+import { Checkbox } from "@nextui-org/react";
 
 import FormModals from "@/components/Modal/modals/modalApplications";
 import FormModalsLicence from "@/components/Modal/modals/modalLicences"
@@ -149,28 +150,44 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         fetchUserCount();
     }, []);
 
+    
 
-    const handleSwitchChange = async (applicationID, checked) => {
-        setIsLoading(true);
-        try {
-            await axios.put(`/api/hotel/properties-applications/`, {
-                data: {
-                    propertyID: idProperty,
-                    applicationID: applicationID,
-                    enabled: checked
-                }
-            });
-            setPropertyApplications(prevApplications =>
-                prevApplications.map(app =>
-                    app.id === applicationID ? { ...app, enabled: checked } : app
-                )
-            );
-        } catch (error) {
-            console.error("Erro ao atualizar a aplicação:", error.message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+//     const [propertyApplications, setPropertyApplications] = useState([]);
+// useEffect(() => {
+
+// const fetchApplications = async () => {
+//     const response = await fetch("/api/hotel/properties-applications/");
+//     const data = await response.json();
+//     setPropertyApplications(
+//     data.map((app) => ({ ...app, enabled: app.enabled || false }))
+//     );
+// };
+// fetchApplications();
+
+// }, []);
+
+const handleSwitchChange = async (applicationID, checked) => {
+    setIsLoading(true);
+    try {
+        const response = await axios.put(`/api/hotel/properties-applications/`, {
+        data: {
+            propertyID: idProperty,
+            applicationID: applicationID,
+            enabled: checked,
+        },
+    });
+        const updatedApplication = response.data;
+        setPropertyApplications((prevApplications) =>
+        prevApplications.map((app) =>
+        applicationID === updatedApplication.id ? { ...app, enabled: checked } : app
+        )
+    );
+    } catch (error) {
+        console.error("Error updating the application:", error.message);
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     return (
         <>
@@ -303,8 +320,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                 <>
                                     <form onSubmit={handleSubmitProperty}>
                                         <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                        <div className="flex flex-row justify-start gap-4">
-                                            {modalHeader} {modalEditArrow} {modalEdit}
+                                            <div className="flex flex-row justify-start gap-4">
+                                                {modalHeader} {modalEditArrow} {modalEdit}
                                             </div>
                                             <div className='flex flex-row items-center mr-5'>
                                                 <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
@@ -335,7 +352,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                         <ModalContent>
                                                             <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
                                                                 <div className="flex flex-row justify-start gap-4">
-                                                                {modalHeader} {modalEditArrow} {modalEdit} <p>Utilizadores</p>
+                                                                    {modalHeader} {modalEditArrow} {modalEdit} <p>Utilizadores</p>
                                                                 </div>
                                                                 <div className='flex flex-row items-center mr-5'>
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
@@ -405,8 +422,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     >
                                                         <ModalContent>
                                                             <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
-                                                            <div className="flex flex-row justify-start gap-4">
-                                                                {modalHeader} {modalEditArrow} {modalEdit} <p>Aplicações</p>
+                                                                <div className="flex flex-row justify-start gap-4">
+                                                                    {modalHeader} {modalEditArrow} {modalEdit} <p>Aplicações</p>
                                                                 </div>
                                                                 <div className='flex flex-row items-center mr-5'>
                                                                     <Button color="transparent" onClick={toggleSecondModal}><FaArrowLeft size={25} /></Button>
@@ -457,11 +474,11 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 ></FormModals>
                                                                                             </TableCell>
                                                                                             <TableCell>
-                                                                                                <Switch
-                                                                                                    checked={application.enabled}
+                                                                                                <Checkbox
+                                                                                                    checked={application.enabled} // Use the application.enabled property here
                                                                                                     onChange={(event) => handleSwitchChange(application.id, event.target.checked)}
                                                                                                     disabled={!isAdmin}
-                                                                                                    size="sm"
+                                                                                                    size="small"
                                                                                                     color="success"
                                                                                                 />
                                                                                             </TableCell>
@@ -815,11 +832,11 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 ></FormModals>
                                                                                             </TableCell>
                                                                                             <TableCell>
-                                                                                                <Switch
-                                                                                                    checked={application.enabled}
+                                                                                                <Checkbox
+                                                                                                    checked={application.enabled} // Use the application.enabled property here
                                                                                                     onChange={(event) => handleSwitchChange(application.id, event.target.checked)}
                                                                                                     disabled={!isAdmin}
-                                                                                                    size="sm"
+                                                                                                    size="small"
                                                                                                     color="success"
                                                                                                 />
                                                                                             </TableCell>
