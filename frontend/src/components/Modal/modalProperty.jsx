@@ -189,6 +189,21 @@ const handleSwitchChange = async (applicationID, checked) => {
     }
 };
 
+    const toggleProperty = async (propertyID, active) => {
+        try {
+            await axios.patch('/api/hotel/properties/' + idProperty, {
+                active: active,
+            });
+
+            // Atualizar a lista de propriedades após alterar o estado
+            const res = await axios.get("/api/hotel/properties");
+            return res.data.response;
+        } catch (error) {
+            console.error("Erro ao desativar/ativar a Propriedade:", error.message);
+            throw error;
+        }
+    };
+
     return (
         <>
             {formTypeModal === 10 && ( //Properties
@@ -682,10 +697,11 @@ const handleSwitchChange = async (applicationID, checked) => {
                                         </ModalHeader>
                                         <ModalBody className="flex flex-col mx-5 my-5 space-y-4">
                                             <div className="flex justify-end gap-2">
-                                                <Switch className="mr-auto"
+                                                <Switch
+                                                    className="mr-auto"
                                                     size="sm"
                                                     isSelected={isSelected}
-                                                    onValueChange={setIsSelected}
+                                                    onValueChange={toggleProperty}
                                                 >
                                                     {isSelected ? "Propriedade Ativada" : "Propriedade Desativada"}
                                                 </Switch>
