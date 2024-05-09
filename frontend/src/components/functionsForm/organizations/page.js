@@ -67,17 +67,17 @@ export function organizationEdit(idOrganization) {
             .then(res => {
                 const organizationData = res.data.response[0];
                 setValuesOrganization({ ...valuesOrganization,
-                    name: organizationData.name,
-                    email: organizationData.email,
-                    fiscalNumber: organizationData.fiscalNumber,
-                    phoneNumber: organizationData.phoneNumber,
-                    address1: organizationData.address1,
-                    address2: organizationData.address2,
-                    country: organizationData.country,
-                    district: organizationData.district,
-                    zipCode: organizationData.zipCode,
-                    password: organizationData.password,
-                    roleID: organizationData.roleID
+                    Name: organizationData.name,
+                    Email: organizationData.email,
+                    FiscalNumber: organizationData.fiscalNumber,
+                    PhoneNumber: organizationData.phoneNumber,
+                    Address1: organizationData.address1,
+                    Address2: organizationData.address2,
+                    Country: organizationData.country,
+                    District: organizationData.district,
+                    ZipCode: organizationData.zipCode,
+                    Password: organizationData.password,
+                    RoleID: organizationData.roleID
                 })
             })
             .catch(err => console.log(err))
