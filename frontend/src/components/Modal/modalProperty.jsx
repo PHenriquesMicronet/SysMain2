@@ -150,7 +150,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         fetchUserCount();
     }, []);
 
-    
+
 
 //     const [propertyApplications, setPropertyApplications] = useState([]);
 // useEffect(() => {
@@ -700,10 +700,11 @@ const handleSwitchChange = async (applicationID, checked) => {
                                                 <Switch
                                                     className="mr-auto"
                                                     size="sm"
-                                                    isSelected={isSelected}
-                                                    onValueChange={toggleProperty}
+                                                    defaultSelected={!valuesProperty.active}
+                                                    onChange={e => setValuesProperty({ ...valuesProperty, active: !e.target.checked })}
+                                                    // onValueChange={e => setValuesProperty({ ...valuesProperty, Deleted: e.target.checked})}
                                                 >
-                                                    {isSelected ? "Propriedade Ativada" : "Propriedade Desativada"}
+                                                    {valuesProperty.active ? "Propriedade Inativa" : "Propriedade Ativa"}
                                                 </Switch>
                                                 <div className="bg-gray-100 p-1 rounded border border-gray-300 mr-2">
                                                     <Badge color="success" content={userCount} isInvisible={isInvisible} shape="circle">
