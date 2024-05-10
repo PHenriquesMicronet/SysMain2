@@ -196,10 +196,10 @@ const modaluser = ({
                     <Modal
                         classNames={{
                             base: "max-h-screen",
-                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                            wrapper: isExpanded ? "w-full h-screen " : "lg:pl-72 h-screen w-full",
                             body: "h-full ",
-
-                        }}
+                        } 
+                        }
                         size="full"
                         isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true} hideCloseButton={true}>
                         <ModalContent>

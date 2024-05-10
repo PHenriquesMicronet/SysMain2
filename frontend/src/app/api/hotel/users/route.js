@@ -58,7 +58,7 @@ export async function GET(request) {
         });
 
         if (properties.length > 0) {
-            userData.properties = properties.map(property => property.name);
+            userData.properties = properties.map(property => property.name).join(', ');
         }
 
         return userData;
