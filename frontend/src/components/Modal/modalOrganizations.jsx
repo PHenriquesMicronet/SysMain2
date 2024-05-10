@@ -86,6 +86,7 @@ const modaluser = ({
                 const response = await axios.get(`/api/hotel/organizations/` + idOrganization + `/users`);
                 setOrganizationUsers(response.data.response);
                 setUserDataFetched(true);
+
             } catch (error) {
                 console.error("Erro ao encontrar os users associados à Organização:", error.message);
             } finally {
