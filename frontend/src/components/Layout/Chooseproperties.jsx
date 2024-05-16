@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react"
 import axios from 'axios';
 import { useRouter } from "next/navigation";
 import FormModals from "@/components/Modal/modalChooseProperty";
-import { setCookies } from '@/app/actions';
 
 const ChooseOrganization = () => {
     const [isHovered1, setIsHovered1] = useState(false)
