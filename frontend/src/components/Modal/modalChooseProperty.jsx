@@ -1,11 +1,11 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react"
-import { 
-    Modal, ModalContent, ModalHeader, ModalBody, 
-    Button, 
+import {
+    Modal, ModalContent, ModalHeader, ModalBody,
+    Button,
     useDisclosure,
-    Card, CardHeader, 
+    Card, CardHeader,
     Image } from "@nextui-org/react";
 
 import axios from 'axios';
@@ -17,7 +17,7 @@ import { MdClose } from "react-icons/md";
 
 
 const modalchooseproperty = ({
-    
+
     buttonName,
     buttonIcon,
     modalHeader,
@@ -30,7 +30,7 @@ const modalchooseproperty = ({
     const { data: session, status } = useSession()
     const [apps, setApps] = useState([])
 
-    
+
     useEffect(() => {
         const getData = async () => {
         if (status !== "loading") {
@@ -49,10 +49,15 @@ const modalchooseproperty = ({
 
     return (
         <>
-            {formTypeModal === 10 && ( 
+            {formTypeModal === 10 && (
                 <>
-                    <Button onPress={onOpen} color={buttonColor} className="w-fit">
-                        {buttonName} {buttonIcon}
+                    <Button onPress={() => {
+                        onClickCallback(idProperty); // Chamando a função de retorno de chamada com o propertyID
+                        onOpen(); // Abre o modal
+                    }} className="w-44 h-44 flex flex-col justify-center items-center border-4  bg-white border-green-600">
+                        {buttonName}
+                        <Image src="/images/hotel.png" alt="Descrição da imagem" className="w-20 h-20 mt-1.5" />
+                        {buttonIcon}
                     </Button>
                     <Modal
                         classNames={{
@@ -76,7 +81,7 @@ const modalchooseproperty = ({
                                     <a href="/homepage">
                                     <Card className="w-44 h-44 flex flex-col justify-center items-center border-4 border-green-600 ml-auto mr-auto mt-16">
                                     <CardHeader className="flex flex-col items-center justify-center">
-                                        <p>{application.name}</p> 
+                                        <p>{application.name}</p>
                                         <Image className="w-20 h-20 mt-2"
                                             src="/images/Logo-Login.png"
                                         />
