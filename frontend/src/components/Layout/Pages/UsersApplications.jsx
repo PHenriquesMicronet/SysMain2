@@ -117,7 +117,7 @@ export default function properties_applications() {
         <>
             <main>
                 <div className="flex flex-col mt-5 py-3">
-                    <p className="text-xs px-6">Todas as Propriedades</p>
+                    <p className="text-xs px-6">Atribuir Aplicações aos Utilizadores</p>
                     <div className="flex flex-row justify-between items-center mx-5">
                         <div className="flex flex-row">
                             <div className="flex flex-wrap md:flex-nowrap gap-4">
@@ -133,14 +133,6 @@ export default function properties_applications() {
                                 />
                             </div>
                         </div>
-                        <FormModals
-                            buttonName={"Inserir Propriedade"}
-                            buttonIcon={<FiPlus size={15} />}
-                            buttonColor={"primary"}
-                            modalHeader={"Inserir Propriedade"}
-                            modalIcons={"bg-red"}
-                            formTypeModal={10}
-                        ></FormModals>
                     </div>
                 </div>
                 <div className="mx-5 h-[65vh] min-h-full">
