@@ -7,49 +7,91 @@ import prisma from "@/lib/prisma"
 export async function GET(request) {
 
     const propertyID = request.nextUrl.searchParams.get('property') || "";
+    const userID = request.nextUrl.searchParams.get('user') || "";
 
-    if (propertyID == "") {
+    if (propertyID == "" && userID == "") {
         const response = await prisma.properties_users.findMany();
+
+        prisma.$disconnect()
 
         return new NextResponse(JSON.stringify({ response, status: 200 }));
     }
 
-    const property = await prisma.properties.findUnique({
-        where: {
-            propertyID: parseInt(propertyID),
-        }
-    });
+    if (propertyID != "") {
 
-    const organizationUsers = await prisma.users.findMany({
-        where: {
-            organizationID: parseInt(property.organizationID),
-        },
-        select: {
-            userID: true,
-            name: true,
-            lastName: true,
-            email: true
-        }
-    });
+        const property = await prisma.properties.findUnique({
+            where: {
+                propertyID: parseInt(propertyID),
+            }
+        });
 
-    const propertyUsers = await prisma.properties_users.findMany({
-        where: {
-            propertyID: parseInt(propertyID),
-        }
-    });
+        const organizationUsers = await prisma.users.findMany({
+            where: {
+                organizationID: parseInt(property.organizationID),
+            },
+            select: {
+                userID: true,
+                name: true,
+                lastName: true,
+                email: true
+            }
+        });
 
-    const propertyUserIDs = propertyUsers.map((propertyUser) => propertyUser.userID);
+        const propertyUsers = await prisma.properties_users.findMany({
+            where: {
+                propertyID: parseInt(propertyID),
+            }
+        });
 
-    const usersNotInProperty = organizationUsers.filter(
-        (user) => !propertyUserIDs.includes(user.userID)
-    );
+        const propertyUserIDs = propertyUsers.map((propertyUser) => propertyUser.userID);
 
-    const response = usersNotInProperty
+        const usersNotInProperty = organizationUsers.filter(
+            (user) => !propertyUserIDs.includes(user.userID)
+        );
+
+        const response = usersNotInProperty
 
 
-    prisma.$disconnect()
+        prisma.$disconnect()
 
-    return new NextResponse(JSON.stringify({ response, status: 200 }));
+        return new NextResponse(JSON.stringify({ response, status: 200 }));
+    }
+
+    if (userID != "") {
+        const user = await prisma.users.findUnique({
+            where: {
+                userID: parseInt(userID),
+            }
+        });
+
+        const organizationProperties = await prisma.properties.findMany({
+            where: {
+                organizationID: parseInt(user.organizationID),
+            },
+            select: {
+                propertyID: true,
+                name: true
+            }
+        });
+
+        const userProperties = await prisma.properties_users.findMany({
+            where: {
+                userID: parseInt(userID),
+            }
+        });
+
+        const userPropertiesIDs = userProperties.map((userProperties) => userProperties.propertyID);
+
+        const propertiesNotInUser = organizationProperties.filter(
+            (property) => !userPropertiesIDs.includes(property.propertyID)
+        );
+
+        const response = propertiesNotInUser
+
+        prisma.$disconnect()
+
+        return new NextResponse(JSON.stringify({ response, status: 200 }));
+    }
 }
 
 export async function PUT(request) {
