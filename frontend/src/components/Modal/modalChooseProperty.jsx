@@ -10,6 +10,9 @@ import {
 } from "@nextui-org/react";
 
 import axios from 'axios';
+import { useRouter } from "next/navigation";
+
+
 
 //icons
 
@@ -31,6 +34,8 @@ const modalchooseproperty = ({
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { data: session, status } = useSession()
     const [apps, setApps] = useState([])
+    const router = useRouter(); // Inicialize o useRouter
+
 
 
     useEffect(() => {
@@ -47,6 +52,23 @@ const modalchooseproperty = ({
         };
         getData();
     }, [session]);
+
+    const handleCookies = async (propertyID, application) => {
+
+        if (application == 1) {
+            const res = await axios.get(`/api/hotel/organizations/` + session.user.organization + `/applications/` + application)
+
+            const connectionString = res.data.response[0].connectionString
+
+            const setCookie = await axios.post(`/api/cookies`, {
+                data: {
+                    propertyID: propertyID,
+                    connectionString: connectionString
+                }
+            })
+        }
+
+    }
 
 
     return (
@@ -91,7 +113,7 @@ const modalchooseproperty = ({
                                                 href="/homepage"
                                                 onClick={(e) => {
                                                     e.preventDefault(); // Prevent default link behavior
-                                                    alert("aaaaaaa"); // Show alert message
+                                                    handleCookies(idProperty, application.id)
                                                     onClose(); // Close the modal
                                                 }}
                                             >
