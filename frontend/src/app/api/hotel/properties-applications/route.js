@@ -5,8 +5,26 @@ import prisma from "@/lib/prisma"
 
 
 export async function GET(request) {
+    const propertyID = request.nextUrl.searchParams.get('propertyID') || "";
+    const applicationID = request.nextUrl.searchParams.get('applicationID') || "";
 
-    const response = await prisma.properties_applications.findMany()
+    if (propertyID == "" && applicationID == "") {
+        const response = await prisma.properties_applications.findMany()
+    
+        prisma.$disconnect()
+
+        return new NextResponse(JSON.stringify({ response, status: 200 }));
+
+    }
+
+    const response = await prisma.properties_applications.findUnique({
+        where: {
+            propertyID_applicationID: {
+                propertyID: parseInt(propertyID),
+                applicationID: parseInt(applicationID)
+            }
+        }
+    })
 
     prisma.$disconnect()
 
