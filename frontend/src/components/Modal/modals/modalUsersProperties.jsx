@@ -1,6 +1,6 @@
 "use client"
-import React, { useState } from "react";
-import { Modal, ScrollShadow, ModalContent, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import React, { useState, useEffect } from "react";
+import { Modal, ScrollShadow, ModalContent, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Checkbox,} from "@nextui-org/react";
 import { AiOutlineGlobal } from "react-icons/ai";
 import axios from 'axios';
 
@@ -25,11 +25,33 @@ const modalusersproperties = ({
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+    const [usersFetched, setUsersFetched] = useState(false);
+    const [usersproperties, setUsersProperties] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
+
+    useEffect(() => {
+        const getData = async () => {
+            if (!usersFetched){
+                setIsLoading(true);
+                try {
+                    const response = await axios.get(`/api/hotel/properties-users?user=`+ idUser);
+                    setUsersProperties(response.data.response);
+                    console.log("aaaaa" + response.data.response)
+                    setUsersFetched(true);
+                } catch (error) {
+                    console.error("Erro ao encontrar os utilizadores não associadas à propriedade:", error.message);
+            }finally {
+                setIsLoading(false);
+            }
+        };
+        }
+        getData();
+    }, []);
+
 
     return (
         <>
@@ -62,7 +84,41 @@ const modalusersproperties = ({
                                             </div>
                                         </ModalHeader>
                                         <ModalBody className="flex flex-col mx-5 my-5 space-y-8">
-                                            
+                                        {isLoading ? (<p>A Carregar...</p>
+                                            ) : (
+                                                <div className="mx-5 h-[65vh] min-h-full">
+                                                    <Table
+                                                        isHeaderSticky={"true"}
+                                                        layout={"fixed"}
+                                                        removeWrapper
+                                                        classNames={{
+                                                            wrapper: "min-h-[222px]",
+                                                        }}
+                                                        className="h-full overflow-auto"
+                                                    >
+                                                        <TableHeader>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                PROPERTY ID
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                NAME
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                ADD
+                                                            </TableColumn>
+                                                        </TableHeader>
+                                                        <TableBody>
+                                                        {usersproperties.map((usersproperties, index) => (
+                                                            <TableRow key={index}>
+                                                                <TableCell>{usersproperties.propertyID}</TableCell>
+                                                                <TableCell>{usersproperties.name}</TableCell>
+                                                                <TableCell><Checkbox/></TableCell>
+                                                            </TableRow>
+                                                            ))}
+                                                        </TableBody>
+                                                    </Table>
+                                                </div>
+                                            )}
                                         </ModalBody>
                                     </form>
                                 </>
