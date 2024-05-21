@@ -13,7 +13,7 @@ export async function GET(request) {
                     name: true
                 }
             },
-            users_properties_applications: true
+            properties_users: true
         }
     });
 
@@ -34,17 +34,9 @@ export async function GET(request) {
             properties: []
         };
 
-        const propertyApplicationIDs = user.users_properties_applications.map(userPropertyApplication => userPropertyApplication.propertyApplicationID);
+        const propertyIDs = user.properties_users.map(property => property.propertyID);
 
-        const properties_applications = await prisma.properties_applications.findMany({
-            where: {
-                propertyApplicationID: {
-                    in: propertyApplicationIDs
-                }
-            }
-        });
-
-        const propertyIDs = properties_applications.map(propertyApplication => propertyApplication.propertyID);
+        console.log(propertyIDs)
 
         const properties = await prisma.properties.findMany({
             where: {
