@@ -1,6 +1,6 @@
 "use client"
-import React, { useState } from "react";
-import { Modal, ScrollShadow, ModalContent, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import React, { useState, useEffect } from "react";
+import { Modal, ScrollShadow, ModalContent, ModalHeader, ModalBody, Avatar, ModalFooter, Button, useDisclosure, Input, Autocomplete, AutocompleteItem, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Checkbox, } from "@nextui-org/react";
 import { AiOutlineGlobal } from "react-icons/ai";
 import axios from 'axios';
 
@@ -22,11 +22,32 @@ const modalpropertiesusers = ({
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+    const [dataFetched, setDataFetched] = useState(false);
+    const [propertiesUsers, setPropertiesUsers] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
+
+    useEffect(() => {
+        const getData = async () => {
+            if (!dataFetched){
+                setIsLoading(true);
+                try {
+                    const res = await axios.get(`/api/hotel/properties-users?property=`+ idProperty);
+                    setPropertiesUsers(res.data.response);
+                    console.log("aaaaa" + res.data.response)
+                    setDataFetched(true);
+                } catch (error) {
+                    console.error("Erro ao encontrar os utilizadores não associadas à propriedade:", error.message);
+            }finally {
+                setIsLoading(false);
+            }
+        };
+        }
+        getData();
+    }, []);
 
     return (
         <>
@@ -59,7 +80,49 @@ const modalpropertiesusers = ({
                                             </div>
                                         </ModalHeader>
                                         <ModalBody className="flex flex-col mx-5 my-5 space-y-8">
-                                            
+                                        {isLoading ? (<p>A Carregar...</p>
+                                            ) : (
+                                                <div className="mx-5 h-[65vh] min-h-full">
+                                                    <Table
+                                                        isHeaderSticky={"true"}
+                                                        layout={"fixed"}
+                                                        removeWrapper
+                                                        classNames={{
+                                                            wrapper: "min-h-[222px]",
+                                                        }}
+                                                        className="h-full overflow-auto"
+                                                    >
+                                                        <TableHeader>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                USER ID
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                NAME
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                LASTNAME
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                EMAIL
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                ADD
+                                                            </TableColumn>
+                                                        </TableHeader>
+                                                        <TableBody>
+                                                        {propertiesUsers.map((propertiesusers, index) => (
+                                                            <TableRow key={index}>
+                                                                <TableCell>{propertiesusers.userID}</TableCell>
+                                                                <TableCell>{propertiesusers.name}</TableCell>
+                                                                <TableCell>{propertiesusers.lastName}</TableCell>
+                                                                <TableCell>{propertiesusers.email}</TableCell>
+                                                                <TableCell><Checkbox/></TableCell>
+                                                            </TableRow>
+                                                            ))}
+                                                        </TableBody>
+                                                    </Table>
+                                                </div>
+                                            )}
                                         </ModalBody>
                                     </form>
                                 </>
