@@ -25,7 +25,7 @@ const modalorg = ({
     modalEditArrow,
     modalEdit
 }) => {
-    console.log("organização:", idOrg)
+
     const [isExpanded, setIsExpanded] = useState(false);
     const variants = ["underlined"];
     const { isOpen, onOpen, onOpenChange } = useDisclosure();

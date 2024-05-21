@@ -21,11 +21,13 @@ import { FaLock } from "react-icons/fa";
 import { Checkbox } from "@nextui-org/react";
 import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
+import { GrUserSettings } from "react-icons/gr";
 
 import FormModals from "@/components/Modal/modals/modalApplications";
 import FormModalsLicence from "@/components/Modal/modals/modalLicences"
 import FormModalsFeature from "@/components/Modal/modals/modalFeatures"
 import FormModalPropertiesUsers from "@/components/Modal/modals/modalPropertiesUsers"
+import FormUsersApplications from "@/components/Modal/modals/UsersApplications"
 
 import propertyInsert, { propertyEdit } from "../functionsForm/property/page";
 
@@ -814,6 +816,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                 <TableColumn className="bg-primary-600 text-white font-bold">
                                                                                     FEATURES
                                                                                 </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    USERS
+                                                                                </TableColumn>
                                                                             </TableHeader>
                                                                             <TableBody>
                                                                                 {isAdmin() ? ( // Se o utilizador for admin
@@ -867,6 +872,17 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                     <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20} /></Button>
                                                                                                 )}
                                                                                             </TableCell>
+                                                                                            <TableCell>
+                                                                                            <FormUsersApplications
+                                                                                                    buttonName={<GrUserSettings size={25}/>}
+                                                                                                    buttonColor={"transparent"}
+                                                                                                    modalHeader={"Associar Utilizador à Aplicação -"}
+                                                                                                    formTypeModal={10}
+                                                                                                    modalEdit={` ID: ${idProperty}`}
+                                                                                                    idApplication={application.id}
+                                                                                                    idProperty={idProperty}
+                                                                                                ></FormUsersApplications>
+                                                                                            </TableCell>
                                                                                         </TableRow>
                                                                                     ))
                                                                                 ) : ( // Se o utilizador nao for admin
@@ -910,6 +926,17 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 ) : (
                                                                                                     <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20} /></Button>
                                                                                                 )}
+                                                                                            </TableCell>
+                                                                                            <TableCell>
+                                                                                            <FormUsersApplications
+                                                                                                    buttonName={<GrUserSettings />}
+                                                                                                    buttonColor={"transparent"}
+                                                                                                    modalHeader={"Associar Utilizador à Aplicação -"}
+                                                                                                    formTypeModal={10}
+                                                                                                    modalEdit={` ID: ${idProperty}`}
+                                                                                                    idApplication={application.id}
+                                                                                                    idProperty={idProperty}
+                                                                                                ></FormUsersApplications>
                                                                                             </TableCell>
                                                                                         </TableRow>
                                                                                     ))

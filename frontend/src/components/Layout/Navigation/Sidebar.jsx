@@ -87,9 +87,6 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                     label: "Properties",
                     active: true
                 },
-                {
-                    ref: "/homepage/users_applications", label: "Users Applications", active: true
-                },
                 
             ].filter(Boolean),
         },
