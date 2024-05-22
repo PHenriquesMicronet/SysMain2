@@ -49,7 +49,7 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
             if (!usersApplicationsFetched) {
                 setIsLoading(true);
                 try {
-                    const response = await axios.get(`/api/hotel/users-applications?property=`+ idProperty);
+                    const response = await axios.get(`/api/hotel/users-applications?property=`+ idProperty + `&application=` + idApplication );
                     setUsersApplications(response.data.response);
                     setUsersApplicationFetched(true);
                 } catch (error) {
@@ -61,6 +61,30 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
         }
         getuserApplications();
     }, []);
+
+    const [selectedUsersApplications, setSelectedUsersApplications] = useState([]);
+
+    const handleCheckboxChange = (userID) => {
+        setSelectedUsersApplications(prevState =>
+            prevState.includes(userID)
+                ? prevState.filter(id => id !== userID)
+                : [...prevState, userID]
+        );
+    };
+    const handleSave = async () => {
+        try {
+            const dataToSave = selectedUsersApplications.map(userID => ({
+                idProperty,
+                idApplication,
+                userID
+            }));
+            const response = await axios.put(`/api/hotel/properties-users`, {
+                dataToSave
+            });
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     return (
         <>
@@ -87,7 +111,7 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
                                         {modalHeader}{modalEdit}
                                         </div>
                                         <div className='flex flex-row items-center mr-5'>
-                                            <Button color="transparent" onPress={onClose} type="submit"><TfiSave size={25} /></Button>
+                                            <Button color="transparent" onPress={handleSave} type="submit"><TfiSave size={25} /></Button>
                                             <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                             <Button color="transparent" onPress={onClose}><MdClose size={30} /></Button>
                                         </div>
@@ -108,10 +132,16 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
                                                 >
                                                     <TableHeader>
                                                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                PROPERTY USER ID
+                                                                USER ID
                                                             </TableColumn>
                                                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                USER ID
+                                                                NAME
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                LASTNAME
+                                                            </TableColumn>
+                                                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                EMAIL
                                                             </TableColumn>
                                                             <TableColumn className="bg-primary-600 text-white font-bold">
                                                                 ADD
@@ -119,13 +149,15 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
                                                         </TableHeader>
                                                         <TableBody>
                                                         {usersApplication.map((users) => (
-                                                                <TableRow key={users.propertyID}>
-                                                                    <TableCell>{users.propertyID}</TableCell>
+                                                                <TableRow key={users.userID}>
+                                                                    <TableCell>{users.userID}</TableCell>
                                                                     <TableCell>{users.name}</TableCell>
+                                                                    <TableCell>{users.lastName}</TableCell>
+                                                                    <TableCell>{users.email}</TableCell>
                                                                     <TableCell>
                                                                         <Checkbox
-                                                                            checked={selectedUsersApplications.includes(users.propertyID)}
-                                                                            onChange={() => handleCheckboxChange(users.propertyID)}
+                                                                            checked={selectedUsersApplications.includes(users.userID)}
+                                                                            onChange={() => handleCheckboxChange(users.userID)}
                                                                         />
                                                                     </TableCell>
                                                                 </TableRow>
