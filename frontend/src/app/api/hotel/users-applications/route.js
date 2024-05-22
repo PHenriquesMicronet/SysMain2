@@ -69,69 +69,75 @@ export async function GET(request) {
 }
 
 
-// export async function PUT(request) {
+export async function PUT(request) {
+    try {
+        const { dataToSave } = await request.json();
 
-//     try {
-//         const { data } = await request.json();
+        const propertyID = dataToSave[0].idProperty;
+        const applicationID = dataToSave[0].idApplication;
 
-//         const propertyApplication = await prisma.properties_applications.findUnique({
-//             where: {
-//                 propertyID_applicationID: {
-//                     propertyID: data.propertyID,
-//                     applicationID: data.applicationID
-//                 }
-//             }
-//         })
+        const propertyApplication = await prisma.properties_applications.findUnique({
+            where: {
+                propertyID_applicationID: {
+                    propertyID,
+                    applicationID
+                }
+            }
+        });
 
-//         console.log(propertyApplication.propertyApplicationID)
+        if (!propertyApplication) {
+            throw new Error('Property application not found');
+        }
 
-//         const response = await prisma.users_properties_applications.create({
-//             data: {
-//                 propertyApplicationID: parseInt(propertyApplication.propertyApplicationID),
-//                 userID: parseInt(data.userID)
-//             }
-//         });
+        const createData = dataToSave.map(item => ({
+            userID: item.userID,
+            propertyApplicationID: propertyApplication.propertyApplicationID
+        }));
 
-//         return new NextResponse(JSON.stringify({ response, status: 200 }));
+        const response = await prisma.users_properties_applications.createMany({
+            data: createData
+        });
 
-//     } catch (error) {
-//         return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
-//     } finally {
-//         await prisma.$disconnect();
-//     }
-// }
+        return new NextResponse(JSON.stringify({ response, status: 200 }), { status: 200 });
 
-// export async function DELETE(request, context) {
+    } catch (error) {
+        return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
+    } finally {
+        await prisma.$disconnect();
+    }
+}
 
-//     try {
-//         const { data } = await request.json();
+export async function DELETE(request, context) {
 
-//         const propertyApplication = await prisma.properties_applications.findUnique({
-//             where: {
-//                 propertyID_applicationID: {
-//                     propertyID: data.propertyID,
-//                     applicationID: data.applicationID
-//                 }
-//             }
-//         })
+    try {
+        const { data } = await request.json();
 
-//         const response = await prisma.users_properties_applications.delete({
-//             where: {
-//                 propertyApplicationID_userID: {
-//                     propertyApplicationID: propertyApplication.propertyApplicationID,
-//                     userID: data.userID
-//                 }
-//             }
-//         })
+        const propertyApplication = await prisma.properties_applications.findUnique({
+            where: {
+                propertyID_applicationID: {
+                    propertyID: data.propertyID,
+                    applicationID: data.applicationID
+                }
+            }
+        })
 
-//         return new NextResponse(JSON.stringify({ status: 200 }));
+        const response = await prisma.users_properties_applications.delete({
+            where: {
+                propertyApplicationID_userID: {
+                    propertyApplicationID: propertyApplication.propertyApplicationID,
+                    userID: data.userID
+                }
+            }
+        })
 
-//     } catch (error) {
-//         return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
-//     } finally {
-//         await prisma.$disconnect();
-//     }
-// }
+        return new NextResponse(JSON.stringify({ status: 200 }));
+
+    } catch (error) {
+        return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
+    } finally {
+        await prisma.$disconnect();
+    }
+}
 
 
 
