@@ -37,10 +37,30 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
     const [isExpanded, setIsExpanded] = useState(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
+    const [usersApplicationsFetched, setUsersApplicationFetched] = useState(false);
+    const [usersApplication, setUsersApplications] = useState([])
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
+
+    useEffect(() => {
+        const getuserApplications = async () => {
+            if (!usersApplicationsFetched) {
+                setIsLoading(true);
+                try {
+                    const response = await axios.get(`/api/hotel/users-applications?property=`+ idProperty);
+                    setUsersApplications(response.data.response);
+                    setUsersApplicationFetched(true);
+                } catch (error) {
+                    console.error("Erro ao encontrar os utilizadores não associadas à propriedade:", error.message);
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+        }
+        getuserApplications();
+    }, []);
 
     return (
         <>
@@ -88,23 +108,29 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
                                                 >
                                                     <TableHeader>
                                                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                USER ID
+                                                                PROPERTY USER ID
                                                             </TableColumn>
                                                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                                                NAME
+                                                                USER ID
                                                             </TableColumn>
                                                             <TableColumn className="bg-primary-600 text-white font-bold">
                                                                 ADD
                                                             </TableColumn>
                                                         </TableHeader>
                                                         <TableBody>
-                                                                <TableRow >
-                                                                    <TableCell>Teste</TableCell>
-                                                                    <TableCell>Teste</TableCell>
-                                                                    <TableCell><Checkbox/></TableCell>
+                                                        {usersApplication.map((users) => (
+                                                                <TableRow key={users.propertyID}>
+                                                                    <TableCell>{users.propertyID}</TableCell>
+                                                                    <TableCell>{users.name}</TableCell>
+                                                                    <TableCell>
+                                                                        <Checkbox
+                                                                            checked={selectedUsersApplications.includes(users.propertyID)}
+                                                                            onChange={() => handleCheckboxChange(users.propertyID)}
+                                                                        />
+                                                                    </TableCell>
                                                                 </TableRow>
-                                                            
-                                                        </TableBody>
+                                                            ))}
+                                                            </TableBody>
                                                 </Table>
                                             </div>
                                         )}

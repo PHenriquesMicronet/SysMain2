@@ -19,8 +19,6 @@ const modalusersproperties = ({
     buttonColor,
     modalEditArrow,
     idUser,
-    OrganizationUserName,
-    PropertiesUserName,
     NameUser
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -40,7 +38,6 @@ const modalusersproperties = ({
                 try {
                     const response = await axios.get(`/api/hotel/properties-users?user=` + idUser);
                     setUsersProperties(response.data.response);
-                    console.log("aaaaa" + response.data.response)
                     setUsersFetched(true);
                 } catch (error) {
                     console.error("Erro ao encontrar os utilizadores não associadas à propriedade:", error.message);

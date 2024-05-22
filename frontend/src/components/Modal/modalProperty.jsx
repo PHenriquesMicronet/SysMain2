@@ -159,6 +159,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         }
     };
 
+
     useEffect(() => {
         async function fetchUserCount() {
             try {
@@ -717,7 +718,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                             modalEditArrow={<BsArrowRight size={25} />}
                                                                             modalEdit={`ID: ${idProperty}`}
                                                                             formTypeModal={10}
-                                                                            idProperty={idProperty}
+                                                                            propertyID={idProperty}
                                                                         />
                                                                 </div>
                                                                 {isLoading ? (<p>A Carregar...</p>
