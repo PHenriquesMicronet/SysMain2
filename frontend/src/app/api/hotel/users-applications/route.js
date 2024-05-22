@@ -97,17 +97,24 @@ export async function GET(request) {
 export async function PUT(request) {
 
     try {
+        const { data } = await request.json();
 
-        const { dataToSave } = await request.json();
+        const propertyApplication = await prisma.properties_applications.findUnique({
+            where: {
+                propertyID_applicationID: {
+                    propertyID: data.propertyID,
+                    applicationID: data.applicationID
+                }
+            }
+        })
 
-        const transformedData = dataToSave.map(item => ({
-            propertyID: item.propertyID,
-            userID: item.idUser
-        }));
+        console.log(propertyApplication.propertyApplicationID)
 
-        const response = await prisma.properties_users.createMany({
-            data: transformedData
-
+        const response = await prisma.users_properties_applications.create({
+            data: {
+                propertyApplicationID: parseInt(propertyApplication.propertyApplicationID),
+                userID: parseInt(data.userID)
+            }
         });
 
         return new NextResponse(JSON.stringify({ response, status: 200 }));
@@ -124,10 +131,19 @@ export async function DELETE(request, context) {
     try {
         const { data } = await request.json();
 
-        const response = await prisma.properties_users.delete({
+        const propertyApplication = await prisma.properties_applications.findUnique({
             where: {
-                propertyID_userID: {
+                propertyID_applicationID: {
                     propertyID: data.propertyID,
+                    applicationID: data.applicationID
+                }
+            }
+        })
+
+        const response = await prisma.users_properties_applications.delete({
+            where: {
+                propertyApplicationID_userID: {
+                    propertyApplicationID: propertyApplication.propertyApplicationID,
                     userID: data.userID
                 }
             }

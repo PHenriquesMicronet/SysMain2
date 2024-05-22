@@ -69,18 +69,9 @@ const modalusersproperties = ({
                 idUser
             }));
 
-            console.log(dataToSave)
-
             const response = await axios.put(`/api/hotel/properties-users`, {
                 dataToSave
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to save properties.');
-            }
-
-            const data = await response.json();
-            console.log(data);
 
         } catch (error) {
             console.error('Error:', error);
