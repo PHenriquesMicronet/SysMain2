@@ -78,7 +78,7 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
                 idApplication,
                 userID
             }));
-            const response = await axios.put(`/api/hotel/properties-users`, {
+            const response = await axios.put(`/api/hotel/users-applications`, {
                 dataToSave
             });
         } catch (error) {
@@ -88,7 +88,7 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
 
     return (
         <>
-            {formTypeModal === 10 && (
+            {formTypeModal === 11 && 
                 <>
                     <Button onPress={onOpen} color={buttonColor} className="w-fit">
                         {buttonName} {buttonIcon}
@@ -172,7 +172,7 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
                         </ModalContent>
                     </Modal>
                 </>
-            )}
+            }
         </>
     );
 };
