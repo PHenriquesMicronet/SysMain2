@@ -60,47 +60,13 @@ export async function PUT(request) {
     try {
         const { data } = await request.json();
 
-        const property = await prisma.properties.findUnique({
-            where: {
-                propertyID: parseInt(data.propertyID)
-            }
-        })
-
-        const organizationApplication = await prisma.organizations_applications.findUnique({
-            where: {
-                organizationID_applicationID: {
-                    organizationID: parseInt(property.organizationID),
-                    applicationID: parseInt(data.applicationID)
-                }
-
-            }
-        })
-
         const newOrganizationApplication = await prisma.organizations_applications.create({
             data: {
-                organizationID: parseInt(property.organizationID),
+                organizationID: parseInt(data.organizationID),
                 applicationID: parseInt(data.applicationID),
+                connectionString: data.connectionString
             }
         });
-
-        if (data.applicationID == 1) {
-            const organizationApplication = await prisma.organizations_applications.findUnique({
-                where: {
-                    organizationID_applicationID: {
-                        organizationID: parseInt(property.organizationID),
-                        applicationID: parseInt(data.applicationID)
-                    }
-                }
-            })
-
-            const newSysPMSProperty = axios.put("http://localhost:3001/api/v1/sysMain/properties", {
-                data: {
-                    connectionString: organizationApplication.connectionString,
-                    property: property
-                }
-            })
-
-        }
 
         return new NextResponse(JSON.stringify({ status: 200 }));
 

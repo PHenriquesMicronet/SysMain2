@@ -49,26 +49,6 @@ export async function PUT(request) {
             }
         })
 
-        const organizationApplication = await prisma.organizations_applications.findUnique({
-            where: {
-                organizationID_applicationID: {
-                    organizationID: parseInt(property.organizationID),
-                    applicationID: parseInt(data.applicationID)
-                }
-
-            }
-        })
-
-        if (organizationApplication == null) {
-            const newOrganizationApplication = await prisma.organizations_applications.create({
-                data: {
-                    organizationID: parseInt(property.organizationID),
-                    applicationID: parseInt(data.applicationID),
-
-                }
-            });
-        }
-
         if (data.applicationID == 1) {
             const organizationApplication = await prisma.organizations_applications.findUnique({
                 where: {
