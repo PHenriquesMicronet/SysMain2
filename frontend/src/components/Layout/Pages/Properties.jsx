@@ -24,7 +24,7 @@ import { FiSearch } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
 import { FiEdit3 } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
-import { IoMdDownload } from "react-icons/io";  
+import { IoMdDownload } from "react-icons/io";
 
 import FormModals from "@/components/Modal/modalProperty";
 import LoadingBackdrop from "@/components/Loader/LoaderV2";
@@ -32,6 +32,9 @@ import LoadingBackdrop from "@/components/Loader/LoaderV2";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { CSVLink } from "react-csv";
+
+import {useTranslations} from 'next-intl';
+
 
 export default function Contact() {
 
@@ -42,6 +45,7 @@ export default function Contact() {
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { data: session, status } = useSession()
+    const t = useTranslations('Index');
 
     // const filteredItems = property.filter(
     //     (property) =>
@@ -121,13 +125,13 @@ export default function Contact() {
         <>
             <main>
                 <div className="flex flex-col mt-5 py-3">
-                    <p className="text-xs px-6">Propriedades</p>
+                    <p className="text-xs px-6">{t("organization.properties.label")}</p>
                     <div className="flex flex-row justify-between items-center mx-5">
                         <div className="flex flex-row">
                             <div className="flex flex-wrap md:flex-nowrap gap-4">
                                 <Input
                                     className="mt-4 w-80"
-                                    placeholder="Procurar..."
+                                    placeholder={t('general.search')}
                                     labelPlacement="outside"
                                     startContent={
                                         <FiSearch color={"black"} className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -138,10 +142,10 @@ export default function Contact() {
                             </div>
                         </div>
                         <FormModals
-                            buttonName={"Inserir Propriedade"}
+                            buttonName={t("general.newRecord")}
                             buttonIcon={<FiPlus size={15} />}
                             buttonColor={"primary"}
-                            modalHeader={"Inserir Propriedade"}
+                            modalHeader={t("organization.properties.new.modalHeader")}
                             modalIcons={"bg-red"}
                             formTypeModal={10}
                         ></FormModals>
@@ -162,22 +166,22 @@ export default function Contact() {
                     >
                         <TableHeader>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                ID
+                                {t("organization.properties.datatable.id")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                NAME
+                                {t("organization.properties.datatable.name")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                ADDRESS
+                                {t("organization.properties.datatable.address")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                DESCRIPTION
+                                {t("organization.properties.datatable.description")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                ABBREVIATION
+                                {t("organization.properties.datatable.shortname")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                DESIGNATION
+                                {t("organization.properties.datatable.designation")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
@@ -206,22 +210,22 @@ export default function Contact() {
                                             <DropdownMenu aria-label="Static Actions" isOpen={true} closeOnSelect={false}>
                                                 <DropdownItem key="edit">
                                                     <FormModals
-                                                        buttonName={"Editar"}
+                                                        buttonName={t("general.editRecord")}
                                                         editIcon={<FiEdit3 size={25} />}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={"Editar Propriedade"}
+                                                        modalHeader={t("organization.properties.edit.modalHeader")}
                                                         modalEditArrow={<BsArrowRight size={25} />}
                                                         modalEdit={`ID: ${property.propertyID}`}
                                                         formTypeModal={12}
                                                         idProperty={property.propertyID}
                                                     ></FormModals>
                                                 </DropdownItem>
-                                                <DropdownItem onClick={() => handleDelete(property.propertyID)}>Remover</DropdownItem>
+                                                <DropdownItem onClick={() => handleDelete(property.propertyID)}>{t("general.removeRecord")}</DropdownItem>
                                                 <DropdownItem >
                                                     <FormModals
-                                                        buttonName={"Ver"}
+                                                        buttonName={t("general.viewRecord")}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={"Ver Detalhes da Propriedade"}
+                                                        modalHeader={t("organization.properties.view.modalHeader")}
                                                         modalEditArrow={<BsArrowRight size={25} />}
                                                         modalEdit={`ID: ${property.propertyID}`}
                                                         formTypeModal={11}
@@ -235,7 +239,7 @@ export default function Contact() {
                                                         buttonColor={"transparent"}
                                                         modalHeader={"Licença"}
                                                         variant="light"
-                                                        className="flex flex-row justify-center"    
+                                                        className="flex flex-row justify-center"
                                                         formTypeModal={13}
                                                         idProperty={property.propertyID}
                                                     ></FormModals> */}
@@ -253,16 +257,16 @@ export default function Contact() {
                         data={items.map((item) => ({
                             propertyID: item.propertyID,
                             Name: item.name,
-                            Address1: item.address1, 
+                            Address1: item.address1,
                             Description: item.description ,
-                            Abbreviation: item.abbreviation , 
+                            Abbreviation: item.abbreviation ,
                             Designation: item.designation
                         }))}
                         filename={"Propriedades"}
                         separator=";"
                         enclosingCharacter=""
                     >
-                        CSV 
+                        CSV
                     </CSVLink><IoMdDownload />
                     </Button>
                     </div>
