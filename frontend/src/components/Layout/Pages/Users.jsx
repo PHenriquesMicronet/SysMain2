@@ -34,6 +34,7 @@ import {useTranslations} from 'next-intl';
 
 
 import Modaluser from "@/components/Modal/modalUser";
+import PaginationComponent from "@/components/Pagination/Pagination";
 
 
 export default function users() {
@@ -241,39 +242,14 @@ export default function users() {
                     </CSVLink><IoMdDownload />
                     </Button>
                     </div>
-                    <div className="flex flex-row items-center">
-                        <Pagination
-                            isCompact
-                            showControls
-                            color="primary"
-                            variant="flat"
-                            page={page}
-                            total={Math.ceil(filteredItems.length / rowsPerPage)}
-                            onChange={handleChangePage}
-                            className="mx-5"
-                        />
-                        <div>
-                            <span className="text-sm text-black">Items por página:</span>
-                            <select
-                                value={rowsPerPage}
-                                onChange={handleChangeRowsPerPage}
-                                className="ml-2 py-1 px-2 border rounded bg-transparent text-sm text-default-600 mx-5"
-                            >
-                                <option value={15}>15</option>
-                                <option value={25}>25</option>
-                                <option value={50}>50</option>
-                            </select>
-                        </div>
-                        <div className="ml-5 mr-10 text-black">
-                            {items.length > 0
-                                ? `${(page - 1) * rowsPerPage + 1}-${Math.min(
-                                    page * rowsPerPage,
-                                    filteredItems.length
-                                )} de ${filteredItems.length}`
-                                : "0 resultados"}
-                        </div>
+                    <PaginationComponent
+                        page={page}
+                        totalItems={filteredItems.length}
+                        rowsPerPage={rowsPerPage}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
                     </div>
-                </div>
             </main>
         </>
     );

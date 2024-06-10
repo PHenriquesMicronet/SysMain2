@@ -53,6 +53,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     /* Modals Open*/
     const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
     const [isThirdModalOpen, setIsThirdModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     /*Array para listar */
     const [propertyUsers, setPropertyUsers] = useState([]);
@@ -135,6 +136,10 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         }
     };
 
+    const handleModalOpenChange = async () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
     const [switchState, setSwitchState] = useState(false);
 
     const handleSwitchToggle = async (applicationID, active) => {
@@ -145,7 +150,8 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
             };
 
             var response
-
+            console.log("Switch active state:", active);
+            setSwitchState(active);
             console.log(active)
 
             if (active) {
@@ -158,7 +164,9 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
 
 
                 if (organizationApplication.data.response == null) {
-                    // abre a modal
+
+                    console.log("Organization application is null, opening modal");
+                    handleModalOpenChange();
 
                     const newOrganizationApplication = await axios.put("/api/hotel/organizations-applications", {
                         data: {
@@ -191,6 +199,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
             console.error("Erro ao enviar solicitação PUT:", error);
         }
     };
+
 
 
     useEffect(() => {
@@ -542,7 +551,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 ></FormModals>
                                                                                             </TableCell>
                                                                                             <TableCell>
-                                                                                            <Checkbox defaultSelected color="success"></Checkbox>
+                                                                                                <Checkbox defaultSelected color="success"></Checkbox>
                                                                                             </TableCell>
                                                                                             <TableCell style={{ textAlign: 'left' }}>
                                                                                                 {application.description === "OnPremPMS" ? (
@@ -869,8 +878,34 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 <Switch
                                                                                                     className="mr-auto"
                                                                                                     size="sm"
+                                                                                                    checked={switchState}
                                                                                                     onChange={(e) => handleSwitchToggle(application.id, e.target.checked)}
                                                                                                 />
+                                                                                                <Modal
+                                                                                                    isOpen={isModalOpen}
+                                                                                                    onOpenChange={handleModalOpenChange}
+                                                                                                    isDismissable={false}
+                                                                                                    isKeyboardDismissDisabled={true}
+                                                                                                >
+                                                                                                    <ModalContent>
+                                                                                                        {(onClose) => (
+                                                                                                            <>
+                                                                                                                <ModalHeader className="flex flex-col gap-1">New Connection String</ModalHeader>
+                                                                                                                <ModalBody>
+                                                                                                                    <Input />
+                                                                                                                </ModalBody>
+                                                                                                                <ModalFooter>
+                                                                                                                    <Button color="danger" variant="light" onPress={onClose}>
+                                                                                                                        X
+                                                                                                                    </Button>
+                                                                                                                    <Button color="primary" onPress={onClose}>
+                                                                                                                        ADD
+                                                                                                                    </Button>
+                                                                                                                </ModalFooter>
+                                                                                                            </>
+                                                                                                        )}
+                                                                                                    </ModalContent>
+                                                                                                </Modal>
                                                                                             </TableCell>
                                                                                             <TableCell style={{ textAlign: 'left' }}>
                                                                                                 {application.description === "OnPremPMS" ? (
@@ -920,7 +955,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                     modalEdit={` ID: ${idProperty}`}
                                                                                                     idApplication={application.id}
                                                                                                     idProperty={idProperty}
-                                                                                                ></FormUsersApplications> */}
+                                                                                                />
                                                                                             </TableCell>
                                                                                         </TableRow>
                                                                                     ))
@@ -976,7 +1011,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 idApplication={application.id}
                                                                                                 idProperty={idProperty}
                                                                                                 />
-                                                                                            {/* <FormUsersApplications
+                                                                                                {/* <FormUsersApplications
                                                                                                     buttonName={<GrUserSettings />}
                                                                                                     buttonColor={"transparent"}
                                                                                                     modalHeader={"Associar Utilizador à Aplicação -"}
