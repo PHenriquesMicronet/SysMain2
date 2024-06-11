@@ -183,9 +183,6 @@ export default function AllUsers() {
                                                         PropertiesUserName={user.properties}
                                                     />
                                                 </DropdownItem>
-                                                <DropdownItem>
-                                                    <button onClick={() => handleDelete(user.userID)}>Remover</button>
-                                                </DropdownItem>
                                                 <DropdownItem><button onClick={() => handleDelete(user.id)}>{t("general.removeRecord")}</button></DropdownItem>
                                                 <DropdownItem key="view">
                                                 <Modaluser
