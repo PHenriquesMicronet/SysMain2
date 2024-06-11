@@ -28,6 +28,8 @@ import PaginationComponent from "@/components/Pagination/Pagination";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { CSVLink } from "react-csv";
+import {useTranslations} from 'next-intl';
+
 
 export default function AllProperties() {
     const [page, setPage] = useState(1);
@@ -35,7 +37,9 @@ export default function AllProperties() {
     const [searchValue, setSearchValue] = useState("");
     const [property, setProperty] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession()
+    const t = useTranslations('Index');
+
 
     const filteredItems = React.useMemo(() => {
         return property.filter((property) =>
@@ -103,13 +107,13 @@ export default function AllProperties() {
         <>
             <main>
                 <div className="flex flex-col mt-5 py-3">
-                    <p className="text-xs px-6">Todas as Propriedades</p>
+                    <p className="text-xs px-6">{t("allProperties.label")}</p>
                     <div className="flex flex-row justify-between items-center mx-5">
                         <div className="flex flex-row">
                             <div className="flex flex-wrap md:flex-nowrap gap-4">
                                 <Input
                                     className="mt-4 w-80"
-                                    placeholder="Procurar..."
+                                    placeholder={t('general.search')}
                                     labelPlacement="outside"
                                     startContent={<FiSearch color={"black"} className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />}
                                     value={searchValue}
@@ -118,10 +122,10 @@ export default function AllProperties() {
                             </div>
                         </div>
                         <FormModals
-                            buttonName={"Inserir Propriedade"}
+                            buttonName={t("general.newRecord")}
                             buttonIcon={<FiPlus size={15} />}
                             buttonColor={"primary"}
-                            modalHeader={"Inserir Propriedade"}
+                            modalHeader={t("allProperties.new.modalHeader")}
                             modalIcons={"bg-red"}
                             formTypeModal={10}
                         />
@@ -139,14 +143,30 @@ export default function AllProperties() {
                         className="h-full overflow-auto"
                     >
                         <TableHeader>
-                            <TableColumn className="bg-primary-600 text-white font-bold">ID</TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">NAME</TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">ADDRESS</TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">DESCRIPTION</TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">ABBREVIATION</TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">DESIGNATION</TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">ORGANIZATION</TableColumn>
-                            <TableColumn className="bg-primary-600 text-white flex justify-center items-center"><GoGear size={20} /></TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allProperties.datatable.id")}
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allProperties.datatable.name")}
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allProperties.datatable.address")}
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allProperties.datatable.description")}
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allProperties.datatable.shortname")}
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allProperties.datatable.designation")}
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allProperties.datatable.organization")}
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
+                                <GoGear size={20} />
+                            </TableColumn>
                         </TableHeader>
                         <TableBody>
                             {items.map((property, index) => (
@@ -171,10 +191,10 @@ export default function AllProperties() {
                                             <DropdownMenu aria-label="Static Actions" isOpen={true} closeOnSelect={false}>
                                                 <DropdownItem key="edit">
                                                     <FormModals
-                                                        buttonName={"Editar"}
+                                                        buttonName={t("general.editRecord")}
                                                         editIcon={<FiEdit3 size={25} />}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={"Editar Propriedade"}
+                                                        modalHeader={t("allProperties.edit.modalHeader")}
                                                         modalEditArrow={<BsArrowRight size={25} />}
                                                         modalEdit={`ID: ${property.propertyID}`}
                                                         formTypeModal={12}
@@ -182,12 +202,12 @@ export default function AllProperties() {
                                                         OrganizationName={property.organization}
                                                     />
                                                 </DropdownItem>
-                                                <DropdownItem onClick={() => handleDelete(property.propertyID)}>Remover</DropdownItem>
-                                                <DropdownItem>
+                                                <DropdownItem onClick={() => handleDelete(property.propertyID)}>{t("general.removeRecord")}</DropdownItem>
+                                                <DropdownItem >
                                                     <FormModals
-                                                        buttonName={"Ver"}
+                                                        buttonName={t("general.viewRecord")}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={"Ver Detalhes da Propriedade"}
+                                                        modalHeader={t("allProperties.view.modalHeader")}
                                                         formTypeModal={11}
                                                         idProperty={property.propertyID}
                                                     />

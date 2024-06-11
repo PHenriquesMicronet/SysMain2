@@ -20,6 +20,8 @@ import { FiSearch, FiPlus, FiEdit3 } from "react-icons/fi";
 import { IoMdDownload } from "react-icons/io";
 import FormModals from "@/components/Modal/modalOrganizations";
 import PaginationComponent from "@/components/Pagination/Pagination";
+import {useTranslations} from 'next-intl';
+
 
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -31,6 +33,8 @@ export default function Contact() {
     const [searchValue, setSearchValue] = useState("");
     const [organizations, setOrganizations] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const t = useTranslations('Index');
+
 
     const filteredItems = React.useMemo(() => {
         return organizations.filter((organization) =>
@@ -97,13 +101,13 @@ export default function Contact() {
         <>
             <main>
                 <div className="flex flex-col mt-5 py-3">
-                    <p className="text-xs px-6">Todas as Organizações</p>
+                    <p className="text-xs px-6">{t("allOrganizations.label")}</p>
                     <div className="flex flex-row justify-between items-center mx-5">
                         <div className="flex flex-row">
                             <div className="flex flex-wrap md:flex-nowrap gap-4">
                                 <Input
                                     className="mt-4 w-80"
-                                    placeholder="Procurar..."
+                                    placeholder={t('general.search')}
                                     labelPlacement="outside"
                                     startContent={
                                         <FiSearch color={"black"} className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -114,10 +118,10 @@ export default function Contact() {
                             </div>
                         </div>
                         <FormModals
-                            buttonName={"Inserir Organização"}
+                            buttonName={t("general.newRecord")}
                             buttonIcon={<FiPlus size={15} />}
                             buttonColor={"primary"}
-                            modalHeader={"Inserir Organização"}
+                            modalHeader={t("allOrganizations.new.modalHeader")}
                             modalIcons={"bg-red"}
                             formTypeModal={10}
                         ></FormModals>
@@ -136,22 +140,22 @@ export default function Contact() {
                     >
                         <TableHeader>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                ID
+                                {t("allOrganizations.datatable.id")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                NAME
+                                {t("allOrganizations.datatable.name")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                ADDRESS
+                                {t("allOrganizations.datatable.address")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                COUNTRY
+                                {t("allOrganizations.datatable.country")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                Nº. PROPERTIES
+                                {t("allOrganizations.datatable.properties")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white font-bold">
-                                Nº. USERS
+                                {t("allOrganizations.datatable.users")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
@@ -164,25 +168,23 @@ export default function Contact() {
                                     <TableCell>{organization.name}</TableCell>
                                     <TableCell>{organization.address1}</TableCell>
                                     <TableCell>{organization.country}</TableCell>
-                                    <TableCell>
-                                        <FormModals
-                                            buttonName={organization.properties}
-                                            buttonColor={"transparent"}
-                                            modalEdit={`ID: ${organization.organizationID}`}
-                                            modalHeader={"All Properties from"}
-                                            formTypeModal={13}
-                                            idOrganization={organization.organizationID}
-                                        />
+                                    <TableCell><FormModals
+                                        buttonName={organization.properties}
+                                        buttonColor={"transparent"}
+                                        modalEdit={`ID: ${organization.organizationID}`}
+                                        modalHeader={t("allOrganizations.properties.label")}
+                                        formTypeModal={13}
+                                        idOrganization={organization.organizationID}
+                                    ></FormModals>
                                     </TableCell>
-                                    <TableCell>
-                                        <FormModals
-                                            buttonName={organization.users}
-                                            buttonColor={"transparent"}
-                                            modalEdit={`Id: ${organization.organizationID}`}
-                                            modalHeader={"All Users from Organization"}
-                                            formTypeModal={14}
-                                            idOrganization={organization.organizationID}
-                                        />
+                                    <TableCell><FormModals
+                                        buttonName={organization.users}
+                                        buttonColor={"transparent"}
+                                        modalEdit={`Id: ${organization.organizationID}`}
+                                        modalHeader={t("allOrganizations.users.label")}
+                                        formTypeModal={14}
+                                        idOrganization={organization.organizationID}
+                                    ></FormModals>
                                     </TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
@@ -198,22 +200,22 @@ export default function Contact() {
                                             >
                                                 <DropdownItem key="edit">
                                                     <FormModals
-                                                        buttonName={"Editar"}
+                                                        buttonName={t("general.editRecord")}
                                                         editIcon={<FiEdit3 size={25} />}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={"Editar Organização"}
+                                                        modalHeader={t("allOrganizations.edit.modalHeader")}
                                                         modalEditArrow={<BsArrowRight size={25} />}
                                                         modalEdit={`ID: ${organization.organizationID}`}
                                                         formTypeModal={11}
                                                         idOrganization={organization.organizationID}
                                                     />
                                                 </DropdownItem>
-                                                <DropdownItem onClick={() => handleDelete(organization.organizationID)}>Remover</DropdownItem>
+                                                <DropdownItem onClick={() => handleDelete(organization.organizationID)}>{t("general.removeRecord")}</DropdownItem>
                                                 <DropdownItem>
                                                     <FormModals
-                                                        buttonName={"Ver"}
+                                                        buttonName={t("general.viewRecord")}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={"Ver Detalhes da Organização"}
+                                                        modalHeader={t("allOrganizations.view.modalHeader")}
                                                         formTypeModal={11}
                                                         modalEditArrow={<BsArrowRight size={25} />}
                                                         modalEdit={`ID: ${organization.organizationID}`}
@@ -231,7 +233,7 @@ export default function Contact() {
                 <div className="bg-tableFooter border border-tableFooterBorder flex justify-end items-center lg:pl-72 w-full min-h-10vh fixed bottom-0 right-0 z-20 text-sm text-default-400 py-3">
                     <div className="space-x-4">
                         <Button onClick={exportToPDF}>PDF <IoMdDownload /></Button>
-                        <Button>                    
+                        <Button>
                             <CSVLink
                             data={items.map((item) => ({
                                 organizationID: item.organizationID,

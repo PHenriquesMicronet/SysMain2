@@ -24,6 +24,10 @@ import { IoMdDownload } from "react-icons/io";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { CSVLink } from "react-csv";
+
+import {useTranslations} from 'next-intl';
+
+
 import Modaluser from "@/components/Modal/modalUser";
 import PaginationComponent from "@/components/Pagination/Pagination";
 
@@ -33,6 +37,7 @@ export default function AllUsers() {
     const [searchValue, setSearchValue] = useState("");
     const [users, setUsers] = useState([]);
     const { data: session, status } = useSession();
+    const t = useTranslations('Index');
 
     const filteredItems = React.useMemo(() => {
         return users.filter(user =>
@@ -93,13 +98,13 @@ export default function AllUsers() {
         <>
             <main>
                 <div className="flex flex-col mt-5 py-3">
-                    <p className="text-xs px-6">Utilizador</p>
+                    <p className="text-xs px-6">{t("allUsers.label")}</p>
                     <div className="flex flex-row justify-between items-center mx-5">
                         <div className="flex flex-row">
                             <div className="flex flex-wrap md:flex-nowrap gap-4">
                                 <Input
                                     className="mt-4 w-80"
-                                    placeholder="Procurar..."
+                                    placeholder={t('general.search')}
                                     labelPlacement="outside"
                                     startContent={<FiSearch color={"black"} className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />}
                                     value={searchValue}
@@ -108,13 +113,14 @@ export default function AllUsers() {
                             </div>
                         </div>
                         <Modaluser
-                            buttonName={"Inserir Utilizador"}
+                            buttonName={t("general.newRecord")}
                             buttonIcon={<FiPlus size={15} />}
                             buttonColor={"primary"}
-                            modalHeader={"Inserir Utilizador"}
+                            modalHeader={t("allUsers.new.modalHeader")}
                             modalIcons={"bg-red"}
                             formTypeModal={10}
-                        />
+
+                        ></Modaluser>
                     </div>
                 </div>
                 <div className="mx-5 h-[65vh] min-h-full">
@@ -127,11 +133,21 @@ export default function AllUsers() {
                         className="h-full overflow-auto"
                     >
                         <TableHeader>
-                            {/* <TableColumn className="bg-primary-600 text-white font-bold">ID</TableColumn> */}
-                            <TableColumn className="bg-primary-600 text-white font-bold">NAME</TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">EMAIL</TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">ORGANIZATION</TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">PROPERTY</TableColumn>
+                        {/* <TableColumn className="bg-primary-600 text-white font-bold">
+                                ID
+                        </TableColumn> */}
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allUsers.datatable.name")}
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allUsers.datatable.email")}
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allUsers.datatable.organization")}
+                            </TableColumn>
+                            <TableColumn className="bg-primary-600 text-white font-bold">
+                                {t("allUsers.datatable.properties")}
+                            </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
                             </TableColumn>
@@ -154,10 +170,10 @@ export default function AllUsers() {
                                             <DropdownMenu aria-label="Static Actions">
                                                 <DropdownItem key="edit">
                                                     <Modaluser
-                                                        buttonName={"Editar"}
+                                                        buttonName={t("general.editRecord")}
                                                         editIcon={<FiEdit3 size={25} />}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={"Editar Utilizador"}
+                                                        modalHeader={t("allUsers.edit.modalHeader")}
                                                         modalEditArrow={<BsArrowRight size={25} />}
                                                         modalEdit={`ID: ${user.userID}`}
                                                         formTypeModal={11}
@@ -170,13 +186,14 @@ export default function AllUsers() {
                                                 <DropdownItem>
                                                     <button onClick={() => handleDelete(user.userID)}>Remover</button>
                                                 </DropdownItem>
+                                                <DropdownItem><button onClick={() => handleDelete(user.id)}>{t("general.removeRecord")}</button></DropdownItem>
                                                 <DropdownItem key="view">
-                                                    <Modaluser
-                                                        buttonName={"Ver"}
+                                                <Modaluser
+                                                        buttonName={t("general.viewRecord")}
                                                         editIcon={<FiEdit3 size={25} />}
                                                         modalEditArrow={<BsArrowRight size={25} />}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={"Ver Utilizador"}
+                                                        modalHeader={t("allUsers.view.modalHeader")}
                                                         modalEdit={`ID: ${user.userID}`}
                                                         formTypeModal={11}
                                                         idUser={user.userID}
@@ -194,23 +211,22 @@ export default function AllUsers() {
                     </Table>
                 </div>
                 <div className="bg-tableFooter border border-tableFooterBorder flex justify-end items-center lg:pl-72 w-full min-h-10vh fixed bottom-0 right-0 z-20 text-sm text-default-400 py-3">
-                    <div className="space-x-4">
-                        <Button onClick={exportToPDF}>PDF <IoMdDownload /></Button>
-                        <Button>
-                            <CSVLink
-                                data={items.map((item) => ({
-                                    Name: item.name,
-                                    Email: item.email,
-                                    Organization: item.organization,
-                                    Properties: item.properties,
-                                }))}
-                                filename={"Utilizadores"}
-                                separator=";"
-                                enclosingCharacter=""
-                            >
-                                CSV
-                            </CSVLink><IoMdDownload />
-                        </Button>
+                <div className="space-x-4">
+                    <Button onClick={exportToPDF}>PDF <IoMdDownload /></Button>
+                    <Button>                    <CSVLink
+                        data={items.map((item) => ({
+                            Name: item.name,
+                            Email: item.email,
+                            Organization: item.organization,
+                            Properties: item.properties,
+                        }))}
+                        filename={"Utilizadores"}
+                        separator=";"
+                        enclosingCharacter=""
+                    >
+                        CSV
+                    </CSVLink><IoMdDownload />
+                    </Button>
                     </div>
                     <PaginationComponent
                         page={page}
