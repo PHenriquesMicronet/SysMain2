@@ -1,8 +1,11 @@
 // components/PaginationComponent.js
 import React from "react";
 import { Pagination } from "@nextui-org/react";
+import {useTranslations} from 'next-intl';
 
 const PaginationComponent = ({ page, totalItems, rowsPerPage, onChangePage, onChangeRowsPerPage }) => {
+    const t = useTranslations('Index');
+
     return (
         <div className="flex flex-row items-center">
             <Pagination
@@ -16,7 +19,7 @@ const PaginationComponent = ({ page, totalItems, rowsPerPage, onChangePage, onCh
                 className="mx-5"
             />
             <div>
-                <span className="text-sm text-black">Items por página:</span>
+                <span className="text-sm text-black">{t("pagination.pageRecords")}</span>
                 <select
                     value={rowsPerPage}
                     onChange={onChangeRowsPerPage}
@@ -32,8 +35,8 @@ const PaginationComponent = ({ page, totalItems, rowsPerPage, onChangePage, onCh
                     ? `${(page - 1) * rowsPerPage + 1}-${Math.min(
                         page * rowsPerPage,
                         totalItems
-                    )} de ${totalItems}`
-                    : "0 resultados"}
+                    )} ${t("pagination.of")} ${totalItems}`
+                    : t("pagination.noRecords")}
             </div>
         </div>
     );

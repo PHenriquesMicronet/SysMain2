@@ -8,6 +8,11 @@
       "viewRecord": "View",
       "loadingStatus": "Loading..."
     },
+    "pagination": {
+      "noRecords": "0 results",
+      "pageRecords": "Records per Page:",
+      "of": "of"
+    },
     "login": {
       "emailLabel": "Email",
       "emailPlaceholder": "Enter your email",
