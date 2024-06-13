@@ -196,8 +196,7 @@ export default function Contact() {
                                                     <BsThreeDotsVertical size={20} className="text-gray-400" />
                                                 </Button>
                                             </DropdownTrigger>
-                                            <DropdownMenu aria-label="Static Actions" isOpen
-                                            >
+                                            <DropdownMenu aria-label="Static Actions" isOpen={true} closeOnSelect={false}>
                                                 <DropdownItem key="edit">
                                                     <FormModals
                                                         buttonName={t("general.editRecord")}
