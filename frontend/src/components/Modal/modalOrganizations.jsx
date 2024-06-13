@@ -150,7 +150,7 @@ const modaluser = ({
                                                         className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
                                                     >
                                                         <Input type="text" name="Name" onChange={handleInputOrganization} variant={variant} label="Name" />
-                                                        <Input type="text" name="E-Mail" onChange={handleInputOrganization} variant={variant} label="E-Mail" />
+                                                        <Input type="text" name="Email" onChange={handleInputOrganization} variant={variant} label="E-Mail" />
                                                     </div>
                                                 ))}
                                             </div>
