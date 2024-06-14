@@ -44,7 +44,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     const [isInvisible, setIsInvisible] = React.useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    const { handleInputProperty, handleSubmitProperty } = propertyInsert();
+    const { handleInputProperty, handleSubmitProperty, handleOrganizationSelect } = propertyInsert();
     const { handleUpdateProperty, setValuesProperty, valuesProperty } = propertyEdit(idProperty);
 
 
@@ -339,24 +339,25 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                 ))}
                                             </div>
                                             <div className="w-full flex flex-col gap-4">
-                                                {variants.map((variant) => (
-                                                    <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                        {isAdmin() && (
-                                                            <Autocomplete
-                                                                variant={variant}
-                                                                label="Select Organization"
-                                                                defaultItems={items}
-                                                                defaultSelectedKey=""
-                                                                className="max-w-xs"
-                                                            >
-                                                                {items.map((item) => (
-                                                                    <AutocompleteItem key={item.value}>{item.OrganizationName}</AutocompleteItem>
-                                                                ))}
-                                                            </Autocomplete>
-                                                        )}
-                                                    </div>
-                                                ))}
-                                            </div>
+                                            {variants.map((variant) => (
+                                                <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                                    {isAdmin() && (
+                                                        <Autocomplete
+                                                            variant={variant}
+                                                            label="Select Organization"
+                                                            defaultItems={items}
+                                                            defaultSelectedKey=""
+                                                            className="max-w-xs"
+                                                            onSelectionChange={handleOrganizationSelect}
+                                                        >
+                                                            {items.map((item) => (
+                                                                <AutocompleteItem key={item.value} value={item.value}>{item.OrganizationName}</AutocompleteItem>
+                                                            ))}
+                                                        </Autocomplete>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
                                         </ModalBody>
                                     </form>
                                 </>
