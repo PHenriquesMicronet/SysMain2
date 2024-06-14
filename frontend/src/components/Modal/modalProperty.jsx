@@ -31,7 +31,8 @@ import FormUsersInApplications from "@/components/Modal/modals/modalUsersInAppli
 
 import propertyInsert, { propertyEdit } from "../functionsForm/property/page";
 
-import {useTranslations} from 'next-intl';
+import { useTranslations } from 'next-intl';
+import organization from "@/app/homepage/organization/page";
 
 
 const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idProperty, editIcon, modalEditArrow, modalEdit, OrganizationName }) => {
@@ -77,6 +78,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         setIsExpanded(!isExpanded);
     };
 
+    console.log(OrganizationName)
 
     const toggleSecondModal = async () => {
         setIsSecondModalOpen(!isSecondModalOpen);
@@ -109,7 +111,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                 setIsLoading(false);
             }
         };
-
         fetchAllApplications();
     }, []);
 
@@ -214,6 +215,25 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         fetchUserCount();
     }, []);
 
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        const fetchOrganizations = async () => {
+            try {
+                const response = await fetch('/api/hotel/organizations');
+                const result = await response.json();
+                if (response.ok) {
+                    setItems(result.response.map(org => ({ value: org.organizationID, OrganizationName: org.name })));
+                } else {
+                    console.error('Failed to fetch organizations:', result.error);
+                }
+            } catch (error) {
+                console.error('Error fetching organizations:', error);
+            }
+        };
+
+        fetchOrganizations();
+    }, []);
 
 
     return (
@@ -315,6 +335,25 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     >
                                                         <Input type="text" name="Abbreviation" onChange={handleInputProperty} variant={variant} label={t("organization.properties.shortnameLabel")} />
                                                         <Input type="text" name="Designation" onChange={handleInputProperty} variant={variant} label={t("organization.properties.designationLabel")} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                                        {isAdmin() && (
+                                                            <Autocomplete
+                                                                variant={variant}
+                                                                label="Select Organization"
+                                                                defaultItems={items}
+                                                                defaultSelectedKey=""
+                                                                className="max-w-xs"
+                                                            >
+                                                                {items.map((item) => (
+                                                                    <AutocompleteItem key={item.value}>{item.OrganizationName}</AutocompleteItem>
+                                                                ))}
+                                                            </Autocomplete>
+                                                        )}
                                                     </div>
                                                 ))}
                                             </div>
@@ -742,7 +781,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                 </div>
                                                                 <div className='flex flex-row items-center mr-5'>
                                                                     <Button>
-                                                                    <FormModalPropertiesUsers
+                                                                        <FormModalPropertiesUsers
                                                                             buttonName={t("general.newRecord")}
                                                                             editIcon={<FiEdit3 size={25} />}
                                                                             buttonColor={"transparent"}
@@ -939,13 +978,13 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                             </TableCell>
                                                                                             <TableCell>
                                                                                                 <FormUsersInApplications
-                                                                                                buttonName={<GrUserSettings size={25}/>}
-                                                                                                buttonColor={"transparent"}
-                                                                                                modalHeader={t("organization.properties.applications.assign.modalHeader")}
-                                                                                                formTypeModal={10}
-                                                                                                modalEdit={` ID: ${idProperty}`}
-                                                                                                idApplication={application.id}
-                                                                                                idProperty={idProperty}
+                                                                                                    buttonName={<GrUserSettings size={25} />}
+                                                                                                    buttonColor={"transparent"}
+                                                                                                    modalHeader={t("organization.properties.applications.assign.modalHeader")}
+                                                                                                    formTypeModal={10}
+                                                                                                    modalEdit={` ID: ${idProperty}`}
+                                                                                                    idApplication={application.id}
+                                                                                                    idProperty={idProperty}
                                                                                                 />
                                                                                             </TableCell>
                                                                                         </TableRow>
@@ -993,14 +1032,14 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                 )}
                                                                                             </TableCell>
                                                                                             <TableCell>
-                                                                                            <FormUsersInApplications
-                                                                                                buttonName={<GrUserSettings size={25}/>}
-                                                                                                buttonColor={"transparent"}
-                                                                                                modalHeader={t("organization.properties.applications.assign.modalHeader")}
-                                                                                                formTypeModal={10}
-                                                                                                modalEdit={` ID: ${idProperty}`}
-                                                                                                idApplication={application.id}
-                                                                                                idProperty={idProperty}
+                                                                                                <FormUsersInApplications
+                                                                                                    buttonName={<GrUserSettings size={25} />}
+                                                                                                    buttonColor={"transparent"}
+                                                                                                    modalHeader={t("organization.properties.applications.assign.modalHeader")}
+                                                                                                    formTypeModal={10}
+                                                                                                    modalEdit={` ID: ${idProperty}`}
+                                                                                                    idApplication={application.id}
+                                                                                                    idProperty={idProperty}
                                                                                                 />
                                                                                                 {/* <FormUsersApplications
                                                                                                     buttonName={<GrUserSettings />}

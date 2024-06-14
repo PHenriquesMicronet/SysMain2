@@ -48,7 +48,6 @@ export default function propertyInsert() {
             .then(response => console.log(response))
             .catch(err => console.log(err))
     }
-    //final da inserção na tabela property
     return {
         handleInputProperty, handleSubmitProperty
     };
