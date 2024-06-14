@@ -263,53 +263,53 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                 <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                             </div>
                                         </ModalHeader>
-                                        <ModalBody className="flex flex-col mx-5 my-5 space-y-4">
-                                            <div className="w-full flex flex-col gap-4">
+                                        <ModalBody className="flex flex-col mx-5 my-5 space-y-2">
+                                            <div className="w-full flex flex-col gap-1">
                                                 {variants.map((variant) => (
                                                     <div
                                                         key={variant}
-                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2"
                                                     >
                                                         <Input type="text" name="Name" onChange={handleInputProperty} variant={variant} label={t("organization.properties.nameLabel")} />
                                                         <Input type="number" name="FiscalNumber" onChange={handleInputProperty} variant={variant} label={t("organization.properties.fiscalNumberLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div className="w-full flex flex-col gap-4">
+                                            <div className="w-full flex flex-col gap-1">
                                                 {variants.map((variant) => (
                                                     <div
                                                         key={variant}
-                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2"
                                                     >
                                                         <Input onChange={handleInputProperty} name="Email" type="text" variant={variant} label={t("organization.properties.emailLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div className="max-w-xs flex flex-col gap-4">
+                                            <div className="max-w-xs flex flex-col gap-1">
                                                 {variants.map((variant) => (
                                                     <div
                                                         key={variant}
-                                                        className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
+                                                        className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2 "
                                                     >
                                                         <Input type="number" name="PhoneNumber" onChange={handleInputProperty} variant={variant} label={t("organization.properties.phoneNumberLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div className="w-full flex flex-col gap-4">
+                                            <div className="w-full flex flex-col gap-1">
                                                 {variants.map((variant) => (
                                                     <div
                                                         key={variant}
-                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2"
                                                     >
                                                         <Input type="text" name="Address1" onChange={handleInputProperty} variant={variant} label={t("organization.properties.mainAddressLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div className="w-full flex flex-col gap-4">
+                                            <div className="w-full flex flex-col gap-1">
                                                 {variants.map((variant) => (
                                                     <div
                                                         key={variant}
-                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2"
                                                     >
                                                         <Input type="text" name="Country" onChange={handleInputProperty} variant={variant} label={t("organization.properties.countryLabel")} />
                                                         <Input type="text" name="District" onChange={handleInputProperty} variant={variant} label={t("organization.properties.districtLabel")} />
@@ -317,37 +317,37 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div className="w-full flex flex-col gap-4">
+                                            <div className="w-full flex flex-col gap-1">
                                                 {variants.map((variant) => (
                                                     <div
                                                         key={variant}
-                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2"
                                                     >
                                                         <Input type="text" name="Description" onChange={handleInputProperty} variant={variant} label={t("organization.properties.descriptionLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div className="w-full flex flex-col gap-4">
+                                            <div className="w-full flex flex-col gap-1">
                                                 {variants.map((variant) => (
                                                     <div
                                                         key={variant}
-                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2"
                                                     >
                                                         <Input type="text" name="Abbreviation" onChange={handleInputProperty} variant={variant} label={t("organization.properties.shortnameLabel")} />
                                                         <Input type="text" name="Designation" onChange={handleInputProperty} variant={variant} label={t("organization.properties.designationLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div className="w-full flex flex-col gap-4">
+                                            <div className="w-full flex flex-col gap-1">
                                             {variants.map((variant) => (
-                                                <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                                <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2">
                                                     {isAdmin() && (
                                                         <Autocomplete
                                                             variant={variant}
                                                             label="Select Organization"
                                                             defaultItems={items}
                                                             defaultSelectedKey=""
-                                                            className="max-w-xs"
+                                                            className="max-1/4"
                                                             onSelectionChange={handleOrganizationSelect}
                                                         >
                                                             {items.map((item) => (
