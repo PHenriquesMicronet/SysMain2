@@ -124,10 +124,10 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                                                     value={selected}
                                                     onValueChange={setSelected}
                                                 >
-                                                    <Radio value="Português">Português</Radio>
-                                                    <Radio value="English">English</Radio>
-                                                    <Radio value="Français">Français</Radio>
-                                                    <Radio value="Español">Español</Radio>
+                                                    <Radio value="pt">PT - Português</Radio>
+                                                    <Radio value="en">EN - English</Radio>
+                                                    <Radio value="fr">FR - Français</Radio>
+                                                    <Radio value="es">ES - Español</Radio>
                                                 </RadioGroup>
                                                 <p className="text-default-500 text-small">Selected: {selected}</p>
                                             </div>
