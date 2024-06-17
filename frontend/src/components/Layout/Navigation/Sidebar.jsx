@@ -9,10 +9,13 @@ import { useSession, signOut } from 'next-auth/react';
 import { IoSettings } from 'react-icons/io5';
 import { FaHotel, FaUserTie } from 'react-icons/fa';
 import { useTranslations } from 'next-intl';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Autocomplete, AutocompleteItem, } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
+import {RadioGroup, Radio} from "@nextui-org/react";
 import { LuLogOut } from 'react-icons/lu';
 
 const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
+
+    const [selected, setSelected] =  useState("English");
 
     const hotelSetup = process.env.NEXT_PUBLIC_HOTEL_SETUP === "true";
 
@@ -23,7 +26,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
         return session?.user?.admin;
     };
 
-    const [selectedLanguage, setSelectedLanguage] = useState('EN');
+    const [selectedLanguage, setSelectedLanguage] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
 
     const languages = [
@@ -116,19 +119,17 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                                     <>
                                         <ModalHeader className="flex flex-col gap-1">Select Language</ModalHeader>
                                         <ModalBody>
-                                            <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                                                <Autocomplete
-                                                    label="Language"
-                                                    className="w-full"
-                                                    onChange={(value) => handleLanguageSelect(value)}
-                                                    value={selectedLanguage}
+                                            <div className="flex flex-col gap-3">
+                                                <RadioGroup
+                                                    value={selected}
+                                                    onValueChange={setSelected}
                                                 >
-                                                    {languages.map((language) => (
-                                                        <AutocompleteItem key={language.value} value={language.value}>
-                                                            {language.label}
-                                                        </AutocompleteItem>
-                                                    ))}
-                                                </Autocomplete>
+                                                    <Radio value="Português">Português</Radio>
+                                                    <Radio value="English">English</Radio>
+                                                    <Radio value="Français">Français</Radio>
+                                                    <Radio value="Español">Español</Radio>
+                                                </RadioGroup>
+                                                <p className="text-default-500 text-small">Selected: {selected}</p>
                                             </div>
                                         </ModalBody>
                                         <ModalFooter>

@@ -91,6 +91,7 @@ export default function Contact() {
             try {
                 await axios.delete(`/api/hotel/organizations/` + organizationID);
                 alert("Organização removida com sucesso!");
+                window.location.reload();
             } catch (error) {
                 alert("A organização não pode ser apagada pois ainda contém propriedades.")
             }

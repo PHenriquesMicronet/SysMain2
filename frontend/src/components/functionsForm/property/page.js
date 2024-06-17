@@ -45,7 +45,7 @@ export default function PropertyInsert() {
                 OrganizationID: organizationID
             }
         })
-            .then(response => console.log(response))
+            .then(response => {console.log(response); window.location.reload();})
             .catch(err => console.log(err));
     };
 
