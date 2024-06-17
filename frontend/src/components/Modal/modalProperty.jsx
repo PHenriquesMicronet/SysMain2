@@ -78,8 +78,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         setIsExpanded(!isExpanded);
     };
 
-    console.log(OrganizationName)
-
     const toggleSecondModal = async () => {
         setIsSecondModalOpen(!isSecondModalOpen);
         if (!fetchUsers) {
