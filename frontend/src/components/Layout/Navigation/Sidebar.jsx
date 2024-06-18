@@ -10,12 +10,11 @@ import { IoSettings } from 'react-icons/io5';
 import { FaHotel, FaUserTie } from 'react-icons/fa';
 import { useTranslations } from 'next-intl';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
-import {RadioGroup, Radio} from "@nextui-org/react";
+import { RadioGroup, Radio } from "@nextui-org/react";
 import { LuLogOut } from 'react-icons/lu';
 
 const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
 
-    const [selected, setSelected] =  useState("English");
 
     const hotelSetup = process.env.NEXT_PUBLIC_HOTEL_SETUP === "true";
 
@@ -26,14 +25,16 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
         return session?.user?.admin;
     };
 
-    const [selectedLanguage, setSelectedLanguage] = useState([]);
+    const [selectedLanguage, setSelectedLanguage] = useState('');
     const [isOpen, setIsOpen] = useState(false);
+    const [selected, setSelected] = useState('');
+
 
     const languages = [
-        { label: 'Português', value: 'PT' },
-        { label: 'Espanhol', value: 'ES' },
-        { label: 'Francês', value: 'FR' },
-        { label: 'Inglês', value: 'EN' }
+        { label: 'Português', value: 'pt' },
+        { label: 'Espanhol', value: 'es' },
+        { label: 'Francês', value: 'fr' },
+        { label: 'Inglês', value: 'en' }
     ];
 
     const handleOpen = () => {
@@ -44,13 +45,13 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
         setIsOpen(false);
     };
 
-    const handleLanguageSelect = (language) => {
-        console.log('Selected language:', language); // Verifique se o idioma está sendo capturado corretamente
-        setSelectedLanguage(language); // Verifique se setSelectedLanguage está sendo chamado corretamente
+    const handleLanguageSelect = () => {
+        const selectedLang = languages.find(lang => lang.label === selected);
+        setSelectedLanguage(selectedLang ? selectedLang.value : '');
+        console.log('Selected language:', selectedLang ? selectedLang.value : '');
         handleClose();
     };
 
-    console.log('Render:', selectedLanguage);
 
 
     const listItems = {
@@ -110,8 +111,8 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
 
                     <div className="flex items-center gap-x-2">
 
-                        <Button size="sm" className="bg-slate-200" onClick={handleOpen}>
-                            {selectedLanguage}
+                        <Button size="sm" className="bg-slate-200 uppercase" onClick={handleOpen}>
+                            {selectedLanguage || 'Select Language'}
                         </Button>
                         <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
                             <ModalContent>
@@ -120,14 +121,12 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                                         <ModalHeader className="flex flex-col gap-1">Select Language</ModalHeader>
                                         <ModalBody>
                                             <div className="flex flex-col gap-3">
-                                                <RadioGroup
-                                                    value={selected}
-                                                    onValueChange={setSelected}
-                                                >
-                                                    <Radio value="pt">PT - Português</Radio>
-                                                    <Radio value="en">EN - English</Radio>
-                                                    <Radio value="fr">FR - Français</Radio>
-                                                    <Radio value="es">ES - Español</Radio>
+                                                <RadioGroup value={selected} onValueChange={setSelected}>
+                                                    {languages.map((language) => (
+                                                        <Radio key={language.value} value={language.label}>
+                                                            {language.value.toUpperCase()} - {language.label}
+                                                        </Radio>
+                                                    ))}
                                                 </RadioGroup>
                                                 <p className="text-default-500 text-small">Selected: {selected}</p>
                                             </div>
@@ -136,7 +135,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, children, name }) => {
                                             <Button color="danger" variant="light" onClick={onClose}>
                                                 Close
                                             </Button>
-                                            <Button color="primary" onClick={onClose}>
+                                            <Button color="primary" onClick={handleLanguageSelect}>
                                                 Choose
                                             </Button>
                                         </ModalFooter>
