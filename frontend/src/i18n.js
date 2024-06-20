@@ -8,7 +8,13 @@ export default getRequestConfig(async () => {
 
     const cookie = cookies().get("language")
 
-    const locale = cookie.value;
+    let locale
+
+    if (cookie) {
+        locale = cookie.value;
+    } else {
+        locale = "en"
+    }
 
     return {
         locale,
