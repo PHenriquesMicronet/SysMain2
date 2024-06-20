@@ -30,7 +30,7 @@ export async function PATCH(request, context) {
             }
         })
 
-        if (activeProperties.length > 0) {
+        if (activeProperties.length > 0 && parseInt(data.active) == 1) {
             return new NextResponse(JSON.stringify({ error: "You can't archive this organization. There are active properties!" }));
         }
 
