@@ -120,6 +120,7 @@ export function propertyEdit(idProperty) {
                 active: valuesProperty.active ? 1 : 0
             }
         })
+            .then(response => {console.log(response); window.location.reload();})
             .catch(err => console.log(err))
     }
 

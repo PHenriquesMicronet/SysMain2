@@ -101,6 +101,7 @@ export function organizationEdit(idOrganization) {
                 active: valuesOrganization.active ? 1 : 0
             }
         })
+            .then(response => {console.log(response); window.location.reload();})
             .catch(err => console.log(err))
     }
 
