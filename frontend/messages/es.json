@@ -93,6 +93,7 @@
                 "descriptionLabel": "Descripción",
                 "shortnameLabel": "Abreviatura",
                 "designationLabel": "Designación",
+                "changeOrganizationLabel" : "Cambiar Organización",
                 "datatable": {
                     "id": "ID",
                     "name": "NOMBRE",
