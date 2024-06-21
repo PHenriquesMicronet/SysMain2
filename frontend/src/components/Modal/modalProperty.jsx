@@ -1137,6 +1137,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                 defaultItems={items}
                                                                 defaultSelectedKey={valuesProperty.OrganizationID}
                                                                 className="w-1/4"
+                                                                defaultInputValue={OrganizationName}
                                                                 onSelectionChange={handleOrganizationEdit} 
                                                             >
                                                                 {items.map((item) => (
