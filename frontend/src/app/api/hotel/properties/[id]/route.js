@@ -45,6 +45,7 @@ export async function PATCH(request, context) {
                 description: data.Description,
                 abbreviation: data.Abbreviation,
                 designation: data.Designation,
+                organizationID: parseInt(data.OrganizationID),
                 del: data.active
             }
         })
