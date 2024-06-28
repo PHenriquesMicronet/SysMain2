@@ -8,9 +8,9 @@ export async function GET(request, context) {
 
     const { id } = context.params;
 
-    const response = await prisma.applications.findMany({
+    const response = await prisma.partners.findMany({
         where: {
-            applicationID: parseInt(id)
+            partnerID: parseInt(id)
         }
     })
 
@@ -30,15 +30,12 @@ export async function PATCH(request, context) {
 
         const { data } = await request.json();
 
-        const response = await prisma.applications.update({
+        const response = await prisma.partners.update({
             where: {
-                applicationID: parseInt(id),
+                partnerID: parseInt(id),
             },
             data: {
-                description: data.description,
-                abbreviation: data.abbreviation,
-                categoryID: parseInt(data.categoryID),
-                partnerID: parseInt(data.partnerID)
+                name: data.name
             }
         })
         return new NextResponse(JSON.stringify({ status: 200 }));
@@ -56,9 +53,9 @@ export async function DELETE(request, context) {
     try {
         const { id } = context.params;
 
-        const response = await prisma.applications.delete({
+        const response = await prisma.partners.delete({
             where: {
-                applicationID: parseInt(id),
+                partnerID: parseInt(id),
             }
         })
         return new NextResponse(JSON.stringify({ status: 200 }));
