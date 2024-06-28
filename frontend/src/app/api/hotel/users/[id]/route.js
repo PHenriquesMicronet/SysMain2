@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import prisma from "@/lib/prisma"
+import organization from "@/app/homepage/organization/page";
 
 
 export async function GET(request, context) {
@@ -32,18 +33,19 @@ export async function PATCH(request, context) {
                 userID: parseInt(id),
             },
             data: {
-                name: data.name,
-                lastName: data.lastName,
-                email: data.email,
-                fiscalNumber: parseInt(data.fiscalNumber),
-                phoneNumber: parseInt(data.phoneNumber),
-                address1: data.address1,
-                address2: data.address2,
-                country: data.country,
-                district: data.district,
-                zipCode: data.zipCode,
-                password: data.password,
-                roleID: parseInt(data.roleID)
+                name: data.Name,
+                lastName: data.LastName,
+                email: data.Email,
+                fiscalNumber: parseInt(data.FiscalNumber),
+                phoneNumber: parseInt(data.PhoneNumber),
+                address1: data.Address1,
+                address2: data.Address2,
+                country: data.Country,
+                district: data.District,
+                zipCode: data.ZipCode,
+                password: data.Password,
+                roleID: parseInt(data.RoleID),
+                organizationID: parseInt(data.OrganizationID)
             }
         })
         return new NextResponse(JSON.stringify({ updateRecord, status: 200 }));
