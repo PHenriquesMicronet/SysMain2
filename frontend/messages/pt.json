@@ -345,6 +345,28 @@
             "edit": {
                 "modalHeader": "Editar Parceiro"
             }
+        },
+        "applicationsCategories": {
+            "label": "Categorias das Aplicações "
+        },
+        "applications": {
+            "label": "Applicações",
+            "description": " Descrição",
+            "abbreviation": "Abreviatura",
+            "selectCategory": " Selecinar Categoria",
+            "selectPartner": " Selecionar Parceiro",
+            "datatable": {
+                "description": "Descrição",
+                "abbreviation": "Abreviatura",
+                "category": "Categoria",
+                "partner": "Parceiro"
+            },
+            "new": {
+                "modalHeader": "Nova Aplicação"
+            },
+            "edit": {
+                "modalHeader": "Editar Aplicação"
+            }
         }
     }
 }

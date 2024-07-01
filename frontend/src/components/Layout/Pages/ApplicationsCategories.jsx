@@ -116,7 +116,7 @@ export default function ApplicationsCategories() {
         <>
             <main>
                 <div className="flex flex-col mt-5 py-3">
-                    <p className="text-xs px-6">{t("partners.label")}</p>
+                    <p className="text-xs px-6">{t("applicationsCategories.label")}</p>
                     <div className="flex flex-row justify-between items-center mx-5">
                         <div className="flex flex-row">
                             <div className="flex flex-wrap md:flex-nowrap gap-4">

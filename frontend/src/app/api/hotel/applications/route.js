@@ -20,10 +20,10 @@ export async function PUT(request) {
         const { data } = await request.json();
         const response = await prisma.applications.create({
             data: {
-                description: data.description,
-                abbreviation: data.abbreviation,
-                categoryID: parseInt(data.categoryID),
-                partnerID: parseInt(data.partnerID)
+                description: data.Description,
+                abbreviation: data.Abbreviation,
+                categoryID: parseInt(data.CategoryID),
+                partnerID: parseInt(data.PartnerID)
             }
         });
 

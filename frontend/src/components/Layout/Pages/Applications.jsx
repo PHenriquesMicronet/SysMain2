@@ -33,7 +33,7 @@ import { CSVLink } from "react-csv";
 import {useTranslations} from 'next-intl';
 
 
-import Modaluser from "@/components/Modal/modalUser";
+import FormModal from "@/components/Modal/modalApplications";
 import PaginationComponent from "@/components/Pagination/Pagination";
 
 
@@ -41,20 +41,23 @@ export default function users() {
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
     const [searchValue, setSearchValue] = React.useState("");
-    const [user, setUser] = useState([]);
+
     const { data: session, status } = useSession()
+
+    const [Applications, setApplications] = useState([]);
+
     const t = useTranslations('Index');
 
     const filteredItems = React.useMemo(() => {
-        return user.filter((user) =>
-            user.name.toLowerCase().includes(
+        return Applications.filter((application) =>
+            application.description.toLowerCase().includes(
                 searchValue.toLowerCase()
             ) ||
-            user.userID.toString().toLowerCase().includes(
+            application.id.toString().toLowerCase().includes(
                 searchValue.toLowerCase()
             )
         );
-    }, [user, searchValue]);
+    }, [Applications, searchValue]);
 
     const exportToPDF = () => {
         const pdf = new jsPDF();
@@ -63,14 +66,11 @@ export default function users() {
     }
 
     useEffect(() => {
-        const getData = async () => {
-
-            if (status !== "loading"){
-                const res = await axios.get(`/api/hotel/organizations/`+ session.user.organization + `/users`);
-                setUser(res.data.response);
-            }
+        const getDataApplications = async () => {
+            const response = await axios.get("/api/hotel/applications");
+            setApplications(response.data.response);
         };
-        getData();
+        getDataApplications();
     }, []);
 
 
@@ -87,25 +87,25 @@ export default function users() {
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(1); // Reset page to 1 when changing rows per page
+        setPage(1); 
     };
 
     const handleSearchChange = (value) => {
         setSearchValue(value);
         setPage(1);
     };
-    const handleDelete = async (userID) => {
+    const handleDelete = async (id) => {
 
-        const confirmDelete = window.confirm("Tem certeza de que deseja excluir este utilizador?");
+        const confirmDelete = window.confirm("Tem certeza de que deseja excluir esta aplicação?");
         console.log()
         if (confirmDelete) {
             try {
-                const response = await axios.delete(`/api/hotel/users/` + userID);
+                const response = await axios.delete(`/api/hotel/applications/` + id);
                 console.log(response.data);
-                alert("Utilizador removido com sucesso!");
+                alert("Aplicação removida com sucesso!");
                 window.location.reload();
             } catch (error) {
-                console.error("Erro ao remover Utilizador:", error.message);
+                console.error("Erro ao remover Aplicação:", error.message);
             }
         }
     };
@@ -114,7 +114,7 @@ export default function users() {
         <>
             <main>
                 <div className="flex flex-col mt-5 py-3">
-                    <p className="text-xs px-6">{t("profiles.users.label")}</p>
+                    <p className="text-xs px-6">{t("applications.label")}</p>
                     <div className="flex flex-row justify-between items-center mx-5">
                         <div className="flex flex-row">
                             <div className="flex flex-wrap md:flex-nowrap gap-4">
@@ -130,14 +130,14 @@ export default function users() {
                                 />
                             </div>
                         </div>
-                        <Modaluser
+                        <FormModal
                             buttonName={t("general.newRecord")}
                             buttonIcon={<FiPlus size={15} />}
                             buttonColor={"primary"}
-                            modalHeader={t("profiles.users.new.modalHeader")}
+                            modalHeader={t("applications.new.modalHeader")}
                             modalIcons={"bg-red"}
                             formTypeModal={10}
-                        ></Modaluser>
+                        ></FormModal>
                     </div>
                 </div>
                 <div className="mx-5 h-[65vh] min-h-full">
@@ -152,33 +152,29 @@ export default function users() {
                         className="h-full overflow-auto"
                     >
                         <TableHeader>
-                        {/*<TableColumn className="bg-primary-600 text-white font-bold">
-                                ID
-                    </TableColumn>`*/}
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                {t("profiles.users.datatable.name")}
+                            <TableColumn className="bg-primary-600 text-white font-bold uppercase">
+                                {t("applications.datatable.description")}
                             </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                {t("profiles.users.datatable.email")}
+                            <TableColumn className="bg-primary-600 text-white font-bold uppercase">
+                                {t("applications.datatable.abbreviation")}
                             </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                {t("profiles.users.datatable.role")}
+                            <TableColumn className="bg-primary-600 text-white font-bold uppercase">
+                                {t("applications.datatable.category")}
                             </TableColumn>
-                            <TableColumn className="bg-primary-600 text-white font-bold">
-                                {t("profiles.users.datatable.properties")}
+                            <TableColumn className="bg-primary-600 text-white font-bold uppercase">
+                                {t("applications.datatable.partner")}
                             </TableColumn>
                             <TableColumn className="bg-primary-600 text-white flex justify-center items-center">
                                 <GoGear size={20} />
                             </TableColumn>
                         </TableHeader>
                         <TableBody>
-                            {items.map((user, index) => (
+                            {items.map((Applications, index) => (
                                 <TableRow key={index}>
-                                    {/*<TableCell>{user.id}</TableCell>*/}
-                                    <TableCell>{user.name}</TableCell>
-                                    <TableCell>{user.email}</TableCell>
-                                    <TableCell>{user.role}</TableCell>
-                                    <TableCell>{user.properties}</TableCell>
+                                    <TableCell>{Applications.description}</TableCell>
+                                    <TableCell>{Applications.abbreviation}</TableCell>
+                                    <TableCell>{Applications.categoryID}</TableCell>
+                                    <TableCell>{Applications.partnerID}</TableCell>
                                     <TableCell className="flex justify-center">
                                         <Dropdown>
                                             <DropdownTrigger>
@@ -191,33 +187,19 @@ export default function users() {
                                             </DropdownTrigger>
                                             <DropdownMenu aria-label="Static Actions" closeOnSelect={false} isOpen={true}>
                                                 <DropdownItem key="edit">
-                                                    <Modaluser
+                                                    <FormModal
                                                         buttonName={t("general.editRecord")}
                                                         editIcon={<FiEdit3 size={25} />}
                                                         buttonColor={"transparent"}
-                                                        modalHeader={t("profiles.users.edit.modalHeader")}
+                                                        modalHeader={t("applications.edit.modalHeader")}
                                                         modalEditArrow={<BsArrowRight size={25} />}
-                                                        modalEdit={`ID: ${user.id}`}
+                                                        modalEdit={`ID: ${Applications.id}`}
                                                         formTypeModal={11}
-                                                        idUser={user.id}
-                                                        PropertiesUserName={user.properties}
-                                                        NameUser={user.name}
-                                                    ></Modaluser>
+                                                        ApplicationID={Applications.id}
+                                                    ></FormModal>
                                                 </DropdownItem>
-                                                <DropdownItem><button onClick={() => handleDelete(user.id)}>{t("general.removeRecord")}</button></DropdownItem>
-                                                <DropdownItem>
-                                                <Modaluser
-                                                        buttonName={t("general.viewRecord")}
-                                                        buttonColor={"transparent"}
-                                                        modalHeader={t("profiles.users.view.modalHeader")}
-                                                        modalEditArrow={<BsArrowRight size={25} />}
-                                                        modalEdit={`ID: ${user.id}`}
-                                                        formTypeModal={11}
-                                                        idUser={user.id}
-                                                        PropertiesUserName={user.properties}
-                                                        NameUser={user.name}
-                                                    ></Modaluser>
-                                                </DropdownItem>
+                                                <DropdownItem><button onClick={() => handleDelete(Applications.id)}>{t("general.removeRecord")}</button></DropdownItem>
+                                                
                                             </DropdownMenu>
                                         </Dropdown>
                                     </TableCell>
