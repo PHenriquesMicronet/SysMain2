@@ -8,9 +8,9 @@ export async function GET(request, context) {
 
     const { id } = context.params;
 
-    const response = await prisma.applications.findMany({
+    const response = await prisma.applications.findUnique({
         where: {
-            applicationID: parseInt(id)
+            id: parseInt(id)
         }
     })
 
