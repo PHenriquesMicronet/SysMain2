@@ -30,7 +30,10 @@
       "settings": {
         "label": "Settings",
         "changePasswordLabel": "Change Password",
-        "securitySettingsLabel": "Security Settings"
+        "securitySettingsLabel": "Security Settings",
+        "partners" : "Partners",
+        "applications" : "Applications",
+        "applicationsCategories" : "Applications Categories"
       },
       "organization": {
         "label": "Organization",
@@ -329,6 +332,20 @@
       "view": {
         "modalHeader": "View User"
       }
+    },
+    "partners":{
+      "label": "Partners",
+      "datatable": {
+        "name": "NAME",
+        "id" : "ID"
+      },
+      "new":{
+        "modalHeader": "New Partner"
+      },
+      "edit":{
+        "modalHeader": "Edit Partner"
+      }
+      
     }
   }
 }

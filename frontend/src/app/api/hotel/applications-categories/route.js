@@ -20,7 +20,7 @@ export async function PUT(request) {
         const { data } = await request.json();
         const response = await prisma.application_categories.create({
             data: {
-                name: data.name,
+                name: data.Name,
             }
         });
 

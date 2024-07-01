@@ -35,7 +35,7 @@ export async function PATCH(request, context) {
                 partnerID: parseInt(id),
             },
             data: {
-                name: data.name
+                name: data.Name
             }
         })
         return new NextResponse(JSON.stringify({ status: 200 }));
