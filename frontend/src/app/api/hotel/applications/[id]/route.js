@@ -32,7 +32,7 @@ export async function PATCH(request, context) {
 
         const response = await prisma.applications.update({
             where: {
-                applicationID: parseInt(id),
+                id: parseInt(id),
             },
             data: {
                 description: data.description,
@@ -58,7 +58,7 @@ export async function DELETE(request, context) {
 
         const response = await prisma.applications.delete({
             where: {
-                applicationID: parseInt(id),
+                id: parseInt(id),
             }
         })
         return new NextResponse(JSON.stringify({ status: 200 }));
