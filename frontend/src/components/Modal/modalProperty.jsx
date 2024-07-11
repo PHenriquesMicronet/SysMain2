@@ -135,70 +135,56 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         }
     };
 
-    const handleModalOpenChange = async () => {
-        setIsModalOpen(!isModalOpen);
+    const handleModalOpenChange = () => {
+        setIsModalOpen(!isModalOpen); // Alterna o estado de isModalOpen
     };
 
     const [switchState, setSwitchState] = useState(false);
 
     const handleSwitchToggle = async (applicationID, active) => {
         try {
-            const requestData = {
-                propertyID: parseInt(idProperty),
-                applicationID: parseInt(applicationID)
-            };
-
-            var response
             console.log("Switch active state:", active);
             setSwitchState(active);
-            console.log(active)
 
             if (active) {
+                const property = await axios.get(`/api/hotel/properties/${idProperty}`);
+                const organizationID = property.data.response.organizationID;
 
-                const property = await axios.get("/api/hotel/properties/" + idProperty)
+                const application = await axios.get(`/api/hotel/applications/${applicationID}`);
+                const applicationName = application.data.response.description;
 
-                const organizationID = property.data.response.organizationID
-
-                const organizationApplication = await axios.get("/api/hotel/organizations-applications?organization=" + organizationID + "&application=" + applicationID)
-
-
-                if (organizationApplication.data.response == null) {
-
-                    console.log("Organization application is null, opening modal");
+                if (applicationName === "SysPMS") {
+                    // Abrir o modal para inserir a connection string
                     handleModalOpenChange();
-
-                    const newOrganizationApplication = await axios.put("/api/hotel/organizations-applications", {
-                        data: {
-                            organizationID: organizationID,
-                            applicationID: applicationID,
-                            connectionString: connectionString
-                        }
-                    })
+                    return; // Interrompe o fluxo aqui para aguardar a inserção da connection string
                 }
 
-                response = await axios.put("/api/hotel/properties-applications", {
-                    data: {
-                        propertyID: idProperty,
-                        applicationID: applicationID
-                    }
+                // Continua com a lógica para ativar a aplicação normalmente
+                const response = await axios.put("/api/hotel/properties-applications", {
+                    propertyID: idProperty,
+                    applicationID: applicationID
                 });
 
+                if (response.status === 200) {
+                    console.log("Aplicação ativada com sucesso na propriedade.");
+                } else {
+                    console.error("Falha ao ativar a aplicação na propriedade.");
+                }
             } else {
-                const propertyApplication = await axios.get("/api/hotel/properties-applications?propertyID=" + idProperty + "&applicationID=" + applicationID);
+                // Lógica para desativar a aplicação
+                const propertyApplication = await axios.get(`/api/hotel/properties-applications?propertyID=${idProperty}&applicationID=${applicationID}`);
+                const response = await axios.delete(`/api/hotel/properties-applications/${propertyApplication.data.response.propertyApplicationID}`);
 
-                response = await axios.delete("/api/hotel/properties-applications/" + propertyApplication.data.response.propertyApplicationID)
-            }
-
-            if (response.status === 200) {
-                console.log("Aplicação ativada com sucesso na propriedade.");
-            } else {
-                console.error("Falha ao ativar a aplicação na propriedade.");
+                if (response.status === 200) {
+                    console.log("Aplicação desativada com sucesso na propriedade.");
+                } else {
+                    console.error("Falha ao desativar a aplicação na propriedade.");
+                }
             }
         } catch (error) {
-            console.error("Erro ao enviar solicitação PUT:", error);
+            console.error("Erro ao enviar solicitação HTTP:", error);
         }
     };
-
 
 
     useEffect(() => {
@@ -926,22 +912,18 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                     isKeyboardDismissDisabled={true}
                                                                                                 >
                                                                                                     <ModalContent>
-                                                                                                        {(onClose) => (
-                                                                                                            <>
-                                                                                                                <ModalHeader className="flex flex-col gap-1">New Connection String</ModalHeader>
-                                                                                                                <ModalBody>
-                                                                                                                    <Input />
-                                                                                                                </ModalBody>
-                                                                                                                <ModalFooter>
-                                                                                                                    <Button color="danger" variant="light" onPress={onClose}>
-                                                                                                                        X
-                                                                                                                    </Button>
-                                                                                                                    <Button color="primary" onPress={onClose}>
-                                                                                                                        ADD
-                                                                                                                    </Button>
-                                                                                                                </ModalFooter>
-                                                                                                            </>
-                                                                                                        )}
+                                                                                                        <ModalHeader className="flex flex-col gap-1">New Connection String</ModalHeader>
+                                                                                                        <ModalBody>
+                                                                                                            <Input />
+                                                                                                        </ModalBody>
+                                                                                                        <ModalFooter>
+                                                                                                            <Button color="danger" variant="light" onPress={handleModalOpenChange}>
+                                                                                                                X
+                                                                                                            </Button>
+                                                                                                            <Button color="primary" onPress={handleModalOpenChange}>
+                                                                                                                ADD
+                                                                                                            </Button>
+                                                                                                        </ModalFooter>
                                                                                                     </ModalContent>
                                                                                                 </Modal>
                                                                                             </TableCell>
@@ -1138,7 +1120,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                 defaultSelectedKey={valuesProperty.OrganizationID}
                                                                 className="w-1/4"
                                                                 defaultInputValue={OrganizationName}
-                                                                onSelectionChange={handleOrganizationEdit} 
+                                                                onSelectionChange={handleOrganizationEdit}
                                                             >
                                                                 {items.map((item) => (
                                                                     <AutocompleteItem key={item.value} value={item.value}>{item.OrganizationName}</AutocompleteItem>
