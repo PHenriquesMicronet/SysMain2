@@ -136,7 +136,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     };
 
     const handleModalOpenChange = () => {
-        setIsModalOpen(!isModalOpen); // Alterna o estado de isModalOpen
+        setIsModalOpen(!isModalOpen);
     };
 
     const [switchState, setSwitchState] = useState(false);
@@ -154,12 +154,10 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                 const applicationName = application.data.response.description;
 
                 if (applicationName === "SysPMS") {
-                    // Abrir o modal para inserir a connection string
-                    handleModalOpenChange();
-                    return; // Interrompe o fluxo aqui para aguardar a inserção da connection string
-                }
 
-                // Continua com a lógica para ativar a aplicação normalmente
+                    handleModalOpenChange();
+                    return;
+                }
                 const response = await axios.put("/api/hotel/properties-applications", {
                     propertyID: idProperty,
                     applicationID: applicationID
@@ -171,7 +169,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                     console.error("Falha ao ativar a aplicação na propriedade.");
                 }
             } else {
-                // Lógica para desativar a aplicação
                 const propertyApplication = await axios.get(`/api/hotel/properties-applications?propertyID=${idProperty}&applicationID=${applicationID}`);
                 const response = await axios.delete(`/api/hotel/properties-applications/${propertyApplication.data.response.propertyApplicationID}`);
 
@@ -186,6 +183,36 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         }
     };
 
+    const handleInputChange = (e) => {
+        setConnectionString(e.target.value);
+    };
+    const [connectionString, setConnectionString] = useState('');
+
+    const handleSubmit = async () => {
+        try {
+            const response = await fetch('/api/hotel/organizations-applications', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    organizationID: idProperty,
+                    applicationID: idApplication,
+                    connectionString: connectionString
+                })
+            });
+
+            if (response.ok) {
+                alert('Connection string added successfully');
+                handleCloseModal();
+            } else {
+                const errorData = await response.json();
+                alert(`Error: ${errorData.error}`);
+            }
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
+    };
 
     useEffect(() => {
         async function fetchUserCount() {
@@ -914,14 +941,19 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                                                                                                     <ModalContent>
                                                                                                         <ModalHeader className="flex flex-col gap-1">New Connection String</ModalHeader>
                                                                                                         <ModalBody>
-                                                                                                            <Input />
+                                                                                                            <Input
+                                                                                                                type="text"
+                                                                                                                placeholder="Enter connection string"
+                                                                                                                value={connectionString}
+                                                                                                                onChange={handleInputChange}
+                                                                                                            />
                                                                                                         </ModalBody>
                                                                                                         <ModalFooter>
-                                                                                                            <Button color="danger" variant="light" onPress={handleModalOpenChange}>
-                                                                                                                X
+                                                                                                            <Button color="danger" variant="light" onClick={handleModalOpenChange}>
+                                                                                                                Cancel
                                                                                                             </Button>
-                                                                                                            <Button color="primary" onPress={handleModalOpenChange}>
-                                                                                                                ADD
+                                                                                                            <Button color="primary" onClick={handleSubmit}>
+                                                                                                                Add
                                                                                                             </Button>
                                                                                                         </ModalFooter>
                                                                                                     </ModalContent>
