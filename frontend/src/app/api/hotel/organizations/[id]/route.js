@@ -41,7 +41,7 @@ export async function PATCH(request, context) {
                 return new NextResponse(JSON.stringify({ error: "You can't archive this organization. There are active properties!" }));
             }
         }
-
+        console.log("DATA", data);
         const response = await prisma.organizations.update({
             where: {
                 organizationID: parseInt(id),

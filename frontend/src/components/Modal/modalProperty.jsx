@@ -140,6 +140,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     };
 
     const [switchState, setSwitchState] = useState(false);
+    const [ organizationApplicationID, setOrganizationApplicationID] = useState(null);
 
     const handleSwitchToggle = async (applicationID, active) => {
         try {
@@ -149,40 +150,45 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
             };
             console.log("Switch active state:", active);
             setSwitchState(active);
-
+    
             if (active) {
-                const property = await axios.get("/api/hotel/properties/" + idProperty)
-
+                const property = await axios.get("/api/hotel/properties/" + idProperty);
                 const organizationID = property.data.response.organizationID;
-
+    
                 const application = await axios.get(`/api/hotel/applications/${applicationID}`);
                 const applicationName = application.data.response.description;
-                const organizationApplication = await axios.get("/api/hotel/organizations-applications?organization=" + organizationID + "&application=" + applicationID)
-
+                const organizationApplication = await axios.get("/api/hotel/organizations-applications?organization=" + organizationID + "&application=" + applicationID);
+    
                 if (applicationName === "SysPMS") {
                     if (organizationApplication.data.response == null) {
-
                         console.log("Organization application is null, opening modal");
-                        
+    
                         handleModalOpenChange();
-
+    
                         const newOrganizationApplication = await axios.put("/api/hotel/organizations-applications", {
                             data: {
                                 organizationID: organizationID,
                                 applicationID: applicationID,
                                 connectionString: connectionString
                             }
-                        })
+                        });
+    
+                        // Store the created organizationApplicationID for future updates
+                        setOrganizationApplicationID(newOrganizationApplication.data.response.organizationApplicationID);
+                    } else {
+                        // Store the existing organizationApplicationID for future updates
+                        setOrganizationApplicationID(organizationApplication.data.response.organizationApplicationID);
                     }
                 }
-                
+    
+                console.log("CARALHO", organizationApplicationID);
                 const response = await axios.put("/api/hotel/properties-applications", {
-                    data:{
+                    data: {
                         propertyID: idProperty,
                         applicationID: applicationID
                     }
                 });
-
+    
                 if (response.status === 200) {
                     console.log("Aplicação ativada com sucesso na propriedade.");
                 } else {
@@ -190,19 +196,20 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                 }
             } else {
                 const propertyApplication = await axios.get("/api/hotel/properties-applications?propertyID=" + idProperty + "&applicationID=" + applicationID);
-
-                const response = await axios.delete("/api/hotel/properties-applications/" + propertyApplication.data.response.propertyApplicationID)
+    
+                const response = await axios.delete("/api/hotel/properties-applications/" + propertyApplication.data.response.propertyApplicationID);
             }
-            
+    
         } catch (error) {
             console.error("Erro ao enviar solicitação PUT:", error);
         }
     };
+    
+    const [connectionString, setConnectionString] = useState('');
 
     const handleInputChange = (e) => {
         setConnectionString(e.target.value);
     };
-    const [connectionString, setConnectionString] = useState('');
 
     const handleSubmit = async () => {
 
@@ -212,20 +219,38 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         const applicationID = applications.data.response.id
 
         try {
-            const response = await axios.put('/api/hotel/organizations-applications', { 
-                data:{
-                    organizationID: organizationID,
-                    applicationID: applicationID,
-                    connectionString: connectionString
+            if (organizationApplicationID) {
+                // Update the existing organization application using PATCH
+                const response = await axios.patch(`/api/hotel/organizations-applications/${organizationApplicationID}`, {
+                    data: {
+                        connectionString: connectionString
+                    }
+                });
+    
+                if (response.status === 200) {
+                    alert('Connection string updated successfully');
+                    handleCloseModal();
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.error}`);
                 }
-            });
-
-            if (response.ok) {
-                alert('Connection string added successfully');
-                handleCloseModal();
             } else {
-                const errorData = await response.json();
-                alert(`Error: ${errorData.error}`);
+                // Create a new organization application using PUT
+                const response = await axios.put('/api/hotel/organizations-applications', {
+                    data: {
+                        organizationID: organizationID,
+                        applicationID: applicationID,
+                        connectionString: connectionString
+                    }
+                });
+    
+                if (response.status === 200) {
+                    alert('Connection string added successfully');
+                    handleCloseModal();
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.error}`);
+                }
             }
         } catch (error) {
             alert(`Error: ${error.message}`);
