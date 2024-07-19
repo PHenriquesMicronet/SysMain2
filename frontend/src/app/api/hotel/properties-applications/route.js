@@ -16,7 +16,7 @@ export async function GET(request) {
         return new NextResponse(JSON.stringify({ response, status: 200 }));
 
     }
-    if(propertyID != ""){
+    if (propertyID != "" && applicationID == "") {
         const response = await prisma.properties_applications.findMany({
             where: {
                 propertyID: parseInt(propertyID)
@@ -48,7 +48,7 @@ export async function PUT(request) {
         const { data } = await request.json();
         const newPropertyApplication = await prisma.properties_applications.create({
             data: {
-                
+
                 propertyID: parseInt(data.propertyID),
                 applicationID: parseInt(data.applicationID),
             }
