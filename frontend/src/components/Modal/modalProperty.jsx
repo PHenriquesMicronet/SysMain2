@@ -116,7 +116,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     const toggleThirdModal = async () => {
         setIsThirdModalOpen(!isThirdModalOpen);
 
-        if (!applicationFetched && isThirdModalOpen) {
+        if (!applicationFetched) {
             setIsLoading(true);
             try {
                 let response;
