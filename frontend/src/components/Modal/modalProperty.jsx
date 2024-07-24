@@ -440,9 +440,6 @@ const modalpropertie = ({isOpen,
 
             {formTypeModal === 11 && ( //Properties view
                 <>
-                    <Button fullWidth={true} size="md" onPress={onOpen} color={buttonColor} className="-h-3 flex justify-start -p-3" >
-                        {buttonName} {buttonIcon}
-                    </Button>
                     <Modal
                         classNames={{
                             base: "max-h-screen",
@@ -451,7 +448,7 @@ const modalpropertie = ({isOpen,
                         }}
                         size="full"
                         hideCloseButton="true"
-                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        isOpen={isOpen} onOpenChange={onClose} isDismissable={false} isKeyboardDismissDisabled={true}>
                         <ModalContent>
                             {(onClose) => (
                                 <>
