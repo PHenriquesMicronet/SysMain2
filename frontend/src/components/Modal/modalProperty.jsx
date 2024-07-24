@@ -35,7 +35,10 @@ import { useTranslations } from 'next-intl';
 import organization from "@/app/homepage/organization/page";
 
 
-const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idProperty, editIcon, modalEditArrow, modalEdit, OrganizationName }) => {
+const modalpropertie = ({isOpen,
+    onOpen,
+    onOpenChange,
+    onClose, buttonName, buttonIcon, modalHeader, formTypeModal, buttonColor, idProperty, editIcon, modalEditArrow, modalEdit, OrganizationName }) => {
 
     const variants = ["underlined"];
 
@@ -48,7 +51,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
     const { handleUpdateProperty, setValuesProperty, handleOrganizationEdit, valuesProperty } = propertyEdit(idProperty);
 
 
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    
     const [isSelected, setIsSelected] = useState(true);
 
     /* Modals Open*/
@@ -311,9 +314,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
         <>
             {formTypeModal === 10 && ( //Properties
                 <>
-                    <Button onPress={onOpen} color={buttonColor} className="w-fit">
-                        {buttonName} {buttonIcon}
-                    </Button>
                     <Modal
                         classNames={{
                             base: "max-h-screen",
@@ -322,7 +322,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                         }}
                         size="full"
                         hideCloseButton="true"
-                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        isOpen={isOpen} onOpenChange={onClose} isDismissable={false} isKeyboardDismissDisabled={true}>
                         <ModalContent>
                             {(onClose) => (
                                 <>
@@ -791,9 +791,6 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
 
             {formTypeModal === 12 && ( //Properties edit
                 <>
-                    <Button fullWidth={true} size="md" onPress={onOpen} color={buttonColor} className="-h-3 flex justify-start -p-3" >
-                        {buttonName} {buttonIcon}
-                    </Button>
                     <Modal
                         classNames={{
                             base: "max-h-screen",
@@ -802,7 +799,7 @@ const modalpropertie = ({ buttonName, buttonIcon, modalHeader, formTypeModal, bu
                         }}
                         size="full"
                         hideCloseButton="true"
-                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        isOpen={isOpen} onOpenChange={onClose} isDismissable={false} isKeyboardDismissDisabled={true}>
                         <ModalContent>
                             {(onClose) => (
                                 <>
