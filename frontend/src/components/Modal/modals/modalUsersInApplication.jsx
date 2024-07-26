@@ -95,7 +95,7 @@ const users_applications = ({ idProperty, idApplication, formTypeModal, buttonNa
                                         <div className='flex flex-row items-center mr-5'>
                                             <FormUsersApplications
                                                 buttonName={t("general.newRecord")}
-                                                buttonColor={""}
+                                                buttonColor={"default"}
                                                 modalHeader={t("organization.properties.applications.assign.modalHeader")}
                                                 formTypeModal={11}
                                                 modalEdit={` ID: ${idProperty}`}

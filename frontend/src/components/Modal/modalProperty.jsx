@@ -848,17 +848,16 @@ const modalpropertie = ({isOpen,
                                                                     {editIcon} {modalHeader} {modalEditArrow} {modalEdit} <p>{t("organization.properties.users.label")}</p>
                                                                 </div>
                                                                 <div className='flex flex-row items-center mr-5'>
-                                                                    <Button>
                                                                         <FormModalPropertiesUsers
                                                                             buttonName={t("general.newRecord")}
                                                                             editIcon={<FiEdit3 size={25} />}
-                                                                            buttonColor={"transparent"}
+                                                                            buttonColor={"default"}
                                                                             modalHeader={t("organization.properties.users.assign.modalHeader")}
                                                                             modalEditArrow={<BsArrowRight size={25} />}
                                                                             modalEdit={`ID: ${idProperty}`}
                                                                             formTypeModal={10}
                                                                             propertyID={idProperty}
-                                                                        /></Button>
+                                                                        />
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                     <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
 
