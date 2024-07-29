@@ -448,6 +448,355 @@ const modalpropertie = ({isOpen,
                 </>
             )}
 
+<<<<<<< HEAD
+=======
+            {formTypeModal === 11 && ( //Properties view
+                <>
+                    <Modal
+                        classNames={{
+                            base: "max-h-screen",
+                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                            body: "h-full ",
+                        }}
+                        size="full"
+                        hideCloseButton="true"
+                        isOpen={isOpen} onOpenChange={onClose} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <form onSubmit={handleSubmitProperty}>
+                                        <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                            <div className="flex flex-row justify-start gap-4">
+                                                {modalHeader} {modalEditArrow} {modalEdit}
+                                            </div>
+                                            <div className='flex flex-row items-center mr-5'>
+                                                <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                            </div>
+                                        </ModalHeader>
+                                        <ModalBody className="flex flex-col mx-5 my-5 space-y-4">
+                                            <div className="flex justify-end gap-2">
+                                                <div className="bg-gray-100 p-1 rounded border border-gray-300 mr-2">
+                                                    <Badge color="success" content={userCount} isInvisible={!userCount} shape="circle">
+                                                        <Button color="transparent" onPress={toggleSecondModal}>
+                                                            <FaUser size={20} className="text-gray-500" />
+                                                        </Button>
+                                                    </Badge>
+                                                    <Modal
+                                                        classNames={{
+                                                            base: "max-h-screen",
+                                                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                                                            body: "h-full",
+                                                        }}
+                                                        size="full"
+                                                        hideCloseButton="true"
+                                                        isOpen={isSecondModalOpen}
+                                                        onClose={toggleSecondModal}
+                                                        isDismissable={false}
+                                                        isKeyboardDismissDisabled={true}
+                                                    >
+                                                        <ModalContent>
+                                                            <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                                                <div className="flex flex-row justify-start gap-4">
+                                                                    {modalHeader} {modalEditArrow} {modalEdit} <p>{t("organization.properties.users.label")}</p>
+                                                                </div>
+                                                                <div className='flex flex-row items-center mr-5'>
+                                                                    <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                                    <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                                                </div>
+                                                            </ModalHeader>
+                                                            <ModalBody>
+                                                                {isLoading ? (<p>{t("general.loadingStatus")}</p>
+                                                                ) : (
+                                                                    <div className="mx-5 h-[65vh] min-h-full">
+                                                                        <Table
+                                                                            isHeaderSticky={"true"}
+                                                                            layout={"fixed"}
+                                                                            removeWrapper
+                                                                            classNames={{
+                                                                                wrapper: "min-h-[222px]",
+                                                                            }}
+                                                                            className="h-full overflow-auto"
+                                                                        >
+                                                                            <TableHeader>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    {t("organization.properties.users.datatable.name")}
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    {t("organization.properties.users.datatable.lastName")}
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    {t("organization.properties.users.datatable.email")}
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    {t("organization.properties.users.datatable.role")}
+                                                                                </TableColumn>
+                                                                            </TableHeader>
+                                                                            <TableBody>
+                                                                                {propertyUsers.map((user, index) => (
+                                                                                    <TableRow key={index}>
+                                                                                        <TableCell>{user.name}</TableCell>
+                                                                                        <TableCell>{user.surname}</TableCell>
+                                                                                        <TableCell>{user.email}</TableCell>
+                                                                                        <TableCell>{user.role}</TableCell>
+                                                                                    </TableRow>
+                                                                                ))}
+                                                                            </TableBody>
+                                                                        </Table>
+                                                                    </div>
+                                                                )}
+                                                            </ModalBody>
+                                                        </ModalContent>
+                                                    </Modal>
+                                                </div>
+                                                <div className="bg-gray-100 p-1 rounded border border-gray-300">
+                                                    <Button color="transparent" onPress={toggleThirdModal}>
+                                                        <IoApps size={20} className="text-gray-500" />
+                                                    </Button>
+                                                    <Modal
+                                                        classNames={{
+                                                            base: "max-h-screen",
+                                                            wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
+                                                            body: "h-full",
+                                                        }}
+                                                        size="full"
+                                                        hideCloseButton="true"
+                                                        isOpen={isThirdModalOpen}
+                                                        onClose={toggleThirdModal}
+                                                        isDismissable={false}
+                                                        isKeyboardDismissDisabled={true}
+                                                    >
+                                                        <ModalContent>
+                                                            <ModalHeader className="flex flex-row justify-between items-center gap-1 bg-primary-600 text-white">
+                                                                <div className="flex flex-row justify-start gap-4">
+                                                                    {modalHeader} {modalEditArrow} {modalEdit} <p>{t("organization.properties.applications.label")}</p>
+                                                                </div>
+                                                                <div className='flex flex-row items-center mr-5'>
+                                                                    <Button color="transparent" onClick={toggleSecondModal}><FaArrowLeft size={25} /></Button>
+                                                                    <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                                    <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
+                                                                </div>
+                                                            </ModalHeader>
+                                                            <ModalBody>
+                                                                {isLoading ? (<p>{t("general.loadingStatus")}</p>
+                                                                ) : (
+                                                                    <div className="mx-5 h-[65vh] min-h-full">
+                                                                        <Table
+                                                                            isHeaderSticky={"true"}
+                                                                            layout={"fixed"}
+                                                                            removeWrapper
+                                                                            classNames={{
+                                                                                wrapper: "min-h-[222px]",
+                                                                            }}
+                                                                            className="h-full overflow-auto"
+                                                                        >
+                                                                            <TableHeader>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    {t("organization.properties.applications.datatable.system")}
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    {t("organization.properties.applications.datatable.available")}
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    {t("organization.properties.applications.datatable.license")}
+                                                                                </TableColumn>
+                                                                                <TableColumn className="bg-primary-600 text-white font-bold">
+                                                                                    {t("organization.properties.applications.datatable.features")}
+                                                                                </TableColumn>
+                                                                            </TableHeader>
+                                                                            <TableBody>
+                                                                                {isAdmin() ? ( // Se o utilizador for admin
+                                                                                    allApplications.map((application, index) => (
+                                                                                        <TableRow key={index}>
+                                                                                            <TableCell style={{ textAlign: 'left' }}>
+                                                                                                <FormModals
+                                                                                                    buttonName={application.description}
+                                                                                                    buttonColor={"transparent"}
+                                                                                                    modalHeader={"Utilizadores da Aplicação -"}
+                                                                                                    formTypeModal={1}
+                                                                                                    modalEdit={` ID: ${idProperty}`}
+                                                                                                    idApplication={application.id}
+                                                                                                    idProperty={idProperty}
+                                                                                                ></FormModals>
+                                                                                            </TableCell>
+                                                                                            <TableCell>
+                                                                                                <Switch
+                                                                                                    className="mr-auto"
+                                                                                                    size="sm"
+                                                                                                    defaultSelected={switchStates[application.id] || false}
+                                                                                                    isSelected={switchStates[application.id] || false}
+                                                                                                    onChange={(e) => handleSwitchToggle(application.id, e.target.checked)}
+                                                                                                />
+                                                                                            </TableCell>
+                                                                                            <TableCell style={{ textAlign: 'left' }}>
+                                                                                                {application.description === "OnPremPMS" ? (
+                                                                                                    <FormModalsLicence
+                                                                                                        buttonName={<BiSpreadsheet size={25} />}
+                                                                                                        buttonColor={"transparent"}
+                                                                                                        formTypeModal={2}
+                                                                                                        modalHeader={t("organizations.properties.applications.features.modalHeader")}
+                                                                                                        modalEdit={` ID: ${idProperty}`}
+                                                                                                        idApplication={application.id}
+                                                                                                        idProperty={idProperty}
+                                                                                                    ></FormModalsLicence>
+                                                                                                ) : (
+                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20} /></Button>
+                                                                                                )}
+                                                                                            </TableCell>
+                                                                                            <TableCell style={{ textAlign: 'left' }}>
+                                                                                                {application.description === "OnPremPMS" ? (
+                                                                                                    <FormModalsFeature
+                                                                                                        buttonName={<FaPlug size={20} />}
+                                                                                                        buttonColor={"transparent"}
+                                                                                                        formTypeModal={3}
+                                                                                                        modalHeader={t("organization.properties.applications.features.modalHeader")}
+                                                                                                        modalEdit={` ID: ${idProperty}`}
+                                                                                                        idApplication={application.id}
+                                                                                                        idProperty={idProperty}
+                                                                                                    ></FormModalsFeature>
+                                                                                                ) : (
+                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20} /></Button>
+                                                                                                )}
+                                                                                            </TableCell>
+                                                                                        </TableRow>
+                                                                                    ))
+                                                                                ) : ( // Se o utilizador nao for admin
+                                                                                    propertyApplication.map((application, index) => (
+                                                                                        <TableRow key={index}>
+                                                                                            <TableCell style={{ textAlign: 'left' }}>
+                                                                                                <FormModals
+                                                                                                    buttonName={application.description}
+                                                                                                    buttonColor={"transparent"}
+                                                                                                    formTypeModal={1}
+                                                                                                    idApplication={application.id}
+                                                                                                    idProperty={idProperty}
+                                                                                                ></FormModals>
+                                                                                            </TableCell>
+                                                                                            <TableCell>
+                                                                                                <Checkbox defaultSelected color="success"></Checkbox>
+                                                                                            </TableCell>
+                                                                                            <TableCell style={{ textAlign: 'left' }}>
+                                                                                                {application.description === "OnPremPMS" ? (
+                                                                                                    <FormModalsLicence
+                                                                                                        buttonName={<BiSpreadsheet size={25} />}
+                                                                                                        buttonColor={"transparent"}
+                                                                                                        formTypeModal={2}
+                                                                                                        idApplication={application.id}
+                                                                                                        idProperty={idProperty}
+                                                                                                    ></FormModalsLicence>
+                                                                                                ) : (
+                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20}
+                                                                                                    /></Button>
+                                                                                                )}
+                                                                                            </TableCell>
+                                                                                            <TableCell style={{ textAlign: 'left' }}>
+                                                                                                {application.description === "OnPremPMS" ? (
+                                                                                                    <FormModalsFeature
+                                                                                                        buttonName={<FaPlug size={20} />}
+                                                                                                        buttonColor={"transparent"}
+                                                                                                        formTypeModal={3}
+                                                                                                        idApplication={application.id}
+                                                                                                        idProperty={idProperty}
+                                                                                                    ></FormModalsFeature>
+                                                                                                ) : (
+                                                                                                    <Button className={"bg-transparent hover:bg-transparent"}><FaLock size={20} /></Button>
+                                                                                                )}
+                                                                                            </TableCell>
+                                                                                        </TableRow>
+                                                                                    ))
+                                                                                )}
+                                                                            </TableBody>
+                                                                        </Table>
+                                                                    </div>
+                                                                )}
+                                                            </ModalBody>
+                                                        </ModalContent>
+                                                    </Modal>
+                                                </div>
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Name" value={valuesProperty.Name} onChange={handleInputProperty} variant={variant} label={t("organization.properties.nameLabel")} />
+                                                        <Input type="text" name="FiscalNumber" value={valuesProperty.FiscalNumber} onChange={handleInputProperty} variant={variant} label={t("organization.properties.fiscalNumberLabel")} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input onChange={handleInputProperty} name="Email" value={valuesProperty.Email} type="text" variant={variant} label={t("organization.properties.emailLabel")} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="max-w-xs flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 "
+                                                    >
+                                                        <Input type="number" name="PhoneNumber" value={valuesProperty.PhoneNumber} onChange={handleInputProperty} variant={variant} label={t("organization.properties.phoneNumberLabel")} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Address1" value={valuesProperty.Address1} onChange={handleInputProperty} variant={variant} label={t("organization.properties.mainAddressLabel")} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Country" value={valuesProperty.Country} onChange={handleInputProperty} variant={variant} label={t("organization.properties.countryLabel")} />
+                                                        <Input type="text" name="District" value={valuesProperty.District} onChange={handleInputProperty} variant={variant} label={t("organization.properties.districtLabel")} />
+                                                        <Input type="text" name="ZipCode" value={valuesProperty.ZipCode} onChange={handleInputProperty} variant={variant} label={t("organization.properties.zipcodeLabel")} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Description" value={valuesProperty.Description} onChange={handleInputProperty} variant={variant} label={t("organization.properties.descriptionLabel")} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-4">
+                                                {variants.map((variant) => (
+                                                    <div
+                                                        key={variant}
+                                                        className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4"
+                                                    >
+                                                        <Input type="text" name="Abbreviation" value={valuesProperty.Abbreviation} onChange={handleInputProperty} variant={variant} label={t("organization.properties.shortnameLabel")} />
+                                                        <Input type="text" name="Designation" value={valuesProperty.Designation} onChange={handleInputProperty} variant={variant} label={t("organization.properties.designationLabel")} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </ModalBody>
+                                    </form>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
+                </>
+            )}
+>>>>>>> 3eec69e4aba2b2bb4f6cf97309dfa86b17fa3e36
 
             {formTypeModal === 12 && ( //Properties edit/view
                 <>
@@ -516,17 +865,16 @@ const modalpropertie = ({isOpen,
                                                                     {editIcon} {modalHeader} {modalEditArrow} {modalEdit} <p>{t("organization.properties.users.label")}</p>
                                                                 </div>
                                                                 <div className='flex flex-row items-center mr-5'>
-                                                                    <Button>
                                                                         <FormModalPropertiesUsers
                                                                             buttonName={t("general.newRecord")}
                                                                             editIcon={<FiEdit3 size={25} />}
-                                                                            buttonColor={"transparent"}
+                                                                            buttonColor={"default"}
                                                                             modalHeader={t("organization.properties.users.assign.modalHeader")}
                                                                             modalEditArrow={<BsArrowRight size={25} />}
                                                                             modalEdit={`ID: ${idProperty}`}
                                                                             formTypeModal={10}
                                                                             propertyID={idProperty}
-                                                                        /></Button>
+                                                                        />
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                     <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
 
