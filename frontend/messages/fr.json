@@ -1,0 +1,332 @@
+{
+    "Index": {
+      "general": {
+        "search": "Rechercher...",
+        "newRecord": "Nouveau",
+        "editRecord": "Modifier",
+        "removeRecord": "Supprimer",
+        "viewRecord": "Voir",
+        "loadingStatus": "Chargement..."
+      },
+      "pagination": {
+        "noRecords": "0 résultats",
+        "pageRecords": "Enregistrements par page:",
+        "of": "de"
+      },
+      "login": {
+        "emailLabel": "Email",
+        "emailPlaceholder": "Entrez votre adresse e-mail",
+        "passwordLabel": "Mot de passe",
+        "passwordPlaceholder": "Entrez votre mot de passe",
+        "buttonLabel": "Login"
+      },
+      "propertySelect": {
+        "label": "Sélectionnez la propriété sur laquelle vous souhaitez travailler:"
+      },
+      "applicationSelect": {
+        "label": "Sélectionnez l'application sur laquelle vous souhaitez travailler:"
+      },
+      "sidebar": {
+        "settings": {
+          "label": "Paramètres",
+          "changePasswordLabel": "Modifier le mot de passe",
+          "securitySettingsLabel": "Paramètres de sécurité"
+        },
+        "organization": {
+          "label": "Organisation",
+          "accountLabel": "Compte",
+          "propertiesLabel": "Propriétés",
+          "allOrganizationsLabel": "Toutes les organisations",
+          "allPropertiesLabel": "Toutes les propriétés"
+        },
+        "profiles": {
+          "label": "Profils",
+          "manageProfilesLabel": "Gérer les profils",
+          "manageUsersLabel": "Gérer les utilisateurs",
+          "manageAllUsersLabel": "Gérer tous les utilisateurs"
+        }
+      },
+      "organization": {
+        "account": {
+          "companyNameLabel": "Nom de l'entreprise",
+          "fiscalNumberLabel": "Numéro fiscal",
+          "emailLabel": "Email",
+          "phoneNumberLabel": "Numéro de téléphone",
+          "mainAddressLabel": "Adresse principale",
+          "secondAddressLabel": "Deuxième adresse",
+          "countryLabel": "Pays",
+          "districtLabel": "Quartier",
+          "zipcodeLabel": "Code postal",
+          "edit": {
+            "modalHeader": "Modifier l'organisation",
+            "statusActive": "Organisation active",
+            "statusInactive": "Organisation inactive"
+          },
+          "propertyLicenses": {
+            "modalHeader": "Licences de toutes les propriétés",
+            "datatable": {
+              "id": "ID",
+              "shortname": "ABRÉVIATION",
+              "bedrooms": "CHAMBRES",
+              "workstations": "POSTES DE TRAVAIL"
+            }
+          },
+          "applications": {
+            "modalHeader": "Applications de l'organisation",
+            "datatable": {
+              "applicationName": "APPLICATION",
+              "details": "DÉTAILS",
+              "properties": "PROPRIÉTÉS"
+            }
+          }
+        },
+        "properties": {
+          "label": "Propriétés",
+          "nameLabel": "Nom",
+          "fiscalNumberLabel": "Numéro fiscal",
+          "emailLabel": "Email",
+          "phoneNumberLabel": "Numéro de téléphone",
+          "mainAddressLabel": "Adresse principale",
+          "countryLabel": "Pays",
+          "districtLabel": "Quartier",
+          "zipcodeLabel": "Code postal",
+          "descriptionLabel": "Description",
+          "shortnameLabel": "Abréviation",
+          "designationLabel": "Désignation",
+          "datatable": {
+            "id": "ID",
+            "name": "NOM",
+            "address": "ADDRESSE",
+            "description": "DESCRIPTION",
+            "shortname": "ABRÉVIATION",
+            "designation": "DÉSIGNATION"
+          },
+          "edit": {
+            "modalHeader": "Modifier la propriété",
+            "statusActive": "Propriété active",
+            "statusInactive": "Propriété inactive"
+          },
+          "new": {
+            "modalHeader": "Nouvelle propriété"
+          },
+          "view": {
+            "modalHeader": "Voir la propriété"
+          },
+          "users": {
+            "label": "Utilisateurs",
+            "datatable": {
+              "id": "ID",
+              "name": "NOM",
+              "lastName": "NOM DE FAMILLE",
+              "email": "EMAIL",
+              "role": "RÔLE",
+              "add": "AJOUTER"
+            },
+            "assign": {
+              "modalHeader": "Attribuer un utilisateur"
+            }
+          },
+          "applications": {
+            "label": "Applications",
+            "datatable": {
+              "system": "SYSTÈME",
+              "available": "DISPONIBLE",
+              "license": "LICENCE",
+              "features": "FONCTIONNALTÉS",
+              "users": "UTILISATEURS"
+            },
+            "assign": {
+              "modalHeader": "Attribuer un utilisateur à l'application",
+              "datatable": {
+                "id": "ID",
+                "name": "NOM",
+                "lastName": "NOM DE FAMILLE",
+                "email": "EMAIL",
+                "add": "AJOUTER"
+              }
+            },
+            "features": {
+              "modalHeader": "Caractéristiques de la propriété",
+              "datatable": {
+                "ip": "IP",
+                "port": "PORT",
+                "prefix": "PRÉFIXE",
+                "actions": "ACTIONS"
+              }
+            },
+            "licenses": {
+              "modalHeader": "Licences de propriété",
+              "datatable": {
+                "id": "ID",
+                "abreviature": "ABV",
+                "bedrooms": "CHAMBRES",
+                "workstations": "POSTES DE TRAVAIL"
+              }
+            }
+          }
+        }
+      },
+      "profiles": {
+        "roles": {
+          "label": "Profils",
+          "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce profil?",
+          "modalHeader": "Nouveau profil",
+          "nameLabel": "Nom",
+          "descriptionLabel": "Description"
+        },
+        "users": {
+          "label": "Utilisateurs",
+          "nameLabel": "Nom",
+          "lastNameLabel": "Nom de famille",
+          "emailLabel": "Email",
+          "fiscalNumberLabel": "Numéro fiscal",
+          "phoneNumberLabel": "Numéro de téléphone",
+          "mainAddressLabel": "Adresse principale",
+          "secondAddressLabel": "Deuxième adresse",
+          "countryLabel": "Pays",
+          "districtLabel": "Quartier",
+          "zipcodeLabel": "Code postal",
+          "passwordLabel": "Mot de passe",
+          "organizationLabel": "Organisation",
+          "propertiesLabel": "Propriétés",
+          "roleLabel": "Rôle",
+          "datatable": {
+            "name": "NOM",
+            "email": "EMAIL",
+            "role": "RÔLE",
+            "properties": "PROPRIÉTÉS"
+          },
+          "new": {
+            "modalHeader": "Nouvel utilisateur"
+          },
+          "edit": {
+            "modalHeader": "Modifier l'utilisateur"
+          },
+          "view": {
+            "modalHeader": "Voir l'utilisateur"
+          },
+          "properties": {
+            "modalHeader": "Ajouter une propriété",
+            "datatable": {
+              "id": "ID",
+              "name": "NOM",
+              "add": "AJOUTER"
+            }
+          }
+        }
+      },
+      "allOrganizations": {
+        "label": "Toutes les organisations",
+        "companyNameLabel": "Nom de l'entreprise",
+        "fiscalNumberLabel": "Numéro fiscal",
+        "emailLabel": "Email",
+        "phoneNumberLabel": "Numéro de téléphone",
+        "mainAddressLabel": "Adresse principale",
+        "secondAddressLabel": "Deuxième adresse",
+        "countryLabel": "Pays",
+        "districtLabel": "Quartier",
+        "zipcodeLabel": "Code postal",
+        "edit": {
+          "modalHeader": "Modifier l'organisation",
+          "statusActive": "Organisation active",
+          "statusInactive": "Organisation inactive"
+        },
+        "view": {
+          "modalHeader": "Voir l'organisation"
+        },
+        "new": {
+          "modalHeader": "Nouvelle organisation"
+        },
+        "datatable": {
+          "id": "ID",
+          "name": "NOM",
+          "address": "ADDRESSE",
+          "country": "PAYS",
+          "properties": "PROPRIÉTÉS",
+          "users": "UTILISATEURS"
+        },
+        "applications": {
+          "modalHeader": "Applications de l'organisation",
+          "datatable": {
+            "applicationName": "APPLICATION",
+            "details": "DÉTAILS",
+            "properties": "PROPRIÉTÉS"
+          },
+          "connectionString": {
+            "modalHeader": "Modifier la chaîne de connexion",
+            "connectionStringLabel": "Chaîne de connexion"
+          }
+        },
+        "properties": {
+          "label": "Toutes les propriétés de",
+          "datatable": {
+            "id": "ID",
+            "name": "NOM",
+            "address": "ADDRESSE",
+            "country": "PAYS",
+            "email": "EMAIL"
+          },
+          "edit": {
+            "modalHeader": "Modifier la propriété"
+          },
+          "view": {
+            "modalHeader": "Voir la propriété"
+          }
+        },
+        "users": {
+          "label": "Tous les utilisateurs de",
+          "datatable": {
+            "id": "ID",
+            "name": "NOM",
+            "email": "EMAIL",
+            "properties": "PROPRIÉTÉS"
+          },
+          "edit": {
+            "modalHeader": "Modifier l'utilisateur"
+          },
+          "view": {
+            "modalHeader": "Voir l'utilisateur"
+          }
+        }
+      },
+      "allProperties": {
+        "label": "Toutes les propriétés",
+        "datatable": {
+          "id": "ID",
+          "name": "NOM",
+          "address": "ADDRESSE",
+          "description": "DESCRIPTION",
+          "shortname": "ABRÉVIATION",
+          "designation": "DÉSIGNATION",
+          "organization": "ORGANISATION"
+        },
+        "new": {
+          "modalHeader": "Nouvelle propriété"
+        },
+        "edit": {
+          "modalHeader": "Modifier la propriété"
+        },
+        "view": {
+          "modalHeader": "Voir la propriété"
+        }
+      },
+      "allUsers": {
+        "label": "Tous les utilisateurs",
+        "datatable": {
+          "name": "NOM",
+          "email": "EMAIL",
+          "organization": "ORGANISATION",
+          "properties": "PROPRIÉTÉS"
+        },
+        "new": {
+          "modalHeader": "Nouvel utilisateur"
+        },
+        "edit": {
+          "modalHeader": "Modifier l'utilisateur"
+        },
+        "view": {
+          "modalHeader": "Voir l'utilisateur"
+        }
+      }
+    }
+  }

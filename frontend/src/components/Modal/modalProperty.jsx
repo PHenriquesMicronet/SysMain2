@@ -440,9 +440,6 @@ const modalpropertie = ({isOpen,
 
             {formTypeModal === 11 && ( //Properties view
                 <>
-                    <Button fullWidth={true} size="md" onPress={onOpen} color={buttonColor} className="-h-3 flex justify-start -p-3" >
-                        {buttonName} {buttonIcon}
-                    </Button>
                     <Modal
                         classNames={{
                             base: "max-h-screen",
@@ -451,7 +448,7 @@ const modalpropertie = ({isOpen,
                         }}
                         size="full"
                         hideCloseButton="true"
-                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        isOpen={isOpen} onOpenChange={onClose} isDismissable={false} isKeyboardDismissDisabled={true}>
                         <ModalContent>
                             {(onClose) => (
                                 <>
@@ -851,17 +848,16 @@ const modalpropertie = ({isOpen,
                                                                     {editIcon} {modalHeader} {modalEditArrow} {modalEdit} <p>{t("organization.properties.users.label")}</p>
                                                                 </div>
                                                                 <div className='flex flex-row items-center mr-5'>
-                                                                    <Button>
                                                                         <FormModalPropertiesUsers
                                                                             buttonName={t("general.newRecord")}
                                                                             editIcon={<FiEdit3 size={25} />}
-                                                                            buttonColor={"transparent"}
+                                                                            buttonColor={"default"}
                                                                             modalHeader={t("organization.properties.users.assign.modalHeader")}
                                                                             modalEditArrow={<BsArrowRight size={25} />}
                                                                             modalEdit={`ID: ${idProperty}`}
                                                                             formTypeModal={10}
                                                                             propertyID={idProperty}
-                                                                        /></Button>
+                                                                        />
                                                                     <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                                     <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
 
