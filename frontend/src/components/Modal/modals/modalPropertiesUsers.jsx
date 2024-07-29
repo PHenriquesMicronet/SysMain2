@@ -93,7 +93,7 @@ const modalpropertiesusers = ({
                         }}
                         size="full"
                         hideCloseButton="true"
-                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        isOpen={isOpen} onOpenChange={onOpenChange} backdrop={"transparent"} isDismissable={false} isKeyboardDismissDisabled={true}>
                         <ModalContent>
                             {(onClose) => (
                                 <>

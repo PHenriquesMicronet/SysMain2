@@ -93,7 +93,7 @@ const modalusersproperties = ({
                         }}
                         size="full"
                         hideCloseButton="true"
-                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        isOpen={isOpen} backdrop={"transparent"} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
                         <ModalContent>
                             {(onClose) => (
                                 <>

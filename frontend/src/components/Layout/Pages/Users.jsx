@@ -43,21 +43,24 @@ export default function users() {
     const [searchValue, setSearchValue] = React.useState("");
     const [user, setUser] = useState([]);
     const { data: session, status } = useSession()
-    const [selectedRoom, setSelectedRoom] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedAction, setSelectedAction] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
   
 
     const t = useTranslations('Index');
 
-    const handleOpenModal = (user) => {
-        setSelectedRoom(user);
+    const handleOpenModal = (user, action) => {
+        setSelectedUser(user);
+        setSelectedAction(action);
         setIsModalOpen(true);
-      };
-    
-      const handleCloseModal = () => {
-        setSelectedRoom(null);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedUser(null);
+        setSelectedAction(null);
         setIsModalOpen(false);
-      };
+    };
 
     const filteredItems = React.useMemo(() => {
         return user.filter((user) =>
@@ -152,9 +155,9 @@ export default function users() {
                             modalHeader={t("profiles.users.new.modalHeader")}
                             modalIcons={"bg-red"}
                             formTypeModal={10}
-                            isOpen={!selectedRoom && isModalOpen}
+                            isOpen={!selectedUser && isModalOpen}
                             onClose={handleCloseModal}
-                            user={selectedRoom}
+                            user={selectedUser}
                         ></Modaluser>
                 </div>
                 <div className="mx-5 h-[65vh] min-h-full">
@@ -203,15 +206,29 @@ export default function users() {
                                                 </Button>
                                             </DropdownTrigger>
                                             <DropdownMenu aria-label="Static Actions" isOpen={true}>
-                                            <DropdownItem key="edit" onClick={() => handleOpenModal(user)}>
-                                                {t("general.editRecord")}
+                                            <DropdownItem key="edit" onClick={() => handleOpenModal(user, "edit")}>
+                                                    {t("general.editRecord")}
                                             </DropdownItem>
                                                 <DropdownItem><button onClick={() => handleDelete(user.userID)}>{t("general.removeRecord")}</button></DropdownItem>
-                                                <DropdownItem key="view" onClick={() => handleOpenModal(user)}>
-                                                View
+                                                <DropdownItem key="view" onClick={() => handleOpenModal(user, "view")}>
+                                                    {t("general.viewRecord")}
                                                 </DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
+                                    <Modaluser
+                                        buttonColor={"transparent"}
+                                        modalHeader={t("profiles.users.edit.modalHeader")}
+                                        modalEditArrow={<BsArrowRight size={25} />}
+                                        modalEdit={`ID: ${user.id}`}
+                                        formTypeModal={11}
+                                        userID={user.id}
+                                        PropertiesUserName={user.properties}
+                                        NameUser={user.name}
+                                        isOpen={selectedUser?.id === user.id && selectedAction === "edit" && isModalOpen}
+                                        onClose={handleCloseModal}
+                                        user={selectedUser}
+                                        isReadOnly={false}
+                                    ></Modaluser>
                                     <Modaluser
                                         buttonColor={"transparent"}
                                         modalHeader={t("profiles.users.view.modalHeader")}
@@ -221,9 +238,10 @@ export default function users() {
                                         userID={user.id}
                                         PropertiesUserName={user.properties}
                                         NameUser={user.name}
-                                        isOpen={selectedRoom?.id === user.id && isModalOpen}
+                                        isOpen={selectedUser?.id === user.id && selectedAction === "view" && isModalOpen}
                                         onClose={handleCloseModal}
-                                        user={selectedRoom}
+                                        user={selectedUser}
+                                        isReadOnly={true}
                                     ></Modaluser>
                                     </TableCell>
                                 </TableRow>

@@ -40,6 +40,21 @@ export default function AllProperties() {
     const { data: session, status } = useSession()
     const t = useTranslations('Index');
 
+    const [selectedProperty, setSelectedProperty] = useState(null);
+    const [selectedAction, setSelectedAction] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenModal = (property, action) => {
+        setSelectedProperty(property);
+        setSelectedAction(action);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedProperty(null);
+        setSelectedAction(null);
+        setIsModalOpen(false);
+    };
 
     const filteredItems = React.useMemo(() => {
         return property.filter((property) =>
@@ -133,15 +148,18 @@ export default function AllProperties() {
                                 />
                             </div>
                         </div>
+                        <Button onClick={() => handleOpenModal()} color={"primary"} className="w-fit">
+                            {t("general.newRecord")} <FiPlus size={15} />
+                        </Button>
+                    </div>
                         <FormModals
-                            buttonName={t("general.newRecord")}
-                            buttonIcon={<FiPlus size={15} />}
-                            buttonColor={"primary"}
                             modalHeader={t("allProperties.new.modalHeader")}
                             modalIcons={"bg-red"}
                             formTypeModal={10}
+                            isOpen={!selectedProperty && isModalOpen}
+                            onClose={handleCloseModal}
+                            property={selectedProperty}
                         />
-                    </div>
                 </div>
                 <div className="mx-5 h-[65vh] min-h-full">
                     <Table
@@ -200,42 +218,38 @@ export default function AllProperties() {
                                                     <BsThreeDotsVertical size={20} className="text-gray-400" />
                                                 </Button>
                                             </DropdownTrigger>
-                                            <DropdownMenu aria-label="Static Actions" isOpen={true} closeOnSelect={false}>
-                                                <DropdownItem key="edit">
-                                                    <FormModals
-                                                        buttonName={t("general.editRecord")}
-                                                        editIcon={<FiEdit3 size={25} />}
-                                                        buttonColor={"transparent"}
-                                                        modalHeader={t("allProperties.edit.modalHeader")}
-                                                        modalEditArrow={<BsArrowRight size={25} />}
-                                                        modalEdit={`ID: ${property.propertyID}`}
-                                                        formTypeModal={12}
-                                                        idProperty={property.propertyID}
-                                                        OrganizationName={property.organization}
-                                                    />
-                                                </DropdownItem>
-                                                <DropdownItem onClick={() => handleDelete(property.propertyID)}>{t("general.removeRecord")}</DropdownItem>
-                                                <DropdownItem >
-                                                    <FormModals
-                                                        buttonName={t("general.viewRecord")}
-                                                        buttonColor={"transparent"}
-                                                        modalHeader={t("allProperties.view.modalHeader")}
-                                                        formTypeModal={11}
-                                                        idProperty={property.propertyID}
-                                                    />
-                                                </DropdownItem>
+                                            <DropdownMenu aria-label="Static Actions" isOpen={true}>
+                                                    <DropdownItem key="edit" onClick={() => handleOpenModal(property, "edit")}>
+                                                        {t("general.editRecord")}
+                                                    </DropdownItem>
+                                                    <DropdownItem onClick={() => handleDelete(property.propertyID)}>{t("general.removeRecord")}</DropdownItem>
+                                                    <DropdownItem key="view" onClick={() => handleOpenModal(property, "view")} >
+                                                        {t("general.viewRecord")}
+                                                    </DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
                                         <FormModals
-                                            buttonName={<BiSpreadsheet size={20} className="text-gray-400"
-                                            />}
-                                            buttonColor={"transparent"}
-                                            modalHeader={"Licença"}
-                                            variant="light"
-                                            className="flex flex-row justify-center"
-                                            formTypeModal={13}
-                                            idProperty={property.propertyID}
-                                        />
+                                                modalHeader={t("organization.properties.edit.modalHeader")}
+                                                modalEditArrow={<BsArrowRight size={25} />}
+                                                modalEdit={`ID: ${property.propertyID}`}
+                                                formTypeModal={12}
+                                                idProperty={property.propertyID}
+                                                isOpen={selectedProperty?.propertyID === property.propertyID && selectedAction === "edit" && isModalOpen}
+                                                onClose={handleCloseModal}
+                                                property={selectedProperty}
+                                                isReadOnly={false}
+                                            ></FormModals>
+                                            <FormModals
+                                                modalHeader={t("organization.properties.view.modalHeader")}
+                                                modalEditArrow={<BsArrowRight size={25} />}
+                                                modalEdit={`ID: ${property.propertyID}`}
+                                                formTypeModal={12}
+                                                idProperty={property.propertyID}
+                                                isOpen={selectedProperty?.propertyID === property.propertyID && selectedAction === "view" && isModalOpen}
+                                                onClose={handleCloseModal}
+                                                property={selectedProperty}
+                                                isReadOnly={true}
+                                            ></FormModals>
                                     </TableCell>
                                 </TableRow>
                             ))}

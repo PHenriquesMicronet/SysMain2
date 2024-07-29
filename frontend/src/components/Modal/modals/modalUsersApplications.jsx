@@ -106,7 +106,7 @@ const users_applications = ({idProperty, idApplication, formTypeModal, buttonNam
                         }}
                         size="full"
                         hideCloseButton="true"
-                        isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+                        isOpen={isOpen} backdrop={"transparent"} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
                         <ModalContent>
                             {(onClose) => (
                                 <>

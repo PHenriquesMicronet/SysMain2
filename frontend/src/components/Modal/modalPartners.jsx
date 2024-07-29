@@ -53,7 +53,6 @@ const modalpartner = ({
                             wrapper: isExpanded ? "w-full h-screen" : "lg:pl-72 h-screen w-full",
                             body: "h-full ",
                         }}
-                        size="full"
                         isOpen={isOpen}
                         hideCloseButton={true}
                         onOpenChange={onClose}
@@ -67,7 +66,7 @@ const modalpartner = ({
                                             {modalHeader}
                                             <div className='flex flex-row items-center mr-5'>
                                                 <Button color="transparent" type="submit"><TfiSave size={25} /></Button>
-                                                <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                {/*<Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>*/}
                                                 <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                             </div>
                                         </ModalHeader>
@@ -101,7 +100,6 @@ const modalpartner = ({
                             wrapper: isExpanded ? "w-full h-screen " : "lg:pl-72 h-screen w-full",
                             body: "h-full ",
                         }}
-                        size="full"
                         isOpen={isOpen} onOpenChange={onClose} isDismissable={false} isKeyboardDismissDisabled={true} hideCloseButton={true}>
                         <ModalContent>
                             {(onClose) => (
@@ -113,14 +111,14 @@ const modalpartner = ({
                                             </div>
                                             <div className='flex flex-row items-center mr-5'>
                                                 <Button color="transparent" onPress={onClose} type="submit"><TfiSave size={25} /></Button>
-                                                <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
+                                                {/*<Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>*/}
                                                 <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                             </div>
                                         </ModalHeader>
                                         <ModalBody className="flex flex-col mx-5 my-5 space-y-4">
                                             <div className="w-full flex flex-col gap-2">
                                                 {variants.map((variant) => (
-                                                    <div key={variant} className="flex w-1/2 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                                    <div key={variant} className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                                                         <Input type="text" name="Name" value={valuesPartner.Name} onChange={e => setValuesPartner({ ...valuesPartner, Name: e.target.value })} variant={variant} label={t("profiles.users.nameLabel")} />
                                                     </div>
                                                 ))}

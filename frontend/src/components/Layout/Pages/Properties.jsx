@@ -49,15 +49,18 @@ export default function Contact() {
     const t = useTranslations('Index');
 
     const [selectedProperty, setSelectedProperty] = useState(null);
+    const [selectedAction, setSelectedAction] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleOpenModal = (property) => {
+    const handleOpenModal = (property, action) => {
         setSelectedProperty(property);
+        setSelectedAction(action);
         setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setSelectedProperty(null);
+        setSelectedAction(null);
         setIsModalOpen(false);
     };
 
@@ -219,20 +222,12 @@ export default function Contact() {
                                                     </Button>
                                                 </DropdownTrigger>
                                                 <DropdownMenu aria-label="Static Actions" isOpen={true} >
-                                                    <DropdownItem key="edit" onClick={() => handleOpenModal(property)}>
-                                                    {t("general.editRecord")}
+                                                    <DropdownItem key="edit" onClick={() => handleOpenModal(property, "edit")}>
+                                                        {t("general.editRecord")}
                                                     </DropdownItem>
                                                     <DropdownItem onClick={() => handleDelete(property.propertyID)}>{t("general.removeRecord")}</DropdownItem>
-                                                    <DropdownItem key="view" onClick={() => handleOpenModal(property)} >
-                                                        {/* <FormModals
-                                                        buttonName={t("general.viewRecord")}
-                                                        buttonColor={"transparent"}
-                                                        modalHeader={t("organization.properties.view.modalHeader")}
-                                                        modalEditArrow={<BsArrowRight size={25} />}
-                                                        modalEdit={`ID: ${property.propertyID}`}
-                                                        formTypeModal={11}
-                                                        idProperty={property.propertyID}
-                                                    ></FormModals> */}
+                                                    <DropdownItem key="view" onClick={() => handleOpenModal(property, "view")} >
+                                                        {t("general.viewRecord")}
                                                     </DropdownItem>
                                                 </DropdownMenu>
                                             </Dropdown>
@@ -242,9 +237,21 @@ export default function Contact() {
                                                 modalEdit={`ID: ${property.propertyID}`}
                                                 formTypeModal={12}
                                                 idProperty={property.propertyID}
-                                                isOpen={selectedProperty?.propertyID === property.propertyID && isModalOpen}
+                                                isOpen={selectedProperty?.propertyID === property.propertyID && selectedAction === "edit" && isModalOpen}
                                                 onClose={handleCloseModal}
                                                 property={selectedProperty}
+                                                isReadOnly={false}
+                                            ></FormModals>
+                                            <FormModals
+                                                modalHeader={t("organization.properties.view.modalHeader")}
+                                                modalEditArrow={<BsArrowRight size={25} />}
+                                                modalEdit={`ID: ${property.propertyID}`}
+                                                formTypeModal={12}
+                                                idProperty={property.propertyID}
+                                                isOpen={selectedProperty?.propertyID === property.propertyID && selectedAction === "view" && isModalOpen}
+                                                onClose={handleCloseModal}
+                                                property={selectedProperty}
+                                                isReadOnly={true}
                                             ></FormModals>
                                         </TableCell>
                                     </TableRow>

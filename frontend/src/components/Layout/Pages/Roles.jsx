@@ -161,7 +161,7 @@ const RolesPage = () => {
                                         <Button onClick={handleUpdateRole} color="transparent" className="cursor-pointer text-gray-500 hover:text-gray-700"><TfiSave size={23} /></Button>
                                     </div>
                                 </div>
-                                <h1 className="text-gray-600 mb-2 text-xl font-bold mb-4"><input type="text" value={valuesRole.name} onChange={e => setValuesRole({ ...valuesRole, name: e.target.value })}/></h1>
+                                <h1 className="text-gray-600 text-xl font-bold mb-4"><input type="text" value={valuesRole.name} onChange={e => setValuesRole({ ...valuesRole, name: e.target.value })}/></h1>
                                 <Button color="transparent"><FaUserTie size={70} /></Button>
                                 <p className="text-gray-600 mt-4"><input color="transparent" type="text" value={valuesRole.description} onChange={e => setValuesRole({ ...valuesRole, description: e.target.value })}/></p>
                             </div>
@@ -179,7 +179,7 @@ const RolesPage = () => {
                                         <BsTrash size={25}  onClick={() => handleDelete(roles.roleID)} className="cursor-pointer text-gray-500 hover:text-gray-700" />
                                     </div>
                                 </div>
-                                <h1 className="text-gray-600 mb-2 text-xl font-bold mb-4">{roles.name}</h1>
+                                <h1 className="text-gray-600 text-xl font-bold mb-4">{roles.name}</h1>
                                 <Button color="transparent"><FaUserTie size={70} /></Button>
                                 <p className="text-gray-600 mt-4">{roles.description}</p>
                             </div>

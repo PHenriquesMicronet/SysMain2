@@ -35,9 +35,10 @@ const modaluser = ({
     NameUser,
     RoleName,
     isOpen,
-  onOpen,
-  onOpenChange,
-  onClose,
+    onOpen,
+    onOpenChange,
+    onClose,
+    isReadOnly
 }) => {
 
     console.log(userID)
@@ -252,7 +253,11 @@ const modaluser = ({
                                                 {editIcon} {modalHeader} {modalEditArrow} {modalEdit}
                                             </div>
                                             <div className='flex flex-row items-center mr-5'>
-                                                <Button color="transparent" onPress={onClose} type="submit"><TfiSave size={25} /></Button>
+                                                {!isReadOnly && (
+                                                    <Button color="transparent" onPress={onClose} type="submit">
+                                                        <TfiSave size={25} />
+                                                    </Button>
+                                                )}
                                                 <Button color="transparent" onClick={toggleExpand}><LiaExpandSolid size={30} /></Button>
                                                 <Button color="transparent" variant="light" onPress={onClose}><MdClose size={30} /></Button>
                                             </div>
@@ -261,9 +266,9 @@ const modaluser = ({
                                             <div className="w-full flex flex-col gap-2">
                                                 {variants.map((variant) => (
                                                     <div key={variant} className="flex w-1/2 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                        <Input type="text" name="Organization" value={OrganizationName} variant={variant} label={t("profiles.users.organizationLabel")} />
+                                                        <Input type="text" name="Organization" value={OrganizationName} isReadOnly={isReadOnly} variant={variant} label={t("profiles.users.organizationLabel")} />
 
-                                                        <Input type="text" name="Properties" value={PropertiesUserName} variant={variant} label={t("profiles.users.propertiesLabel")} />
+                                                        <Input type="text" name="Properties" value={PropertiesUserName} isReadOnly={isReadOnly} variant={variant} label={t("profiles.users.propertiesLabel")} />
 
                                                         <Button color="transparent"><PiInfo size={30} /></Button>
 
@@ -286,47 +291,47 @@ const modaluser = ({
                                             <div className="w-full flex flex-col gap-2">
                                                 {variants.map((variant) => (
                                                     <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                        <Input type="text" name="Name" value={valuesUser.Name} onChange={e => setValuesUser({ ...valuesUser, Name: e.target.value })} variant={variant} label={t("profiles.users.nameLabel")} />
-                                                        <Input type="text" name="LastName" value={valuesUser.LastName} onChange={e => setValuesUser({ ...valuesUser, LastName: e.target.value })} variant={variant} label={t("profiles.users.lastNameLabel")} />
+                                                        <Input type="text" name="Name" value={valuesUser.Name} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, Name: e.target.value })} variant={variant} label={t("profiles.users.nameLabel")} />
+                                                        <Input type="text" name="LastName" value={valuesUser.LastName} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, LastName: e.target.value })} variant={variant} label={t("profiles.users.lastNameLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="w-full flex flex-col gap-2">
                                                 {variants.map((variant) => (
                                                     <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                        <Input type="text" name="Email" value={valuesUser.Email} onChange={e => setValuesUser({ ...valuesUser, Email: e.target.value })} variant={variant} label={t("profiles.users.emailLabel")} />
-                                                        <Input type="text" name="FiscalNumber" value={valuesUser.FiscalNumber} onChange={e => setValuesUser({ ...valuesUser, FiscalNumber: e.target.value })} variant={variant} label={t("profiles.users.fiscalNumberLabel")} />
+                                                        <Input type="text" name="Email" value={valuesUser.Email} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, Email: e.target.value })} variant={variant} label={t("profiles.users.emailLabel")} />
+                                                        <Input type="text" name="FiscalNumber" value={valuesUser.FiscalNumber} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, FiscalNumber: e.target.value })} variant={variant} label={t("profiles.users.fiscalNumberLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="max-w-xs flex flex-col gap-2">
                                                 {variants.map((variant) => (
                                                     <div key={variant} className="flex max-w-xs flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                        <Input type="text" name="PhoneNumber" value={valuesUser.PhoneNumber} onChange={e => setValuesUser({ ...valuesUser, PhoneNumber: e.target.value })} variant={variant} label={t("profiles.users.phoneNumberLabel")} />
+                                                        <Input type="text" name="PhoneNumber" value={valuesUser.PhoneNumber} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, PhoneNumber: e.target.value })} variant={variant} label={t("profiles.users.phoneNumberLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="w-full flex flex-col gap-2">
                                                 {variants.map((variant) => (
                                                     <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                        <Input type="text" name="Address1" value={valuesUser.Address1} onChange={e => setValuesUser({ ...valuesUser, Address1: e.target.value })} variant={variant} label={t("profiles.users.mainAddressLabel")} />
-                                                        <Input type="text" name="Address2" value={valuesUser.Address2} onChange={e => setValuesUser({ ...valuesUser, Address2: e.target.value })} variant={variant} label={t("profiles.users.secondAddressLabel")} />
+                                                        <Input type="text" name="Address1" value={valuesUser.Address1} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, Address1: e.target.value })} variant={variant} label={t("profiles.users.mainAddressLabel")} />
+                                                        <Input type="text" name="Address2" value={valuesUser.Address2} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, Address2: e.target.value })} variant={variant} label={t("profiles.users.secondAddressLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="w-full flex flex-col gap-2">
                                                 {variants.map((variant) => (
                                                     <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                        <Input type="text" name="Country" value={valuesUser.Country} onChange={e => setValuesUser({ ...valuesUser, Country: e.target.value })} variant={variant} label={t("profiles.users.countryLabel")} />
-                                                        <Input type="text" name="District" value={valuesUser.District} onChange={e => setValuesUser({ ...valuesUser, District: e.target.value })} variant={variant} label={t("profiles.users.districtLabel")} />
-                                                        <Input type="text" name="ZipCode" value={valuesUser.ZipCode} onChange={e => setValuesUser({ ...valuesUser, ZipCode: e.target.value })} variant={variant} label={t("profiles.users.zipcodeLabel")} />
+                                                        <Input type="text" name="Country" value={valuesUser.Country} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, Country: e.target.value })} variant={variant} label={t("profiles.users.countryLabel")} />
+                                                        <Input type="text" name="District" value={valuesUser.District} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, District: e.target.value })} variant={variant} label={t("profiles.users.districtLabel")} />
+                                                        <Input type="text" name="ZipCode" value={valuesUser.ZipCode} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, ZipCode: e.target.value })} variant={variant} label={t("profiles.users.zipcodeLabel")} />
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="w-full flex flex-col gap-2">
                                                 {variants.map((variant) => (
                                                     <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                                        <Input type="password" className="w-1/4" name="Password" value={valuesUser.Password} onChange={e => setValuesUser({ ...valuesUser, Password: e.target.value })} variant={variant} label={t("profiles.users.passwordLabel")} />
+                                                        <Input type="password" className="w-1/4" name="Password" value={valuesUser.Password} isReadOnly={isReadOnly} onChange={e => setValuesUser({ ...valuesUser, Password: e.target.value })} variant={variant} label={t("profiles.users.passwordLabel")} />
                                                         <Autocomplete
                                                                 variant={variant}
                                                                 label={t("profiles.users.roleLabel")}
@@ -335,6 +340,7 @@ const modaluser = ({
                                                                 className="w-1/4"
                                                                 defaultInputValue={RoleName}
                                                                 onSelectionChange={handleRoleEdit}
+                                                                isReadOnly={isReadOnly}
                                                             >
                                                                 {itemsRoles.map((item) => (
                                                                     <AutocompleteItem key={item.value} value={item.value}>{item.RoleName}</AutocompleteItem>
@@ -349,6 +355,7 @@ const modaluser = ({
                                                                 className="w-1/4"
                                                                 defaultInputValue={OrganizationName}
                                                                 onSelectionChange={handleOrganizationEdit}
+                                                                isReadOnly={isReadOnly}
                                                             >
                                                                 {items.map((item) => (
                                                                     <AutocompleteItem key={item.value} value={item.value}>{item.OrganizationName}</AutocompleteItem>
